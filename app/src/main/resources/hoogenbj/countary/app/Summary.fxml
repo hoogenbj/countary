@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2023. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<fx:root stylesheets="@skin.css" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER">
+        <VBox alignment="CENTER" spacing="10.0">
+            <VBox>
+                <HBox>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-heading-text"
+                          text="Transactions Outstanding"/>
+                </HBox>
+                <HBox spacing="5.0">
+                    <Pane prefWidth="10.0" />
+                    <HBox alignment="CENTER_RIGHT" prefWidth="90.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Debits:" />
+                    </HBox>
+                    <Text fx:id="debits" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                </HBox>
+                <HBox spacing="5.0">
+                    <Pane prefWidth="10.0" />
+                    <HBox alignment="CENTER_RIGHT" prefWidth="90.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Credits:" />
+                    </HBox>
+                    <Text fx:id="credits" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                </HBox>
+                <HBox spacing="5.0">
+                    <Pane prefWidth="10.0" />
+                    <HBox alignment="CENTER_RIGHT" prefWidth="90.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Balance:" />
+                    </HBox>
+                    <Text fx:id="transactionBalance" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                </HBox>
+            </VBox>
+            <VBox>
+                <HBox>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-heading-text"
+                          text="Budget Funding"/>
+                </HBox>
+                <HBox>
+                    <Pane prefWidth="10.0" />
+                    <HBox alignment="CENTER_RIGHT" prefWidth="90.0" spacing="5.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Funded:" />
+                    </HBox>
+                    <Text fx:id="funded" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                </HBox>
+                <HBox>
+                    <Pane prefWidth="10.0" />
+                    <HBox alignment="CENTER_RIGHT" prefWidth="90.0" spacing="5.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Unfunded:" />
+                    </HBox>
+                    <Text fx:id="unfunded" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                </HBox>
+                <HBox>
+                    <Pane prefWidth="10.0" />
+                    <HBox alignment="CENTER_RIGHT" prefWidth="90.0" spacing="5.0">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Balance:" />
+                    </HBox>
+                    <Text fx:id="fundingBalance" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+</fx:root>

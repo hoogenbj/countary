@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2022. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Text?>
+
+<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+    <BorderPane>
+        <center>
+            <TableView fx:id="tableView">
+                <columns>
+                    <TableColumn fx:id="budgetColumn" editable="false" prefWidth="150.0"
+                                 style="-fx-alignment: center-left;" text="Budget"/>
+                    <TableColumn fx:id="itemColumn" editable="false" prefWidth="150.0"
+                                 style="-fx-alignment: center-left;" text="Item"/>
+                    <TableColumn fx:id="noteColumn" editable="false" prefWidth="150.0"
+                                 style="-fx-alignment: center-left;" text="Note"/>
+                    <TableColumn fx:id="itemAmountColumn" editable="false" prefWidth="100.0"
+                                 style="-fx-alignment: center-right;" text="Amount"/>
+                    <TableColumn fx:id="allocationDeleteColumn" editable="false" prefWidth="50.0"
+                                 style="-fx-alignment: center;" text="Delete"/>
+                </columns>
+            </TableView>
+        </center>
+        <top>
+            <VBox BorderPane.alignment="CENTER">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Transaction:"/>
+                    <Text fx:id="transaction" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                        <HBox.margin>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        </HBox.margin>
+                    </Text>
+                    <Text fx:id="amount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                        <HBox.margin>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        </HBox.margin>
+                    </Text>
+                    <SVGPath fx:id="accountTag" content="M40,60 C42,48 44,30 25,32"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                    <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Balance:"/>
+                    <Text fx:id="balance" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                        <HBox.margin>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        </HBox.margin>
+                    </Text>
+                </HBox>
+            </VBox>
+        </top>
+    </BorderPane>
+</fx:root>

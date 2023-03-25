@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  ~ Copyright (c) 2023. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+
+<?import hoogenbj.countary.app.ClearableTextField?>
+<VBox alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="hoogenbj.countary.app.AccountsWorksheetController">
+    <HBox>
+        <ClearableTextField fx:id="searchCriteria" promptText="Enter text to search for">
+        </ClearableTextField>
+    </HBox>
+    <HBox>
+        <TableView fx:id="tableView" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="nameColumn" minWidth="-Infinity" prefWidth="250.0" text="Name"/>
+                <TableColumn fx:id="numberColumn" minWidth="-Infinity" prefWidth="150.0" text="Number"/>
+                <TableColumn fx:id="branchColumn" minWidth="-Infinity" prefWidth="70.0" text="Branch code"/>
+                <TableColumn fx:id="bankColumn" minWidth="-Infinity" prefWidth="250.0" text="Bank"/>
+                <TableColumn fx:id="tagColumn" minWidth="-Infinity" prefWidth="50.0" text="Tag"/>
+            </columns>
+        </TableView>
+    </HBox>
+    <HBox VBox.vgrow="ALWAYS"/>
+</VBox>

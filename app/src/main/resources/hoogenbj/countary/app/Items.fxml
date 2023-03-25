@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2022. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hoogenbj.countary.app.ItemsController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" spacing="4.0">
+                <TextField fx:id="searchCriteria" promptText="Enter text to search for">
+                </TextField>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="my-radio-group" stylesheets="@skin.css">
+                    <fx:define>
+                        <ToggleGroup fx:id="kindToggleGroup"/>
+                    </fx:define>
+                    <RadioButton fx:id="annualKind" mnemonicParsing="false" prefWidth="75.0" text="Annual"
+                                 toggleGroup="$kindToggleGroup"/>
+                    <RadioButton fx:id="monthlyKind" mnemonicParsing="false" prefWidth="80.0" text="Monthly"
+                                 toggleGroup="$kindToggleGroup"/>
+                    <RadioButton fx:id="adhocKind" mnemonicParsing="false" prefWidth="80.0" text="Ad hoc"
+                                 toggleGroup="$kindToggleGroup"/>
+                    <RadioButton fx:id="noKind" layoutX="191.0" layoutY="16.0" mnemonicParsing="false" prefWidth="80.0"
+                                 selected="true" text="All" toggleGroup="$kindToggleGroup"/>
+                    <padding>
+                        <Insets left="4.0" right="4.0"/>
+                    </padding>
+                </HBox>
+                <Button mnemonicParsing="false" onAction="#onCreateItem" text="Create Item...">
+                </Button>
+                <Button fx:id="tagButton" disable="true" mnemonicParsing="false" onAction="#onTag" text="Tag...">
+                </Button>
+            </HBox>
+            <padding>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+            <AnchorPane>
+                <TableView fx:id="tableView" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                        <TableColumn fx:id="deleteColumn" editable="false" maxWidth="30.0" minWidth="30.0"
+                                     prefWidth="30.0" style="-fx-alignment: center;"/>
+                        <TableColumn fx:id="nameColumn" prefWidth="300.0" style="-fx-alignment: center-left;"
+                                     text="Name"/>
+                        <TableColumn fx:id="kindColumn" prefWidth="75.0" style="-fx-alignment: center-left;"
+                                     text="Kind"/>
+                        <TableColumn fx:id="categoryColumn" editable="false" prefWidth="150.0"
+                                     style="-fx-alignment: center-left;" text="Category"/>
+                        <TableColumn fx:id="tagsColumn" editable="false" minWidth="-Infinity" prefWidth="450.0"
+                                     style="-fx-alignment: center-left;" text="Tags"/>
+                    </columns>
+                </TableView>
+            </AnchorPane>
+        </ScrollPane>
+    </center>
+</BorderPane>

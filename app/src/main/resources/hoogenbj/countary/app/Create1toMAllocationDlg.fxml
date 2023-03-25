@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<!--
+  ~ Copyright (c) 2022. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<DialogPane prefWidth="360.0" stylesheets="@skin.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+
+    <content>
+        <AnchorPane>
+            <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <center>
+                    <BorderPane>
+                        <center>
+                            <AnchorPane prefHeight="150.0">
+                                <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="tableView">
+                                  <columns>
+                                      <TableColumn fx:id="budgetNameColumn" prefWidth="110.0" text="Budget" />
+                                      <TableColumn fx:id="itemNameColumn" prefWidth="100.0" text="Item"/>
+                                      <TableColumn fx:id="amountColumn" prefWidth="100.0" text="Amount" />
+                                  </columns>
+                              </TableView>
+                          </ScrollPane>
+                      </AnchorPane>
+                  </center>
+                  <top>
+                         <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Allocations:" />
+                         </HBox>
+                  </top>
+               </BorderPane>
+            </center>
+            <top>
+                   <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                       <Text fx:id="transactionDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                       <Text fx:id="transactionAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
+                   </HBox>
+            </top>
+            <bottom>
+                <VBox alignment="CENTER" spacing="4.0" BorderPane.alignment="TOP_CENTER">
+                    <HBox spacing="5.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Budget:"
+                               textAlignment="RIGHT"/>
+                        <TextField fx:id="budgetNameField" editable="false"/>
+                    </HBox>
+                    <HBox spacing="5.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Item:"
+                               textAlignment="RIGHT"/>
+                        <TextField fx:id="itemNameField" editable="false"/>
+                    </HBox>
+                    <HBox spacing="5.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Note:"
+                               textAlignment="RIGHT"/>
+                        <TextField fx:id="noteField" promptText="Type a note"/>
+                    </HBox>
+                    <HBox fillHeight="false" spacing="5.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Amount:"
+                               textAlignment="RIGHT"/>
+                        <TextField fx:id="allocationAmountField"/>
+                    </HBox>
+                    <BorderPane.margin>
+                        <Insets top="10.0"/>
+                    </BorderPane.margin>
+                </VBox>
+            </bottom>
+         </BorderPane>
+        </AnchorPane>
+    </content>
+    <ButtonType fx:id="okButtonType" buttonData="OK_DONE" text="OK" />
+    <ButtonType buttonData="CANCEL_CLOSE" text="Cancel" />
+</DialogPane>

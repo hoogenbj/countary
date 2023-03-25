@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2022. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<?import hoogenbj.countary.app.ClearableTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" spacing="4.0">
+                <ClearableTextField fx:id="searchCriteria" promptText="Enter text to search for">
+                </ClearableTextField>
+                <HBox alignment="CENTER_LEFT" spacing="4.0" styleClass="my-radio-group" stylesheets="@skin.css">
+                    <fx:define>
+                        <ToggleGroup fx:id="kindToggleGroup"/>
+                    </fx:define>
+                    <RadioButton fx:id="annualKind" mnemonicParsing="false" prefWidth="70.0" text="Annual"
+                                 toggleGroup="$kindToggleGroup"/>
+                    <RadioButton fx:id="monthlyKind" mnemonicParsing="false" prefWidth="75.0" text="Monthly"
+                                 toggleGroup="$kindToggleGroup"/>
+                    <RadioButton fx:id="adhocKind" mnemonicParsing="false" prefWidth="70.0" text="Ad hoc"
+                                 toggleGroup="$kindToggleGroup"/>
+                    <RadioButton fx:id="noKind" layoutX="191.0" layoutY="16.0" mnemonicParsing="false"
+                                 prefWidth="40.0" selected="true" text="All" toggleGroup="$kindToggleGroup"/>
+                    <padding>
+                        <Insets left="4.0" right="4.0"/>
+                    </padding>
+                </HBox>
+                <CheckBox fx:id="showHidden" mnemonicParsing="false" text="Show hidden"/>
+                <Button fx:id="createButton" mnemonicParsing="false" onAction="#onCreateBudget" text="Create">
+                </Button>
+                <Button fx:id="cloneButton" disable="true" mnemonicParsing="false" onAction="#onCloneBudget"
+                        text="Clone">
+                </Button>
+            </HBox>
+            <padding>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="tableView">
+            <columns>
+                <TableColumn fx:id="nameColumn" prefWidth="300.0" text="Name"/>
+                <TableColumn fx:id="balanceColumn" editable="false" prefWidth="100.0"
+                             style="-fx-alignment: center-right;" text="Balance"/>
+                <TableColumn fx:id="kindColumn" prefWidth="75.0" text="Kind"/>
+                <TableColumn fx:id="hiddenColumn" prefWidth="75.0" text="Hidden"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

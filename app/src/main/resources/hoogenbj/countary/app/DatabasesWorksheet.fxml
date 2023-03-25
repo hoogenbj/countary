@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  ~ Copyright (c) 2023. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<VBox alignment="CENTER" spacing="4.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="hoogenbj.countary.app.DatabasesWorksheetController">
+   <HBox alignment="CENTER" spacing="5.0">
+      <VBox.margin>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+      </VBox.margin>
+      <Label text="Current database path:">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </Label>
+      <TextField fx:id="path" editable="false" promptText="Open or create a database" HBox.hgrow="ALWAYS">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </TextField>
+   </HBox>
+   <HBox alignment="CENTER" spacing="4.0">
+      <padding>
+         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+      </padding>
+      <Button mnemonicParsing="false" onAction="#onDemo" text="Demo database...">
+         <font>
+            <Font size="24.0"/>
+         </font>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+         </HBox.margin>
+      </Button>
+   </HBox>
+   <HBox alignment="CENTER">
+      <VBox.margin>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+      </VBox.margin>
+      <Button mnemonicParsing="false" onAction="#onOpen" text="Open database...">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </Button>
+   </HBox>
+   <HBox alignment="CENTER">
+      <VBox.margin>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+      </VBox.margin>
+      <Button mnemonicParsing="false" onAction="#onCreate" text="Create database...">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </Button>
+   </HBox>
+   <HBox alignment="CENTER" spacing="10.0">
+      <VBox.margin>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+      </VBox.margin>
+      <Button mnemonicParsing="false" onAction="#onBackup" text="Backup database...">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#onRestore" text="Restore database...">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </Button>
+   </HBox>
+</VBox>

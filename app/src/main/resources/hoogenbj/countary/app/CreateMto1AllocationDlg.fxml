@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<!--
+  ~ Copyright (c) 2022. Johan Hoogenboezem
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<DialogPane prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@skin.css">
+    <content>
+        <AnchorPane>
+            <VBox spacing="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="0.0">
+                <HBox fillHeight="false">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Transactions:"/>
+                </HBox>
+                <ScrollPane prefHeight="150.0">
+                    <AnchorPane>
+                        <TableView fx:id="tableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columns>
+                                <TableColumn fx:id="descriptionColumn" prefWidth="240.0" text="Description"/>
+                                <TableColumn fx:id="amountColumn" prefWidth="120.0" text="Amount"/>
+                            </columns>
+                        </TableView>
+                    </AnchorPane>
+                </ScrollPane>
+                <HBox fillHeight="false" spacing="5.0">
+                    <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Budget:"
+                           textAlignment="RIGHT"/>
+                    <TextField fx:id="budgetNameField" editable="false"/>
+                </HBox>
+                <HBox fillHeight="false" spacing="5.0">
+                    <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Item:"
+                           textAlignment="RIGHT"/>
+                    <TextField fx:id="itemNameField" editable="false"/>
+                </HBox>
+                <HBox fillHeight="false" spacing="5.0">
+                    <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Note:"
+                           textAlignment="RIGHT"/>
+                    <TextField fx:id="noteField" promptText="Type a note"/>
+                </HBox>
+                <HBox fillHeight="false" spacing="5.0">
+                    <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="100.0" text="Amount:"
+                           textAlignment="RIGHT"/>
+                    <TextField fx:id="allocationAmountField" editable="false"/>
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </content>
+    <ButtonType fx:id="okButtonType" buttonData="OK_DONE" text="OK" />
+    <ButtonType buttonData="CANCEL_CLOSE" text="Cancel" />
+</DialogPane>

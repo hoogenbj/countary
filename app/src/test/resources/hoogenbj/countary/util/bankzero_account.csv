@@ -1,0 +1,4 @@
+Date,Day,Time,Type,Description 1,Description 2,Fee,Amount,Balance,Has Attachments
+2021-12-04,Sat,11:55,Pay in,Capitec bank limited,CAPITEC  JANE,0.00,600.00,"1,536.00",No
+2021-12-27,Mon,11:44,Card purchase,Exclusive Books Sandton,Sandton Dip Transaction,0.00,-206.00,"1,330.00",No
+2021-12-31,Fri,18:38,Card purchase,Loot Online,Johannesburg Online Transaction,0.00,"-1,189.00",141.00,No
