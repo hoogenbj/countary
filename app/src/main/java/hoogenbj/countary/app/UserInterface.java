@@ -29,11 +29,11 @@ public interface UserInterface {
 
     String openBankStatementFile(String ext);
 
-    void showError(String s);
-
     void showNotification(String notification);
 
     File restoreDatabaseFromFile();
+
+    void showError(String content);
 
     String chooseDB();
 }

@@ -20,6 +20,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Window;
 
 import java.io.IOException;
@@ -30,11 +33,46 @@ import java.util.ResourceBundle;
 
 public class ErrorDialogController extends Dialog<String> implements Initializable {
     @FXML
-    public ButtonType okButtonType;
-    public TextArea errorMessage;
-    public TextArea stackTrace;
+    private HBox stackTraceContainer;
+    @FXML
+    private HBox exceptionContainer;
+    @FXML
+    private HBox informationContainer;
+    @FXML
+    private Label information;
+    @FXML
+    private ButtonType okButtonType;
+    @FXML
+    private TextArea errorMessage;
+    @FXML
+    private TextArea stackTrace;
+    @FXML
+    private ButtonType copyButtonType;
 
-    public static ErrorDialogController getInstance(Window owner, Throwable exception) {
+    private Button okButton;
+    private Button copyButton;
+    private Throwable exception;
+    private String message;
+    private String title;
+
+    public static ErrorDialogController getInstance(Window owner, String message, Throwable exception) {
+        ErrorDialogController controller = getInstance(owner);
+        controller.exception = exception;
+        controller.message = message;
+        controller.title = "An unexpected error occurred";
+        controller.initControls();
+        return controller;
+    }
+
+    public static ErrorDialogController getInstance(Window owner, String message) {
+        ErrorDialogController controller = getInstance(owner);
+        controller.message = message;
+        controller.title = "An error occurred";
+        controller.initControls();
+        return controller;
+    }
+
+    private static ErrorDialogController getInstance(Window owner) {
         FXMLLoader loader = CountaryApp.injector.getInstance(FXMLLoader.class);
         loader.setLocation(ErrorDialogController.class.getResource("ErrorDialog.fxml"));
         ErrorDialogController controller = null;
@@ -42,18 +80,57 @@ public class ErrorDialogController extends Dialog<String> implements Initializab
             DialogPane dlgPane = loader.load();
             controller = loader.getController();
             controller.initOwner(owner);
-            controller.setTitle("An unexpected error occurred");
-            controller.errorMessage.setText(exception.getMessage());
-            StringWriter stringWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stringWriter);
-            exception.printStackTrace(printWriter);
-            controller.stackTrace.setText(stringWriter.toString());
+            controller.okButton = (Button) dlgPane.lookupButton(controller.okButtonType);
+            controller.okButton.setDefaultButton(true);
+            controller.copyButton = (Button) dlgPane.lookupButton(controller.copyButtonType);
             controller.setDialogPane(dlgPane);
             controller.setResultConverter(buttonType -> "");
         } catch (IOException e) {
             throw new RuntimeException("Unable to launch ErrorDialogController", e);
         }
         return controller;
+    }
+
+    private void initControls() {
+        setTitle(title);
+        if (exception == null) {
+            stackTraceContainer.setManaged(false);
+            stackTraceContainer.setVisible(false);
+            exceptionContainer.setVisible(false);
+            exceptionContainer.setManaged(false);
+            copyButton.setManaged(false);
+            copyButton.setVisible(false);
+        } else {
+            errorMessage.setText(exception.getMessage());
+            String st = getStackTrace(exception);
+            stackTrace.setText(st);
+            copyButton.setOnAction(event -> {
+                ClipboardContent content = new ClipboardContent();
+                content.putString(st);
+                Clipboard.getSystemClipboard().setContent(content);
+            });
+        }
+        if (message == null) {
+            informationContainer.setVisible(false);
+            informationContainer.setManaged(false);
+        } else {
+            information.setText(message);
+        }
+    }
+
+    public static ErrorDialogController getInstance(Window owner, Throwable exception) {
+        ErrorDialogController controller = getInstance(owner);
+        controller.exception = exception;
+        controller.title = "An uncaught exception occurred";
+        controller.initControls();
+        return controller;
+    }
+
+    private static String getStackTrace(Throwable exception) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        exception.printStackTrace(printWriter);
+        return stringWriter.toString();
     }
 
     @Override

@@ -140,16 +140,16 @@ public class TransactionController implements ControllerHelpers {
                 userInterface.showWarning("The database appears to be empty. Create database objects first.");
             } else {
                 transactionModel = new TransactionModel(model, this::refreshTransactions, this::searchClearable);
-                KeyValue recentAccount = settings.getCurrentAccount();
-                if (recentAccount == null)
-                    return;
-                Account account = model.getAccount(Long.parseLong(recentAccount.value()));
-                if (account != null) {
-                    accounts.setValue(account);
-                    transactionModel.setAccount(account);
-                    loadStatementButton.setDisable(false);
-                }
                 initControls();
+                KeyValue recentAccount = settings.getCurrentAccount();
+                if (recentAccount != null) {
+                    Account account = model.getAccount(Long.parseLong(recentAccount.value()));
+                    if (account != null) {
+                        accounts.setValue(account);
+                        transactionModel.setAccount(account);
+                        loadStatementButton.setDisable(false);
+                    }
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Unable to retrieve last statement from database", e);

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <!--
   ~ Copyright (c) 2022. Johan Hoogenboezem
@@ -24,28 +25,43 @@
   ~    limitations under the License.
   -->
 
-<DialogPane prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hoogenbj.countary.app.ErrorDialogController">
+<DialogPane prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hoogenbj.countary.app.ErrorDialogController">
 
-    <ButtonType fx:id="okButtonType" buttonData="OK_DONE" text="OK" />
-   <content>
-       <VBox>
-           <HBox spacing="10.0">
-               <VBox.margin>
-                   <Insets />
-               </VBox.margin>
-               <padding>
-                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-               <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Error message:" />
-               <TextArea fx:id="errorMessage" editable="false" prefHeight="20.0" wrapText="true" />
-           </HBox>
-           <HBox layoutX="21.0" layoutY="21.0" spacing="10.0">
-               <padding>
-                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-               <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Stack trace:" />
-               <TextArea fx:id="stackTrace" editable="false" prefHeight="150.0" wrapText="true" />
-           </HBox>
-       </VBox>
-   </content>
+    <ButtonType fx:id="okButtonType" buttonData="OK_DONE" text="OK"/>
+    <ButtonType fx:id="copyButtonType" buttonData="OTHER" text="Copy to clipboard"/>
+    <content>
+        <VBox>
+            <HBox fx:id="informationContainer" spacing="10.0">
+                <VBox.margin>
+                    <Insets/>
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+                <Label fx:id="information" alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+            </HBox>
+            <HBox fx:id="exceptionContainer" spacing="10.0">
+                <VBox.margin>
+                    <Insets/>
+                </VBox.margin>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+                <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Error message:"/>
+                <TextArea fx:id="errorMessage" editable="false" prefHeight="20.0" wrapText="true"/>
+            </HBox>
+            <HBox fx:id="stackTraceContainer" layoutX="21.0" layoutY="21.0" spacing="10.0">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+                <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Stack trace:"/>
+                <TextArea fx:id="stackTrace" editable="false" prefHeight="150.0" wrapText="true"/>
+            </HBox>
+        </VBox>
+    </content>
 </DialogPane>

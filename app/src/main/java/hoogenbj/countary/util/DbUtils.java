@@ -56,8 +56,7 @@ public class DbUtils {
     }
 
     public static boolean openDemoDatabase(Settings settings, UserInterface userInterface, DataModel model) {
-        String previousDbUrl = settings.getDatabaseUrl();
-        String previousFilePath = settings.getDatabasePath();
+        backupDatabaseSettings(settings);
         File tempFile = null;
         try {
             tempFile = File.createTempFile(String.format("countary_demo_%d", System.currentTimeMillis()), ".sqlite.tmp");
@@ -74,23 +73,35 @@ public class DbUtils {
             return true;
         } catch (IOException e) {
             userInterface.showError(String.format("Unable to initialise demo database due to %s", e));
-            settings.setDatabasePath(previousFilePath);
-            settings.setDatabaseUrl(previousDbUrl);
+            restoreDatabaseSettings(settings);
         } catch (SQLException e) {
             userInterface.showError(String.format("Unable to execute statements to initialise demo database in %s due to %s",
                     tempFile.getAbsolutePath(), e));
-            settings.setDatabasePath(previousFilePath);
-            settings.setDatabaseUrl(previousDbUrl);
+            restoreDatabaseSettings(settings);
         } catch (Throwable e) {
             if (tempFile != null)
                 userInterface.showError(String.format("Unexpected error while trying to create a demo database in %s due to %s",
                         tempFile.getAbsolutePath(), e));
             else
                 userInterface.showError(String.format("Unexpected error while trying to create a demo database due to %s", e));
+            restoreDatabaseSettings(settings);
+        }
+        return false;
+    }
+
+    private static String previousDbUrl = null;
+    private static String previousFilePath = null;
+
+    private static void backupDatabaseSettings(Settings settings) {
+        previousDbUrl = settings.getDatabaseUrl();
+        previousFilePath = settings.getDatabasePath();
+    }
+
+    private static void restoreDatabaseSettings(Settings settings) {
+        if (previousDbUrl != null) {
             settings.setDatabasePath(previousFilePath);
             settings.setDatabaseUrl(previousDbUrl);
         }
-        return false;
     }
 
     public static boolean createDatabase(Settings settings, UserInterface userInterface, DataModel model) {
@@ -98,8 +109,7 @@ public class DbUtils {
         if (file != null) {
             String filePath = file.getAbsolutePath();
             String dbUrl = String.format("jdbc:sqlite:%s", filePath);
-            String previousDbUrl = settings.getDatabaseUrl();
-            String previousFilePath = settings.getDatabasePath();
+            backupDatabaseSettings(settings);
             settings.setDatabaseUrl(dbUrl);
             settings.setDatabasePath(filePath);
             try {
@@ -110,16 +120,13 @@ public class DbUtils {
                 return true;
             } catch (IOException e) {
                 userInterface.showError(String.format("Unable to initialise database at %s due to %s", filePath, e));
-                settings.setDatabasePath(previousFilePath);
-                settings.setDatabaseUrl(previousDbUrl);
+                restoreDatabaseSettings(settings);
             } catch (SQLException e) {
                 userInterface.showError(String.format("Unable to execute statements to initialise database at %s due to %s", filePath, e));
-                settings.setDatabasePath(previousFilePath);
-                settings.setDatabaseUrl(previousDbUrl);
+                restoreDatabaseSettings(settings);
             } catch (Throwable e) {
                 userInterface.showError(String.format("Unexpected error while trying to create a database file at %s due to %s", filePath, e));
-                settings.setDatabasePath(previousFilePath);
-                settings.setDatabaseUrl(previousDbUrl);
+                restoreDatabaseSettings(settings);
             }
         }
         return false;

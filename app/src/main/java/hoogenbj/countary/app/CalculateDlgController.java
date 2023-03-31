@@ -169,8 +169,10 @@ public class CalculateDlgController extends Dialog<Boolean> {
         calculationsContainer.getChildren().add(heading);
         BigDecimal difference = plannedSum.subtract(sumActual);
         addCalculation("Difference", difference);
-        BigDecimal percentage = sumActual.divide(plannedSum, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100.0"));
-        addCalculation("Percentage", percentage);
+        if (plannedSum.signum() != 0) {
+            BigDecimal percentage = sumActual.divide(plannedSum, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100.0"));
+            addCalculation("Percentage", percentage);
+        }
     }
 
     private static boolean isValid(BigDecimal bigDecimal) {

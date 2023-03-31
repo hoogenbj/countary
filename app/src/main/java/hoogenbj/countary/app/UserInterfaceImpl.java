@@ -16,7 +16,6 @@
 
 package hoogenbj.countary.app;
 
-import hoogenbj.countary.util.DbUtils;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -25,8 +24,9 @@ import org.controlsfx.control.Notifications;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.List;
 import java.util.Optional;
+
+import static hoogenbj.countary.app.CountaryApp.OWNER_WINDOW;
 
 public class UserInterfaceImpl implements UserInterface {
     @Override
@@ -43,7 +43,7 @@ public class UserInterfaceImpl implements UserInterface {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Database Files", "*.sqlite"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        File dbFile = fileChooser.showOpenDialog(CountaryApp.OWNER_WINDOW);
+        File dbFile = fileChooser.showOpenDialog(OWNER_WINDOW);
         if (dbFile != null) {
             return dbFile.getAbsolutePath();
         } else
@@ -58,7 +58,7 @@ public class UserInterfaceImpl implements UserInterface {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Database Files", "*.sqlite"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        return fileChooser.showSaveDialog(CountaryApp.OWNER_WINDOW);
+        return fileChooser.showSaveDialog(OWNER_WINDOW);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UserInterfaceImpl implements UserInterface {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Database Backup Files", "*.backup"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        return fileChooser.showOpenDialog(CountaryApp.OWNER_WINDOW);
+        return fileChooser.showOpenDialog(OWNER_WINDOW);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UserInterfaceImpl implements UserInterface {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Database Backup Files", "*.backup"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        return fileChooser.showSaveDialog(CountaryApp.OWNER_WINDOW);
+        return fileChooser.showSaveDialog(OWNER_WINDOW);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class UserInterfaceImpl implements UserInterface {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Bank Statement Files", ext),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        File file = fileChooser.showOpenDialog(CountaryApp.OWNER_WINDOW);
+        File file = fileChooser.showOpenDialog(OWNER_WINDOW);
         if (file != null) {
             return file.getAbsolutePath();
         } else
@@ -103,9 +103,8 @@ public class UserInterfaceImpl implements UserInterface {
 
     @Override
     public void showError(String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR,
-                content, ButtonType.CLOSE);
-        alert.showAndWait();
+        ErrorDialogController instance = ErrorDialogController.getInstance(OWNER_WINDOW, content);
+        instance.showAndWait();
     }
 
     @Override
@@ -114,16 +113,17 @@ public class UserInterfaceImpl implements UserInterface {
         ButtonType openDemoDatabase = new ButtonType("Open Demo Database", ButtonBar.ButtonData.OTHER);
         ButtonType createDatabase = new ButtonType("Create New Database", ButtonBar.ButtonData.OTHER);
         ButtonType nothing = new ButtonType("Nothing", ButtonBar.ButtonData.OTHER);
-        Dialog<String> dialog = new Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Open Database");
         dialog.setContentText("What do you want to do?");
         dialog.getDialogPane().getButtonTypes().addAll(openDatabase, openDemoDatabase, createDatabase, nothing);
-        Optional<String> selection = dialog.showAndWait();
-        return selection.orElse("Nothing");
+        Optional<ButtonType> selection = dialog.showAndWait();
+        return selection.orElse(nothing).getText();
     }
 
     @Override
     public void showNotification(String notification) {
-        Notifications.create().text(notification).hideAfter(Duration.seconds(3)).showWarning();
+        if (OWNER_WINDOW != null && OWNER_WINDOW.isShowing())
+            Notifications.create().text(notification).hideAfter(Duration.seconds(3)).showWarning();
     }
 }
