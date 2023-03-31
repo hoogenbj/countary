@@ -15,4 +15,4 @@ Don't know what OFX format is? If you are/were a Microsoft Money or Quicken/Quic
 user, then you might've been using OFX already - if you were importing 
 transactions from your bank.
 
-**Watch this space - more to come soon!**
+[Troubleshooting](trouble.markdown)

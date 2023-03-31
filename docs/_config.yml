@@ -21,7 +21,8 @@
 title: Countary
 email: hoogenbj@gmail.com
 description: >-
-  Countary offers everything you need to create and manage budgets. It runs anywhere that JavaFX can run.
+  Countary offers everything you need to create and manage budgets. It runs on any desktop computer that can run 
+  [JavaFX](https://openjfx.io/).
   If your bank provides exports of statements in OFX format, then you can use Countary!
 baseurl: "/countary/"
 url: "https://hoogenbj.github.io"
