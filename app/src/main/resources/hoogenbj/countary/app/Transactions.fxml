@@ -71,7 +71,7 @@
                         <Button fx:id="oneToMany" mnemonicParsing="false" text="1 to Many"/>
                         <Button fx:id="manyToOne" mnemonicParsing="false" text="Many to 1" visible="false"/>
                     </StackPane>
-                    <Button mnemonicParsing="false" onAction="#onAddTransaction" text="+">
+                    <Button mnemonicParsing="false" onAction="#onAddTransaction" text="+" fx:id="addTransaction">
                         <font>
                             <Font name="System Bold" size="13.0"/>
                         </font>

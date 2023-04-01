@@ -63,6 +63,8 @@ public class TransactionController implements ControllerHelpers {
     @FXML
     private Button refresh;
     @FXML
+    private Button addTransaction;
+    @FXML
     private Button manyToOne;
     @FXML
     ComboBox<Account> accounts;
@@ -148,12 +150,24 @@ public class TransactionController implements ControllerHelpers {
                         accounts.setValue(account);
                         transactionModel.setAccount(account);
                         loadStatementButton.setDisable(false);
+                    } else {
+                        disableIfNoAccountIsCurrent(true);
                     }
+                } else {
+                    disableIfNoAccountIsCurrent(true);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Unable to retrieve last statement from database", e);
         }
+    }
+
+    private void disableIfNoAccountIsCurrent(boolean value) {
+        showCompletedAlso.setDisable(value);
+        searchChoice.setDisable(value);
+        refresh.setDisable(value);
+        searchCriteria.setDisable(value);
+        addTransaction.setDisable(value);
     }
 
     private void searchClearable(Boolean aBoolean) {
@@ -311,11 +325,11 @@ public class TransactionController implements ControllerHelpers {
                 if (item == null || empty) {
                     setGraphic(null);
                 } else {
-                    Text text = new Text(Account.toKeyValue(item).key());
+                    setText(Account.toKeyValue(item).key());
                     SVGPath tag = new SVGPath();
                     tag.setContent(AccountTag.svgPathContent);
                     tag.setFill(Color.web(item.tagColor()));
-                    HBox hbox = new HBox(5.0, text, tag);
+                    HBox hbox = new HBox(5.0, tag);
                     setGraphic(hbox);
                 }
             }
@@ -351,6 +365,7 @@ public class TransactionController implements ControllerHelpers {
             loadStatementButton.setDisable(false);
             transactionModel.setAccount(newValue);
             settings.setCurrentAccount(Account.toKeyValue(newValue));
+            disableIfNoAccountIsCurrent(false);
         }
     }
 
@@ -484,8 +499,11 @@ public class TransactionController implements ControllerHelpers {
             try {
                 account = model.createAccount(account);
                 accountsList.add(account);
-                if (accounts.getValue() == null)
+                if (accounts.getValue() == null) {
                     accounts.setValue(account);
+                    disableIfNoAccountIsCurrent(false);
+
+                }
             } catch (SQLException e) {
                 throw new RuntimeException("Unable to create account", e);
             }

@@ -18,10 +18,11 @@ package hoogenbj.countary.app;
 import java.util.prefs.Preferences;
 
 public class SettingsPreferences implements Settings {
-    private static final String DB_URL_KEY = "/countary/database/url";
-    private static final String CURRENT_ACCOUNT_KEY = "/countary/current/account/key";
-    private static final String CURRENT_ACCOUNT_VALUE = "/countary/current/account/value";
-    private static final String CUSTOM_COLORS_KEY = "/countary/custom_colors";
+    private static final String KEY_PREFIX = "/countary";
+    private static final String DB_URL_KEY = KEY_PREFIX + "/database/url";
+    private static final String CURRENT_ACCOUNT_KEY = KEY_PREFIX + "/current/account/key";
+    private static final String CURRENT_ACCOUNT_VALUE = KEY_PREFIX + "/current/account/value";
+    private static final String CUSTOM_COLORS_KEY = KEY_PREFIX + "/custom_colors";
 
     private final Preferences preferences;
 

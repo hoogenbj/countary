@@ -105,7 +105,7 @@ public class CountaryController implements ControllerHelpers {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(CountaryController.class.getResource("skin.css").toExternalForm());
             stage.setScene(scene);
-            stage.setTitle("₵ountary - the opinionated budget program");
+            stage.setTitle("ountary - the opinionated budget program");
             stage.show();
             scene.getWindow().setOnCloseRequest((WindowEvent t) -> {
                 if (t.getEventType().equals(WindowEvent.WINDOW_CLOSE_REQUEST)) {
