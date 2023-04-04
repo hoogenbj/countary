@@ -112,6 +112,7 @@ public class CountaryController implements ControllerHelpers {
                     Platform.exit();
                 }
             });
+            CountaryApp.OWNER_WINDOW = scene.getWindow();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

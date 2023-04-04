@@ -87,7 +87,7 @@ public class StatementParserTest {
                 assertEquals("TOTAL FAERIEGLEN 470720*5678  01 NOV", line.getDescription());
                 assertEquals(txDateFormat.parse("01 NOV 2022"), line.getTransactionDate().getTime());
                 assertEquals(new BigDecimal("-532.60"), line.getAmount());
-                assertEquals(new BigDecimal("36865.90"), line.getBalance());
+                assertEquals(new BigDecimal("70216.72"), line.getBalance());
                 checked++;
             }
         }

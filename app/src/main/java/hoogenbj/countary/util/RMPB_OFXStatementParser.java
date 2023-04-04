@@ -148,7 +148,7 @@ public class RMPB_OFXStatementParser implements StatementParser {
                                 BigDecimal amount = ParseUtils.parseBigDecimal(simpleTag.getContent());
                                 transaction.amount = amount;
                                 transaction.balance = runningBalance[0];
-                                runningBalance[0] = runningBalance[0].add(amount);
+                                runningBalance[0] = runningBalance[0].subtract(amount);
                             }
                             case "MEMO" ->
                                     transaction.description = StringEscapeUtils.unescapeXml(simpleTag.getContent());
