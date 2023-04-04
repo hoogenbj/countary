@@ -52,22 +52,29 @@ jlink {
     jpackage {
         if (os.macOsX) {
             installerType = "dmg"
-            imageOptions = ['--icon', 'src/main/resources/hoogenbj/countary/app/countary.icns']
-            installerOptions = [
-                    '--name', "Countary",
-                    '--vendor', 'Johan Hoogenboezem',
-                    '--verbose',
-                    '--dest', "product",
-                    '--app-version', "$version",
-                    '--copyright', "JA Hoogenboezem 2023",
-                    '--description', "Countary - an opinionated budgeting program",
-                    '--license-file', "../LICENSE",
-                    '--mac-package-identifier', "hoogenbj.Countary",
-                    '--mac-package-name', "Countary"
+            installerOptions = ['--mac-package-identifier', "hoogenbj.Countary",
+                                '--mac-package-name', "Countary"
             ]
         } else if (os.windows) {
-            installerOptions = ['--win-per-user-install', '--win-dir-chooser', '--win-menu']
+            installerType = "msi"
+            installerOptions = ['--win-per-user-install', '--win-dir-chooser', '--win-menu',
+                                '--win-upgrade-uuid', 'c7d18706-9e31-4cf0-a5b1-bc5ed34b4315']
         }
+        imageOptions = ['--icon', 'src/main/resources/hoogenbj/countary/app/countary.icns']
+        installerOptions += '--name'
+        installerOptions += 'Countary'
+        installerOptions += '--vendor'
+        installerOptions += 'Johan Hoogenboezem'
+        installerOptions += '--dest'
+        installerOptions += 'product'
         installerOptions += '--verbose'
+        installerOptions += '--app-version'
+        installerOptions += "$version"
+        installerOptions += '--license-file'
+        installerOptions += '../LICENSE'
+        installerOptions += '--copyright'
+        installerOptions += 'JA Hoogenboezem 2023'
+        installerOptions += '--description'
+        installerOptions += "Countary - an opinionated budgeting program"
     }
 }
