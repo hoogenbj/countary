@@ -1,6 +1,10 @@
 ---
 layout: default
 ---
+# Troubleshooting
+I've been the only user of Countary so far.  It is highly likely that other users
+will find bugs that I missed. But bugs can be fixed.
+
 In case of an error a dialog will display which should explain what went wrong:
 
 ![error dialog](error_dialog.png)
@@ -11,4 +15,6 @@ can be used to copy the stack trace to the clipboard. An email can be sent to
 and should include the stack trace if there was one. There is no guarantee of
 support, but the author also uses Countary so it is likely that issues will be addressed.
 
-The repository can be watched to get notified of activity - such as a new version being released.
+The repository can be `watched` to get notified of activity - such as a new version being released.
+
+Back to [Home](index.markdown)
