@@ -25,6 +25,18 @@ database and are ready to start with your own.
 ## Nothing
 Maybe you want to continue later.
 
+If you clicked one of the `database`, buttons you will see the initial screen - the
+Transactions worksheet. Here is the Transactions worksheet for the Demo database
+(click on the image to make it bigger):
+[![Transactions Worksheet](transactions_worksheet.png)](transactions_worksheet.png)
+
+You can change the view to something else, by selecting from the menu. Here's the
+menu on a Mac:  
+![Menu on a Mac](menu_mac.png)
+
+...and here is what it looks like on Windows:  
+![Menu on Windows](menu_windows.png)
+
 To continue using Countary, you will need to understand the concepts:
 
 [**Transactions**](transactions.markdown)  

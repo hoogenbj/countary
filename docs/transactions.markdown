@@ -13,10 +13,6 @@ On the other hand, multiple transactions can be assigned to one budget item.
 For example, e-toll transactions can be assigned to the `E-Toll` budget item
 of the `monthly` budget.
 
-`Countary` will always show the `Transactions Worksheet` first. This initial
-view is where most of your time will be spent deciding what to do with each
-transaction.
-
 Here's a view of the `Transactions Worksheet` for the Demo database (click on it 
 to see a bigger version):
 [![Transactions Worksheet](transactions_worksheet.png)](transactions_worksheet.png)
