@@ -28,6 +28,9 @@ import java.util.Set;
 import java.util.function.BiFunction;
 
 public interface DataModel {
+
+    void clearCache();
+
     Map<Long, BigDecimal> getPlannedByBudgetAndTags(Budget budget) throws SQLException;
 
     Map<Long, BigDecimal> getActualByBudgetAndTags(Budget budget) throws SQLException;

@@ -36,20 +36,26 @@ public class DatabasesWorksheetController implements ControllerHelpers {
 
     @FXML
     private void onOpen(ActionEvent actionEvent) {
-        if (DbUtils.openDatabase(settings, userInterface))
+        if (DbUtils.openDatabase(settings, userInterface)) {
             path.setText(settings.getDatabasePath());
+            model.clearCache();
+        }
     }
 
     @FXML
     private void onDemo(ActionEvent actionEvent) {
-        if (DbUtils.openDemoDatabase(settings, userInterface, model))
+        if (DbUtils.openDemoDatabase(settings, userInterface, model)) {
             path.setText(settings.getDatabasePath());
+            model.clearCache();
+        }
     }
 
     @FXML
     private void onCreate(ActionEvent actionEvent) {
-        if (DbUtils.createDatabase(settings, userInterface, model))
+        if (DbUtils.createDatabase(settings, userInterface, model)) {
             path.setText(settings.getDatabasePath());
+            model.clearCache();
+        }
     }
 
     @FXML

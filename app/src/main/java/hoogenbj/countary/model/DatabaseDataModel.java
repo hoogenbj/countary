@@ -45,6 +45,11 @@ public class DatabaseDataModel implements DataModel {
     }
 
     @Override
+    public void clearCache() {
+        categoryCache.clear();
+    }
+
+    @Override
     public void backup(String filePath) throws SQLException {
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
              Statement statement = connection.createStatement()) {

@@ -53,7 +53,7 @@ public class CreateItemDlgController extends Dialog<Item> implements Initializab
         loader.setLocation(CreateItemDlgController.class.getResource("CreateItemDlg.fxml"));
         CreateItemDlgController controller = new CreateItemDlgController();
         controller.initOwner(owner);
-        controller.setTitle("Create a item");
+        controller.setTitle("Create an item");
         controller.model = model;
         loader.setController(controller);
         try {
