@@ -28,11 +28,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RMPB_OFXStatementParser implements StatementParser {
+public class OFXStatementParser implements StatementParser {
     // Probably specific to RMBPB
     private static final Pattern txDatePattern = Pattern.compile("(\\d{2} (JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))$");
     public static final String BANKTRANLIST = "BANKTRANLIST";

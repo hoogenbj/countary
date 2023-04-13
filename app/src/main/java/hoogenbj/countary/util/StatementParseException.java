@@ -29,4 +29,8 @@ public class StatementParseException extends RuntimeException {
     public StatementParseException(String path, Throwable e) {
         super(String.format("Error in file %s ", path), e);
     }
+
+    public StatementParseException(String message, String path) {
+        super(String.format("%s in file %s ", message, path));
+    }
 }

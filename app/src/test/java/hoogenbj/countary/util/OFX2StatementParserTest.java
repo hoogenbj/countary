@@ -14,13 +14,21 @@
  *    limitations under the License.
  */
 
-package hoogenbj.countary.util.ofx;
+package hoogenbj.countary.util;
+import org.junit.jupiter.api.Test;
 
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
-public class Tags {
-    public static final Pattern HEADER_REGEX = Pattern.compile("\\s*([A-Z]+):(\\w+)");
-    public static final Pattern SIMPLE_TAG_REGEX = Pattern.compile("\\s*\\<([A-Z0-9.]+)\\>(.+)");
-    public static final Pattern COMPLEX_TAG_REGEX = Pattern.compile("\\s*\\<([A-Z0-9.]+)\\>$");
-    public static final Pattern END_TAG_REGEX = Pattern.compile("\\s*\\</([A-Z0-9.]+)\\>$");
+import static org.junit.jupiter.api.Assertions.*;
+public class OFX2StatementParserTest {
+    @Test
+    public void parseTest() throws IOException {
+        URI uri = URI.create("file:///Users/johan/private/bankstate/RonellSeState/CapitecBankTransactionHistory_10032023-09042023(1).ofx");
+        OFX2StatementParser parser = new OFX2StatementParser();
+        parser.parse(uri);
+    }
 }

@@ -1,0 +1,298 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+<OFX>
+	<SIGNONMSGSRSV1>
+		<SONRS>
+			<STATUS>
+				<CODE>0
+				<SEVERITY>INFO
+			</STATUS>
+			<DTSERVER>20230409110552
+			<LANGUAGE>ENG
+		</SONRS>
+	</SIGNONMSGSRSV1>
+	<BANKMSGSRSV1>
+		<STMTTRNRS>
+			<TRNUID>1
+			<STATUS>
+				<CODE>0
+				<SEVERITY>INFO
+			</STATUS>
+			<STMTRS>
+				<CURDEF>ZAR
+				<BANKACCTFROM>
+					<BANKID>Capitec
+					<ACCTID>1234567890
+					<ACCTTYPE>SAVINGS
+				</BANKACCTFROM>
+				<BANKTRANLIST>
+					<DTSTART>20230310000000
+					<DTEND>20230409000000
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230313000000
+						<TRNAMT>-610.13
+						<FITID>56422724145
+						<MEMO>Cx Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230313000000
+						<TRNAMT>-210.27
+						<FITID>56423250858
+						<MEMO>Superspar Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230317000000
+						<TRNAMT>-40.00
+						<FITID>56552605913
+						<MEMO>Fatima Fabrics Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230318000000
+						<TRNAMT>-10.00
+						<FITID>56594438852
+						<MEMO>Edenvale Mall (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230319000000
+						<TRNAMT>-90.58
+						<FITID>56627744293
+						<MEMO>Marini Kollege   Lange Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230320000000
+						<TRNAMT>-710.73
+						<FITID>56654473265
+						<MEMO>Cx Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230320000000
+						<TRNAMT>-234.28
+						<FITID>56654936424
+						<MEMO>Superspar Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20230320000000
+						<TRNAMT>8.01
+						<FITID>56670191256
+						<MEMO>Payment Received: Cos       Ccpinnon 00000179   Transfer  0909002803
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20230320000000
+						<TRNAMT>5.26
+						<FITID>56670191283
+						<MEMO>Payment Received: Cos       Ccpnwpid 00000179   Transfer  0909002840
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230322000000
+						<TRNAMT>-7.00
+						<FITID>56712640316
+						<MEMO>Interpark Kloof Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20230324000000
+						<TRNAMT>4473.51
+						<FITID>56769699561
+						<MEMO>Payment Received: Stansal   N624intertank311222 Salary    0913853350
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230324000000
+						<TRNAMT>-118.80
+						<FITID>56779254119
+						<MEMO>Clicks Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230326000000
+						<TRNAMT>-14.39
+						<FITID>56880754246
+						<MEMO>Superspar Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230327000000
+						<TRNAMT>-715.58
+						<FITID>56917716682
+						<MEMO>Cx Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230327000000
+						<TRNAMT>-133.74
+						<FITID>56918474194
+						<MEMO>Superspar Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20230328000000
+						<TRNAMT>8900.00
+						<FITID>56971563411
+						<MEMO>Payment Received: Bollie                        Payment   0927240407
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20230328000000
+						<TRNAMT>150.00
+						<FITID>56971563427
+						<MEMO>Payment Received: Sophie Smith                 Payment   0927399547
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230328000000
+						<TRNAMT>-0.30
+						<FITID>56994307904
+						<MEMO>SMS Notification Fee: 1 notification(s)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230330000000
+						<TRNAMT>-4473.51
+						<FITID>57053906145
+						<MEMO>Internet Banking Payment: Share Investor Accou
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230330000000
+						<TRNAMT>-2.00
+						<FITID>57053906150
+						<MEMO>Payment Fee
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230331000000
+						<TRNAMT>-32.40
+						<FITID>57085967410
+						<MEMO>Net Cafe. Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>CREDIT
+						<DTPOSTED>20230331000000
+						<TRNAMT>54.73
+						<FITID>57150808524
+						<MEMO>Interest Received
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230331000000
+						<TRNAMT>-7.00
+						<FITID>57150808525
+						<MEMO>Monthly Account Admin Fee
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230401000000
+						<TRNAMT>-112.88
+						<FITID>57207239801
+						<MEMO>Superspar Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230403000000
+						<TRNAMT>-599.25
+						<FITID>57306690518
+						<MEMO>Cx Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230403000000
+						<TRNAMT>-516.60
+						<FITID>57308970947
+						<MEMO>Superspar Johannesburg (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230403000000
+						<TRNAMT>-113.98
+						<FITID>57313082911
+						<MEMO>Superspar Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230405000000
+						<TRNAMT>-258.92
+						<FITID>57391040830
+						<MEMO>Cx Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230405000000
+						<TRNAMT>-159.99
+						<FITID>57392160784
+						<MEMO>Pick n Pay Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230405000000
+						<TRNAMT>-57.00
+						<FITID>57407073370
+						<MEMO>Her Annies 95861 Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230406000000
+						<TRNAMT>-255.00
+						<FITID>57447978985
+						<MEMO>Banking App Payment: Honeydew Bears
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230406000000
+						<TRNAMT>-2.00
+						<FITID>57447978988
+						<MEMO>Payment Fee
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230408000000
+						<TRNAMT>-63.97
+						<FITID>57518992174
+						<MEMO>Cx Edenvale (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230408000000
+						<TRNAMT>-84.00
+						<FITID>57525318531
+						<MEMO>Ik *de Backery (pty) L Gauteng (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230408000000
+						<TRNAMT>-180.00
+						<FITID>57526505435
+						<MEMO>Ikh*de Molen Pancake H Gauteng (Card 1234)
+					</STMTTRN>
+					<STMTTRN>
+						<TRNTYPE>DEBIT
+						<DTPOSTED>20230408000000
+						<TRNAMT>-170.00
+						<FITID>57526505493
+						<MEMO>Ikh*de Molen Restauran Gauteng (Card 1234)
+					</STMTTRN>
+				</BANKTRANLIST>
+				<LEDGERBAL>
+					<BALAMT>19497.55
+					<DTASOF>20230409110552
+				</LEDGERBAL>
+			</STMTRS>
+		</STMTTRNRS>
+	</BANKMSGSRSV1>
+</OFX>

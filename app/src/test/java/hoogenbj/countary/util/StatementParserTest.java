@@ -20,6 +20,9 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,7 +79,7 @@ public class StatementParserTest {
 
     @Test
     public void parseRMBPB_OFXTest() throws Exception {
-        ParsedStatement parsedStatement = new RMPB_OFXStatementParser().parse(this.getClass().getResource("rmbpb_account.ofx").toURI());
+        ParsedStatement parsedStatement = new OFXStatementParser().parse(this.getClass().getResource("rmbpb_account.ofx").toURI());
         assertEquals("62012345678", parsedStatement.getAccountNumber());
         assertEquals(35, parsedStatement.getLines().size());
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -92,5 +95,54 @@ public class StatementParserTest {
             }
         }
         assertEquals(1, checked);
+    }
+
+    @Test
+    public void parseOFX2Test() throws Exception {
+        ParsedStatement parsedStatement = new OFX2StatementParser().parse(this.getClass().getResource("CapitecBankTransactionHistory_OFX2.ofx").toURI());
+        assertEquals("1234567890", parsedStatement.getAccountNumber());
+        assertEquals(36, parsedStatement.getLines().size());
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        int checked = 0;
+        for (ParsedStatement.Line line : parsedStatement.getLines()) {
+            if (dateFormat.parse("20230401000000").getTime() == line.getPostedOn().getTime().getTime()) {
+                assertEquals("Superspar Johannesburg (Card 1234)", line.getDescription());
+                assertEquals(dateFormat.parse("20230329000000"), line.getTransactionDate().getTime());
+                assertEquals(new BigDecimal("-112.88"), line.getAmount());
+                assertEquals(new BigDecimal("13316.75"), line.getBalance());
+                checked++;
+            }
+        }
+        assertEquals(1, checked);
+    }
+
+    @Test
+    public void parseOFX1Test() throws Exception {
+        ParsedStatement parsedStatement = new OFXStatementParser().parse(this.getClass().getResource("CapitecBankTransactionHistory_OFX1.ofx").toURI());
+        assertEquals("1234567890", parsedStatement.getAccountNumber());
+        assertEquals(36, parsedStatement.getLines().size());
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        int checked = 0;
+        for (ParsedStatement.Line line : parsedStatement.getLines()) {
+            if (dateFormat.parse("20230401000000").getTime() == line.getPostedOn().getTime().getTime()) {
+                assertEquals("Superspar Johannesburg (Card 1234)", line.getDescription());
+                assertEquals(new BigDecimal("-112.88"), line.getAmount());
+                assertEquals(new BigDecimal("13316.75"), line.getBalance());
+                checked++;
+            }
+        }
+        assertEquals(1, checked);
+    }
+
+    @Test
+    public void compareStatementsTest() throws Exception {
+        ParsedStatement parsedOFX1Statement = new OFXStatementParser().parse(this.getClass().getResource("CapitecBankTransactionHistory_OFX1.ofx").toURI());
+        ParsedStatement parsedOFX2Statement = new OFX2StatementParser().parse(this.getClass().getResource("CapitecBankTransactionHistory_OFX2.ofx").toURI());
+        List<String> ofx1Descriptions = parsedOFX1Statement.getLines().stream().map(line -> line.getDescription()).toList();
+        assertEquals(36, ofx1Descriptions.size());
+        List<String> ofx2Descriptions = parsedOFX2Statement.getLines().stream().map(line -> line.getDescription()).toList();
+        assertEquals(36, ofx2Descriptions.size());
+        ofx2Descriptions.stream().filter(line -> !ofx1Descriptions.contains(line)).forEach(System.out::println);
+        assertTrue(ofx1Descriptions.containsAll(ofx2Descriptions));
     }
 }

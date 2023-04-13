@@ -14,13 +14,8 @@
  *    limitations under the License.
  */
 
-package hoogenbj.countary.util.ofx;
+package hoogenbj.countary.util.ofx2;
 
-import java.util.regex.Pattern;
+public record Header(int ofxHeader, int version, String security, String oldFileUID, String newFileUID) {
 
-public class Tags {
-    public static final Pattern HEADER_REGEX = Pattern.compile("\\s*([A-Z]+):(\\w+)");
-    public static final Pattern SIMPLE_TAG_REGEX = Pattern.compile("\\s*\\<([A-Z0-9.]+)\\>(.+)");
-    public static final Pattern COMPLEX_TAG_REGEX = Pattern.compile("\\s*\\<([A-Z0-9.]+)\\>$");
-    public static final Pattern END_TAG_REGEX = Pattern.compile("\\s*\\</([A-Z0-9.]+)\\>$");
 }
