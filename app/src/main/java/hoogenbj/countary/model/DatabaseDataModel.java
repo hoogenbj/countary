@@ -18,8 +18,10 @@ package hoogenbj.countary.model;
 import com.google.inject.Inject;
 import hoogenbj.countary.app.KeyValue;
 import hoogenbj.countary.app.Settings;
-import hoogenbj.countary.util.DbUtils;
+import hoogenbj.countary.app.UserInterface;
 import hoogenbj.countary.util.ParsedStatement;
+
+import static org.sqlite.SQLiteErrorCode.*;
 import org.sqlite.SQLiteConfig;
 
 import java.math.BigDecimal;
@@ -494,6 +496,39 @@ public class DatabaseDataModel implements DataModel {
                 throw new RuntimeException(String.format("Expected row count of 1 after updating name. Row count was %d instead.", updated));
             return new Account(account.id(), account.name(), account.number(), account.branchCode(), account.bank(), color);
         }
+    }
+
+    @Override
+    public void rebuildVirtualTables(UserInterface userInterface) {
+        Set<String> virtualTables = Set.of("account_idx", "budget_idx", "item_idx", "tag_idx", "transactions_idx");
+        virtualTables.forEach(vt -> {
+            try {
+                if (isVirtualTableCorrupt(vt)) {
+                    rebuildVirtualTable(vt);
+                    userInterface.showNotification(String.format("Rebuilt virtual table %s", vt));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void rebuildVirtualTable(String vt) throws SQLException {
+        String query = String.format("insert into %s(%s) values('rebuild')", vt, vt);
+        executeStatements(List.of(query));
+    }
+
+    private boolean isVirtualTableCorrupt(String vt) throws SQLException {
+        String query = String.format("insert into %s(%s) values('integrity-check')", vt, vt);
+        try {
+            executeStatements(List.of(query));
+        } catch (SQLException e) {
+            if (e.getErrorCode() == SQLITE_CORRUPT_VTAB.code) {
+                return true;
+            } else
+                throw e;
+        }
+        return false;
     }
 
     @Override

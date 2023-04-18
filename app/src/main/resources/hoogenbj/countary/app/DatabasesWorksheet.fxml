@@ -79,14 +79,24 @@
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
       </VBox.margin>
       <Button mnemonicParsing="false" onAction="#onBackup" text="Backup database...">
-         <font>
-            <Font size="24.0"/>
-         </font>
+          <font>
+              <Font size="24.0"/>
+          </font>
       </Button>
-      <Button mnemonicParsing="false" onAction="#onRestore" text="Restore database...">
-         <font>
-            <Font size="24.0"/>
-         </font>
-      </Button>
+       <Button mnemonicParsing="false" onAction="#onRestore" text="Restore database...">
+           <font>
+               <Font size="24.0"/>
+           </font>
+       </Button>
    </HBox>
+    <HBox alignment="CENTER">
+        <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </VBox.margin>
+        <Button mnemonicParsing="false" onAction="#onRebuildVirtualTables" text="Rebuild virtual tables...">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Button>
+    </HBox>
 </VBox>

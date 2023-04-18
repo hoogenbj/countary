@@ -23,6 +23,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+import java.sql.SQLException;
+
 public class DatabasesWorksheetController implements ControllerHelpers {
     @FXML
     private TextField path;
@@ -73,6 +75,15 @@ public class DatabasesWorksheetController implements ControllerHelpers {
         String dbUrl = settings.getDatabaseUrl();
         if (dbUrl != null) {
             path.setText(settings.getDatabasePath());
+        }
+    }
+
+    @FXML
+    private void onRebuildVirtualTables(ActionEvent actionEvent) {
+        try {
+            model.rebuildVirtualTables(userInterface);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error rebuilding virtual tables", e);
         }
     }
 }
