@@ -38,44 +38,42 @@
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
-                    <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Account name:"/>
+                    <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Account name:"/>
                     <TextField fx:id="accountName" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="10.0" spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Account number:" />
+                    <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Account number:"/>
                     <TextField fx:id="accountNumber" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
                 </HBox>
                 <HBox layoutX="10.0" layoutY="55.0" spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Bank name:"/>
+                    <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Bank name:"/>
                     <TextField fx:id="bankName" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="100.0" spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
-                    <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Branch code:"/>
+                    <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Branch code:"/>
                     <TextField fx:id="branchCode" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="145.0" spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
-                    <children>
-                        <Label alignment="CENTER_RIGHT" prefWidth="100.0" text="Tag:"/>
-                        <SVGPath fx:id="tag"
-                                 content="M5.5,7A1.5,1.5 0 0,1 4,5.5A1.5,1.5 0 0,1 5.5,4A1.5,1.5 0 0,1 7,5.5A1.5,1.5 0 0,1 5.5,7M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4C2.89,2 2,2.89 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.58,21.41C11.95,21.77 12.45,22 13,22C13.55,22 14.05,21.77 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.44 21.77,11.94 21.41,11.58ZM5.5,7A1.5,1.5 0 0,1 4,5.5A1.5,1.5 0 0,1 5.5,4A1.5,1.5 0 0,1 7,5.5A1.5,1.5 0 0,1 5.5,7M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4C2.89,2 2,2.89 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.58,21.41C11.95,21.77 12.45,22 13,22C13.55,22 14.05,21.77 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.44 21.77,11.94 21.41,11.58Z"/>
-                        <ColorPicker onAction="#onColorPicked" fx:id="tagColor">
-                            <value>
-                                <Color/>
-                            </value>
-                        </ColorPicker>
-                    </children>
+                    <Label alignment="CENTER_RIGHT" prefWidth="150.0" text="Tag:"/>
+                    <SVGPath fx:id="tag"
+                             content="M5.5,7A1.5,1.5 0 0,1 4,5.5A1.5,1.5 0 0,1 5.5,4A1.5,1.5 0 0,1 7,5.5A1.5,1.5 0 0,1 5.5,7M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4C2.89,2 2,2.89 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.58,21.41C11.95,21.77 12.45,22 13,22C13.55,22 14.05,21.77 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.44 21.77,11.94 21.41,11.58ZM5.5,7A1.5,1.5 0 0,1 4,5.5A1.5,1.5 0 0,1 5.5,4A1.5,1.5 0 0,1 7,5.5A1.5,1.5 0 0,1 5.5,7M21.41,11.58L12.41,2.58C12.05,2.22 11.55,2 11,2H4C2.89,2 2,2.89 2,4V11C2,11.55 2.22,12.05 2.59,12.41L11.58,21.41C11.95,21.77 12.45,22 13,22C13.55,22 14.05,21.77 14.41,21.41L21.41,14.41C21.78,14.05 22,13.55 22,13C22,12.44 21.77,11.94 21.41,11.58Z"/>
+                    <ColorPicker onAction="#onColorPicked" fx:id="tagColor">
+                        <value>
+                            <Color/>
+                        </value>
+                    </ColorPicker>
                 </HBox>
             </VBox>
         </AnchorPane>

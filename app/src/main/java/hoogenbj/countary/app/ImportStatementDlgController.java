@@ -17,6 +17,7 @@
 package hoogenbj.countary.app;
 
 import com.google.inject.Inject;
+import hoogenbj.countary.model.Account;
 import hoogenbj.countary.util.StatementParsers;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -41,18 +42,24 @@ public class ImportStatementDlgController extends Dialog<KeyValue> {
     @Inject
     private UserInterface userInterface;
 
+    @Inject
+    private Settings settings;
+
     public void initialize() {
         parsers.setItems(FXCollections.observableList(
                 Arrays.stream(StatementParsers.values()).sequential().map(p -> new KeyValue(p.description(), p.name())).toList())
         );
-        parsers.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && !newValue.equals(oldValue)) {
-                okButton.setDisable(false);
-            }
-        });
     }
 
-    public static ImportStatementDlgController getInstance(Window owner) {
+    private KeyValue getLastImportType(Account account) {
+        StatementParsers parser = settings.getAccountStatement(account.hashCode());
+        if (parser != null) {
+            return new KeyValue(parser.description(), parser.name());
+        } else
+            return null;
+    }
+
+    public static ImportStatementDlgController getInstance(Window owner, Account account) {
         FXMLLoader loader = CountaryApp.injector.getInstance(FXMLLoader.class);
         loader.setLocation(ImportStatementDlgController.class.getResource("ImportStatement.fxml"));
         ImportStatementDlgController controller = null;
@@ -60,10 +67,11 @@ public class ImportStatementDlgController extends Dialog<KeyValue> {
             DialogPane dlgPane = loader.load();
             controller = loader.getController();
             controller.initOwner(owner);
-            controller.setTitle("Select an account");
+            controller.setTitle("Select the type of import");
             controller.setDialogPane(dlgPane);
             controller.okButton = (Button) dlgPane.lookupButton(controller.okButtonType);
             controller.okButton.setDisable(true);
+            controller.postInit(account);
             ImportStatementDlgController finalController = controller;
             controller.setResultConverter(buttonType -> {
                 if (!Objects.equals(ButtonBar.ButtonData.OK_DONE, buttonType.getButtonData())) {
@@ -77,8 +85,22 @@ public class ImportStatementDlgController extends Dialog<KeyValue> {
                     return null;
             });
         } catch (IOException e) {
-            throw new RuntimeException("Unable to launch SelectAccountDlgController", e);
+            throw new RuntimeException("Unable to launch ImportStatementDlgController", e);
         }
         return controller;
+    }
+
+    private void postInit(Account account) {
+        KeyValue remembered = getLastImportType(account);
+        if (remembered != null) {
+            parsers.setValue(remembered);
+        }
+        parsers.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                System.out.println(newValue.value());
+                settings.setAccountStatement(account.hashCode(), StatementParsers.valueOf(newValue.value()));
+                okButton.setDisable(false);
+            }
+        });
     }
 }

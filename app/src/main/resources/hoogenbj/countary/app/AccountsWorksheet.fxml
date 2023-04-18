@@ -30,13 +30,15 @@
         </ClearableTextField>
     </HBox>
     <HBox>
-        <TableView fx:id="tableView" HBox.hgrow="ALWAYS">
+        <TableView fx:id="tableView" HBox.hgrow="ALWAYS" editable="true">
             <columns>
                 <TableColumn fx:id="nameColumn" minWidth="-Infinity" prefWidth="250.0" text="Name"/>
                 <TableColumn fx:id="numberColumn" minWidth="-Infinity" prefWidth="150.0" text="Number"/>
-                <TableColumn fx:id="branchColumn" minWidth="-Infinity" prefWidth="70.0" text="Branch code"/>
+                <TableColumn fx:id="branchColumn" minWidth="-Infinity" prefWidth="100.0" text="Branch code"/>
                 <TableColumn fx:id="bankColumn" minWidth="-Infinity" prefWidth="250.0" text="Bank"/>
-                <TableColumn fx:id="tagColumn" minWidth="-Infinity" prefWidth="50.0" text="Tag"/>
+                <TableColumn fx:id="statementColumn" prefWidth="250.0" text="Statement type"/>
+                <TableColumn fx:id="tagColumn" style="-fx-alignment: center;" minWidth="-Infinity" prefWidth="50.0"
+                             text="Tag"/>
             </columns>
         </TableView>
     </HBox>

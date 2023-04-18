@@ -87,7 +87,7 @@ public class CreateAccountDlgController extends Dialog<Account> implements Initi
     }
 
     private enum Inputs {
-        AccountName, AccountNumber, BankName, BranchCode, Tag
+        AccountName, AccountNumber, BankName, BranchCode
     }
 
     private final EnumSet<Inputs> inputState = EnumSet.noneOf(Inputs.class);
@@ -102,6 +102,5 @@ public class CreateAccountDlgController extends Dialog<Account> implements Initi
         inputUtils.observeChangesInInput(accountNumber.textProperty(), inputState, Inputs.AccountNumber);
         inputUtils.observeChangesInInput(bankName.textProperty(), inputState, Inputs.BankName);
         inputUtils.observeChangesInInput(branchCode.textProperty(), inputState, Inputs.BranchCode);
-        inputUtils.observeChangesInInput(tagColor.valueProperty(), inputState, Inputs.Tag);
     }
 }

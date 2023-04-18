@@ -17,6 +17,7 @@ package hoogenbj.countary.model;
 
 import hoogenbj.countary.app.KeyValue;
 import hoogenbj.countary.util.ParsedStatement;
+import javafx.scene.paint.Color;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -183,4 +184,6 @@ public interface DataModel {
     void executeStatements(List<String> statements) throws SQLException;
 
     Set<Long> searchAccounts(String criteria) throws SQLException;
+
+    Account updateAccountTagColor(Account account, String color) throws SQLException;
 }

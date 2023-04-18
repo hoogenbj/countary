@@ -17,6 +17,7 @@ package hoogenbj.countary.app;
 
 import com.google.inject.Inject;
 import hoogenbj.countary.model.*;
+import hoogenbj.countary.util.DbUtils;
 import hoogenbj.countary.util.SVGUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -311,11 +312,7 @@ public class ItemsController implements ControllerHelpers {
                     tableView.scrollTo(itemHolder);
                 });
             } catch (SQLException e) {
-                if (e.getErrorCode() == SQLITE_CONSTRAINT) {
-                    userInterface.showError("A item with that name already exists");
-                } else {
-                    throw new RuntimeException("Unable to create item", e);
-                }
+                DbUtils.handleException(userInterface, "item", e);
             }
         });
     }

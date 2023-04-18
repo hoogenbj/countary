@@ -18,18 +18,22 @@ package hoogenbj.countary.app;
 
 import com.google.inject.Inject;
 import hoogenbj.countary.model.*;
+import hoogenbj.countary.util.ParseUtils;
+import hoogenbj.countary.util.StatementParsers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.util.StringConverter;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -38,6 +42,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class AccountsWorksheetController {
+    @FXML
+    private TableColumn<AccountHolder, StatementParsers> statementColumn;
     @FXML
     private TableColumn<AccountHolder, String> nameColumn;
     @FXML
@@ -87,6 +93,13 @@ public class AccountsWorksheetController {
         numberColumn.setCellValueFactory(p -> p.getValue().numberProperty());
         branchColumn.setCellValueFactory(p -> p.getValue().branchProperty());
         bankColumn.setCellValueFactory(p -> p.getValue().bankProperty());
+        statementColumn.setCellFactory(ComboBoxTableCell.forTableColumn(this.makeStringConverter(), StatementParsers.values()));
+        statementColumn.setOnEditCommit(cell -> {
+            Account account = cell.getRowValue().getAccount();
+            settings.setAccountStatement(account.hashCode(), cell.getNewValue());
+            cell.getRowValue().setStatementParser(cell.getNewValue());
+        });
+        statementColumn.setCellValueFactory(cell -> cell.getValue().statementParserProperty());
         tagColumn.setCellFactory(this::makeTag);
         tagColumn.setCellValueFactory(p -> p.getValue().accountProperty());
         Platform.runLater(() -> searchCriteria.getParent().requestFocus());
@@ -103,8 +116,25 @@ public class AccountsWorksheetController {
         });
     }
 
+    private StringConverter<StatementParsers> makeStringConverter() {
+        return new StringConverter<>() {
+            @Override
+            public String toString(StatementParsers object) {
+                if (object != null)
+                    return object.description();
+                else
+                    return "";
+            }
+
+            @Override
+            public StatementParsers fromString(String string) {
+                return null;
+            }
+        };
+    }
+
     private TableCell<AccountHolder, Account> makeTag(TableColumn<AccountHolder, Account> column) {
-        return new TableCell<>() {
+        TableCell<AccountHolder, Account> cell = new TableCell<>() {
             @Override
             protected void updateItem(Account account, boolean empty) {
                 super.updateItem(account, empty);
@@ -114,10 +144,31 @@ public class AccountsWorksheetController {
                     SVGPath tag = new SVGPath();
                     tag.setContent(AccountTag.svgPathContent);
                     tag.setFill(Color.web(account.tagColor()));
+                    Tooltip tooltip = new Tooltip("Double-click to change");
+                    Tooltip.install(tag, tooltip);
                     this.setGraphic(tag);
                 }
             }
         };
+        cell.addEventFilter(MouseEvent.MOUSE_CLICKED, this::makeTagEventHandler);
+        return cell;
+    }
+
+    private void makeTagEventHandler(MouseEvent event) {
+        if (event.getClickCount() > 1) {
+            AccountHolder accountHolder = tableView.getSelectionModel().getSelectedItem();
+            String tagColor = accountHolder.getAccount().tagColor();
+            ChangeColorDlgController dlg = ChangeColorDlgController.getInstance(CountaryApp.OWNER_WINDOW, Color.web(tagColor));
+            dlg.showAndWait().ifPresent(color -> {
+                Account newAccount;
+                try {
+                    newAccount = model.updateAccountTagColor(accountHolder.getAccount(), ParseUtils.toRGBCode(color));
+                    accountHolder.setAccount(newAccount);
+                } catch (SQLException e) {
+                    throw new RuntimeException("Unable to update tag color for account", e);
+                }
+            });
+        }
     }
 
     private void doSearch(String criteria) {
@@ -148,16 +199,7 @@ public class AccountsWorksheetController {
     private void loadData() {
         try {
             listOfAccounts = FXCollections.observableArrayList(model.getAccounts().stream()
-                    .map(AccountHolder::new).toList());
-//            listOfAccounts.forEach(accountHolder -> CompletableFuture.supplyAsync(() -> {
-//                try {
-//                    BigDecimal balance = model.getActualForBudget(accountHolder.getBudget());
-//                    accountHolder.setBalance(balance);
-//                    return balance;
-//                } catch (SQLException e) {
-//                    throw new RuntimeException("Unable to retrieve actual for budget " + accountHolder.getBudget().name(), e);
-//                }
-//            }));
+                    .map(account -> new AccountHolder(settings, account)).toList());
             filteredList = new FilteredList<>(listOfAccounts);
             SortedList<AccountHolder> sortedList = new SortedList<>(filteredList, Comparator.comparing(AccountHolder::getName).reversed());
             tableView.setItems(sortedList);

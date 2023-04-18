@@ -135,7 +135,7 @@ public class OFXStatementParser implements StatementParser {
                             case "DTPOSTED" -> {
                                 Calendar postingDate = Calendar.getInstance();
                                 try {
-                                    postingDate.setTime(dateFormat.parse(simpleTag.getContent()));
+                                    postingDate.setTime(dateFormat.parse(simpleTag.getContent().substring(0, 8)));
                                     transaction.postingDate = postingDate;
                                 } catch (ParseException e) {
                                     throw new RuntimeException(String.format("Unable to parse date %s in transaction " +

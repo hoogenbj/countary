@@ -16,10 +16,15 @@
 
 package hoogenbj.countary.model;
 
+import hoogenbj.countary.app.Settings;
+import hoogenbj.countary.util.StatementParsers;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
+
+import java.util.List;
 
 public class AccountHolder {
 
@@ -27,13 +32,31 @@ public class AccountHolder {
     private StringProperty nameProperty;
     private StringProperty numberProperty;
     private StringProperty branchProperty;
+    private SimpleObjectProperty<StatementParsers> statementParserProperty;
     private StringProperty bankProperty;
-    public AccountHolder(Account account) {
+
+    private Settings settings;
+
+    public AccountHolder(Settings settings, Account account) {
+        this.settings = settings;
         setAccount(account);
         setName(account.name());
         setNumber(account.number());
         setBank(account.bank());
         setBranch(account.branchCode());
+        setStatementParser(settings, account);
+    }
+
+    private void setStatementParser(Settings settings, Account account) {
+        StatementParsers parser = settings.getAccountStatement(account.hashCode());
+        statementParserProperty().set(parser);
+    }
+
+    public SimpleObjectProperty<StatementParsers> statementParserProperty() {
+        if (statementParserProperty == null) {
+            statementParserProperty = new SimpleObjectProperty<>(this, "statementParser");
+        }
+        return statementParserProperty;
     }
 
     private void setBranch(String branchCode) {
@@ -98,5 +121,10 @@ public class AccountHolder {
 
     public String getName() {
         return nameProperty().get();
+    }
+
+    public void setStatementParser(StatementParsers newValue) {
+        settings.setAccountStatement(getAccount().hashCode(), newValue);
+        statementParserProperty().set(newValue);
     }
 }

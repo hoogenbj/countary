@@ -20,7 +20,7 @@ public enum StatementParsers {
     RMBPBCSV("CSV (RMB Private Bank or FNB)", RMBPB_CSVStatementParser.class, "*.csv"),
     BZCSV("CSV (Bank Zero)", BankZeroStatementParser.class, "*.csv"),
     OFX1("OFX v1.x", OFXStatementParser.class, "*.ofx"),
-    OFX2("OFX v2.x", OFXStatementParser.class, "*.ofx");
+    OFX2("OFX v2.x", OFX2StatementParser.class, "*.ofx");
 
     private final String description;
     private final Class<? extends StatementParser> parser;

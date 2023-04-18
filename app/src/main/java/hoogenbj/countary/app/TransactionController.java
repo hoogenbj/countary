@@ -420,7 +420,7 @@ public class TransactionController implements ControllerHelpers {
 
     @FXML
     private void onLoadStatement() {
-        ImportStatementDlgController dlg = ImportStatementDlgController.getInstance(CountaryApp.OWNER_WINDOW);
+        ImportStatementDlgController dlg = ImportStatementDlgController.getInstance(CountaryApp.OWNER_WINDOW, accounts.getValue());
         Optional<KeyValue> value = dlg.showAndWait();
         value.ifPresent(
                 keyValue -> {
@@ -590,13 +590,10 @@ public class TransactionController implements ControllerHelpers {
                         replacements.forEach(holder -> holderLookup.get(holder.getTransaction()).setTransaction(holder.getTransaction()));
                         tableView.getSelectionModel().clearSelection();
                         tableView.refresh();
+                        onAllocation.accept(allocations.get(0).transaction().account(), budgetItemSelected.getBudgetItem());
                     } catch (SQLException e) {
-                        if (e.getErrorCode() == SQLITE_CONSTRAINT) {
-                            userInterface.showError("A transaction can only be allocated to a budget item once.");
-                        } else
-                            throw new RuntimeException("Unable to allocate multiple transactions to one budget item.", e);
+                        DbUtils.handleException(userInterface, "transaction", e);
                     }
-                    onAllocation.accept(allocations.get(0).transaction().account(), budgetItemSelected.getBudgetItem());
                 });
             }
         } else if (count == 1) {
@@ -640,13 +637,10 @@ public class TransactionController implements ControllerHelpers {
                             tableView.refresh();
                         }
                     });
+                    onAllocation.accept(allocation.transaction().account(), budgetItemSelected.getBudgetItem());
                 } catch (SQLException e) {
-                    if (e.getErrorCode() == SQLITE_CONSTRAINT) {
-                        userInterface.showError("A transaction can only be allocated to a budget item once.");
-                    } else
-                        throw new RuntimeException("Unexpected error while trying to allocate transactions", e);
+                    DbUtils.handleException(userInterface, "transaction", e);
                 }
-                onAllocation.accept(allocation.transaction().account(), budgetItemSelected.getBudgetItem());
             });
         } else {
             userInterface.showError("No transactions are selected");

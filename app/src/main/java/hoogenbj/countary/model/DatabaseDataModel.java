@@ -482,6 +482,21 @@ public class DatabaseDataModel implements DataModel {
     }
 
     @Override
+    public Account updateAccountTagColor(Account account, String color) throws SQLException {
+        String query = "update account set tagColor = ? where id = ?";
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            connection.setAutoCommit(true);
+            statement.setString(1, color);
+            statement.setLong(2, account.id());
+            int updated = statement.executeUpdate();
+            if (updated != 1)
+                throw new RuntimeException(String.format("Expected row count of 1 after updating name. Row count was %d instead.", updated));
+            return new Account(account.id(), account.name(), account.number(), account.branchCode(), account.bank(), color);
+        }
+    }
+
+    @Override
     public Category addCategorySibling(Category sibling, String newSiblingName) throws SQLException {
         return createCategory(newSiblingName, sibling.kind(), sibling.bgColor(), sibling.parent());
     }

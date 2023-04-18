@@ -15,6 +15,8 @@
  */
 package hoogenbj.countary.app;
 
+import hoogenbj.countary.util.StatementParsers;
+
 public interface Settings {
     String getDatabaseUrl();
 
@@ -30,7 +32,11 @@ public interface Settings {
 
     void setCurrentAccount(KeyValue currentAccount);
 
+    StatementParsers getAccountStatement(int hashcode);
+
     void setCustomColors(String customColors);
 
     String getCustomColors();
+
+    void setAccountStatement(int hashcode, StatementParsers parser);
 }

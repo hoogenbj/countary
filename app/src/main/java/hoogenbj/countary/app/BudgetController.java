@@ -267,11 +267,7 @@ public class BudgetController implements ControllerHelpers {
                 Budget finalBudget = budget;
                 Platform.runLater(() -> listOfBudgets.add(new BudgetHolder(finalBudget, this::onHiddenChanged)));
             } catch (SQLException e) {
-                if (e.getErrorCode() == SQLITE_CONSTRAINT) {
-                    userInterface.showError("A budget with that name already exists");
-                } else {
-                    throw new RuntimeException("Unable to create budget", e);
-                }
+                DbUtils.handleException(userInterface, "budget", e);
             }
         });
     }
@@ -285,11 +281,7 @@ public class BudgetController implements ControllerHelpers {
                 Budget newBudget = model.cloneBudget(budget, name);
                 listOfBudgets.add(new BudgetHolder(newBudget, this::onHiddenChanged));
             } catch (SQLException e) {
-                if (e.getErrorCode() == SQLITE_CONSTRAINT) {
-                    userInterface.showError("A budget with that name already exists");
-                } else {
-                    throw new RuntimeException("Unable to create budget", e);
-                }
+                DbUtils.handleException(userInterface, "budget", e);
             }
         });
     }

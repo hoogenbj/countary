@@ -125,7 +125,7 @@ public class Parser {
             ParsedStatement.Line transaction = new ParsedStatement.Line();
             Calendar postingDate = Calendar.getInstance();
             try {
-                postingDate.setTime(dateFormat.parse(trn.dtposted()));
+                postingDate.setTime(dateFormat.parse(trn.dtposted().substring(0, 8)));
                 transaction.setPostedOn(postingDate);
             } catch (ParseException e) {
                 throw new RuntimeException(String.format("Unable to parse date %s in transaction " +
@@ -134,7 +134,7 @@ public class Parser {
             }
             Calendar transactionDate = Calendar.getInstance();
             try {
-                transactionDate.setTime(dateFormat.parse(trn.dtuser()));
+                transactionDate.setTime(dateFormat.parse(trn.dtuser().substring(0, 8)));
                 transaction.setTransactionDate(transactionDate);
             } catch (ParseException e) {
                 throw new RuntimeException(String.format("Unable to parse date %s in transaction " +

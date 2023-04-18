@@ -28,6 +28,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+import static org.sqlite.SQLiteErrorCode.*;
+
 public class DbUtils {
 
     public static Integer MAX_TRANSACTION_ROWS = 1000;
@@ -154,5 +156,16 @@ public class DbUtils {
                 userInterface.showError("Unable to restore database because of " + e);
             }
         }
+    }
+
+    public static void handleException(UserInterface userInterface, String record, SQLException e) {
+        if (e.getErrorCode() == SQLITE_CONSTRAINT.code) {
+            userInterface.showError(String.format("A %s with that name already exists", record));
+        } else if (e.getErrorCode() == SQLITE_CORRUPT_VTAB.code) {
+            userInterface.showError(String.format("%s. Rebuild virtual tables", SQLITE_CORRUPT_VTAB.message));
+        } else {
+            throw new RuntimeException(String.format("Unable to create %s", record), e);
+        }
+
     }
 }

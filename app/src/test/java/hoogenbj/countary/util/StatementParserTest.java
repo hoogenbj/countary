@@ -21,8 +21,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,9 +103,9 @@ public class StatementParserTest {
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         int checked = 0;
         for (ParsedStatement.Line line : parsedStatement.getLines()) {
-            if (dateFormat.parse("20230401000000").getTime() == line.getPostedOn().getTime().getTime()) {
+            if (dateFormat.parse("20230401").getTime() == line.getPostedOn().getTime().getTime()) {
                 assertEquals("Superspar Johannesburg (Card 1234)", line.getDescription());
-                assertEquals(dateFormat.parse("20230329000000"), line.getTransactionDate().getTime());
+                assertEquals(dateFormat.parse("20230329"), line.getTransactionDate().getTime());
                 assertEquals(new BigDecimal("-112.88"), line.getAmount());
                 assertEquals(new BigDecimal("13316.75"), line.getBalance());
                 checked++;
@@ -124,7 +122,7 @@ public class StatementParserTest {
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         int checked = 0;
         for (ParsedStatement.Line line : parsedStatement.getLines()) {
-            if (dateFormat.parse("20230401000000").getTime() == line.getPostedOn().getTime().getTime()) {
+            if (dateFormat.parse("20230401").getTime() == line.getPostedOn().getTime().getTime()) {
                 assertEquals("Superspar Johannesburg (Card 1234)", line.getDescription());
                 assertEquals(new BigDecimal("-112.88"), line.getAmount());
                 assertEquals(new BigDecimal("13316.75"), line.getBalance());

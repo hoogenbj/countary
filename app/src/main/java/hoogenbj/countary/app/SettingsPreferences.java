@@ -15,6 +15,8 @@
  */
 package hoogenbj.countary.app;
 
+import hoogenbj.countary.util.StatementParsers;
+
 import java.util.prefs.Preferences;
 
 public class SettingsPreferences implements Settings {
@@ -23,6 +25,8 @@ public class SettingsPreferences implements Settings {
     private static final String CURRENT_ACCOUNT_KEY = KEY_PREFIX + "/current/account/key";
     private static final String CURRENT_ACCOUNT_VALUE = KEY_PREFIX + "/current/account/value";
     private static final String CUSTOM_COLORS_KEY = KEY_PREFIX + "/custom_colors";
+
+    private static final String STATEMENT_PARSER = KEY_PREFIX + "/%d/parser";
 
     private final Preferences preferences;
 
@@ -90,5 +94,19 @@ public class SettingsPreferences implements Settings {
     @Override
     public String getCustomColors() {
         return preferences.get(CUSTOM_COLORS_KEY, "");
+    }
+
+    @Override
+    public StatementParsers getAccountStatement(int hashcode) {
+        String parser = preferences.get(String.format(STATEMENT_PARSER, hashcode), "");
+        if (parser.isEmpty())
+            return null;
+        else
+            return StatementParsers.valueOf(parser);
+    }
+
+    @Override
+    public void setAccountStatement(int hashcode, StatementParsers parser) {
+        preferences.put(String.format(STATEMENT_PARSER, hashcode), parser.name());
     }
 }
