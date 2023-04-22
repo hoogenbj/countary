@@ -72,15 +72,9 @@ public class TransactionModel {
         doSearch();
     }
 
-    public void searchByPostedDate(LocalDate postedDate) {
+    public void searchByDate(LocalDate postedDate) {
         currentSearch = SearchChoice.PostedDate;
         currentCriteria = String.valueOf(postedDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        doSearch();
-    }
-
-    public void searchByTransactionDate(LocalDate transactionDate) {
-        currentSearch = SearchChoice.TransactionDate;
-        currentCriteria = String.valueOf(transactionDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
         doSearch();
     }
 
@@ -104,13 +98,25 @@ public class TransactionModel {
                 throw new RuntimeException("Unable to search transactions", e);
             }
         } else {
-            String what = currentSearch.getKeyValue().value();
-            try {
-                List<Transaction> transactions = dataModel.searchTransactions(account, showCompleted, what, currentCriteria);
-                refreshTransactions.accept(transactions);
-                searchClearable.accept(true);
-            } catch (SQLException e) {
-                throw new RuntimeException("Unable to search transactions", e);
+            if (currentSearch.equals(SearchChoice.PostedDate)) {
+                List<Transaction> transactions;
+                try {
+                    transactions = dataModel.searchTransactions(account, showCompleted, SearchChoice.PostedDate.getKeyValue().value(), currentCriteria);
+                    transactions.addAll(dataModel.searchTransactions(account, showCompleted, SearchChoice.TransactionDate.getKeyValue().value(), currentCriteria));
+                    refreshTransactions.accept(transactions);
+                    searchClearable.accept(true);
+                } catch (SQLException e) {
+                    throw new RuntimeException("Unable to search transactions", e);
+                }
+            } else {
+                String what = currentSearch.getKeyValue().value();
+                try {
+                    List<Transaction> transactions = dataModel.searchTransactions(account, showCompleted, what, currentCriteria);
+                    refreshTransactions.accept(transactions);
+                    searchClearable.accept(true);
+                } catch (SQLException e) {
+                    throw new RuntimeException("Unable to search transactions", e);
+                }
             }
         }
     }

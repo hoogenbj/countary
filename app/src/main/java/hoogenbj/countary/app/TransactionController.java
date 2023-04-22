@@ -32,7 +32,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 
 import java.io.File;
@@ -52,7 +51,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static hoogenbj.countary.util.DbUtils.MAX_TRANSACTION_ROWS;
-import static org.sqlite.core.Codes.SQLITE_CONSTRAINT;
 
 public class TransactionController implements ControllerHelpers {
     private Consumer<Account> onStatementLoaded;
@@ -94,8 +92,6 @@ public class TransactionController implements ControllerHelpers {
     private TableColumn<TransactionHolder, String> descriptionColumn;
     @FXML
     private TableColumn<TransactionHolder, Transaction> deleteColumn;
-    @FXML
-    private ChoiceBox<TransactionModel.SearchChoice> searchChoice;
     @FXML
     private ClearableTextField searchCriteria;
     @FXML
@@ -164,7 +160,6 @@ public class TransactionController implements ControllerHelpers {
 
     private void disableIfNoAccountIsCurrent(boolean value) {
         showCompletedAlso.setDisable(value);
-        searchChoice.setDisable(value);
         refresh.setDisable(value);
         searchCriteria.setDisable(value);
         addTransaction.setDisable(value);
@@ -191,10 +186,6 @@ public class TransactionController implements ControllerHelpers {
     }
 
     private void initControls() throws SQLException {
-        searchChoice.setValue(TransactionModel.SearchChoice.Description);
-        searchChoice.setConverter(choiceConverter());
-        searchDatePicker.setVisible(false);
-        searchDatePicker.setManaged(false);
         searchDatePicker.setConverter(convertSearchDate());
         searchDatePicker.valueProperty().addListener(this::dateBasedSearch);
         clear.setOnAction(btn -> clearAction());
@@ -206,8 +197,6 @@ public class TransactionController implements ControllerHelpers {
         oneToMany.setOnAction(action -> mapOneTransactionToManyBudgetItems());
         manyToOne.setOnAction(action -> mapManyTransactionsToOneBudgetItem());
         searchCriteria.textProperty().addListener(this::textBasedSearch);
-        searchChoice.setItems(FXCollections.observableList(List.of(TransactionModel.SearchChoice.values())));
-        searchChoice.valueProperty().addListener(this::listenForSearchChoiceChanges);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableView.getSelectionModel().getSelectedItems()
                 .addListener((ListChangeListener<? super TransactionHolder>) c -> monitorSelectionChanges(c.getList()));
@@ -377,12 +366,8 @@ public class TransactionController implements ControllerHelpers {
 
     private void clearAction() {
         transactionModel.clearSearch();
-        searchChoice.setValue(TransactionModel.SearchChoice.Description);
-        searchCriteria.setVisible(true);
-        searchCriteria.setManaged(true);
-        searchDatePicker.setVisible(false);
-        searchDatePicker.setManaged(false);
         searchCriteria.setText("");
+        searchDatePicker.setValue(null);
         singleTransactionsSelected = false;
         multipleTransactionsSelected = false;
         clear.setDisable(true);
@@ -460,34 +445,6 @@ public class TransactionController implements ControllerHelpers {
             throw new RuntimeException("Unable to parse statement: " + filePath, e);
         } catch (StatementParseException e) {
             throw e;
-        }
-    }
-
-    private void listenForSearchChoiceChanges(ObservableValue<? extends TransactionModel.SearchChoice> observable,
-                                              TransactionModel.SearchChoice oldValue, TransactionModel.SearchChoice newValue) {
-        if (newValue != null && !newValue.equals(oldValue)) {
-            transactionModel.clearSearch();
-            if (newValue.equals(TransactionModel.SearchChoice.TransactionDate) || newValue.equals(TransactionModel.SearchChoice.PostedDate)) {
-                searchCriteria.setVisible(false);
-                searchCriteria.setManaged(false);
-                searchDatePicker.setVisible(true);
-                searchDatePicker.setManaged(true);
-                searchDatePicker.setValue(null);
-            } else if (newValue.equals(TransactionModel.SearchChoice.Amount)) {
-                searchCriteria.setVisible(true);
-                searchCriteria.setManaged(true);
-                searchCriteria.setPromptText("Enter amount to search for");
-                searchDatePicker.setVisible(false);
-                searchDatePicker.setManaged(false);
-            } else if (newValue.equals(TransactionModel.SearchChoice.Description)) {
-                searchCriteria.setVisible(true);
-                searchCriteria.setManaged(true);
-                searchCriteria.setPromptText("Enter text to search for");
-                searchDatePicker.setVisible(false);
-                searchDatePicker.setManaged(false);
-            } else {
-                throw new RuntimeException("Unexpected choice: " + newValue);
-            }
         }
     }
 
@@ -648,13 +605,17 @@ public class TransactionController implements ControllerHelpers {
     }
 
     private void textBasedSearch(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        if (newValue != null && !newValue.equals(oldValue) && !newValue.isEmpty()) {
-            if (searchChoice.getValue().equals(TransactionModel.SearchChoice.Description))
+        if (newValue != null && !newValue.equals(oldValue) && newValue.length() > 1) {
+            BigDecimal value = null;
+            try {
+                value = ParseUtils.parseBigDecimal(newValue);
+            } catch (Exception e) {
+                // need to know if it is a valid amount
+            }
+            if (value == null)
                 transactionModel.searchByDescription(newValue);
-            else if (searchChoice.getValue().equals(TransactionModel.SearchChoice.Amount)) {
+            else {
                 transactionModel.searchByAmount(newValue);
-            } else {
-                throw new RuntimeException("Unexpected search choice: " + newValue);
             }
         } else {
             transactionModel.clearSearch();
@@ -663,14 +624,7 @@ public class TransactionController implements ControllerHelpers {
 
     private void dateBasedSearch(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
         if (newValue != null && !newValue.equals(oldValue)) {
-            TransactionModel.SearchChoice choice = searchChoice.getValue();
-            if (choice.equals(TransactionModel.SearchChoice.PostedDate))
-                transactionModel.searchByPostedDate(newValue);
-            else if (choice.equals(TransactionModel.SearchChoice.TransactionDate)) {
-                transactionModel.searchByTransactionDate(newValue);
-            } else {
-                throw new RuntimeException("Unknown search choice: " + choice);
-            }
+            transactionModel.searchByDate(newValue);
         } else {
             transactionModel.clearSearch();
         }

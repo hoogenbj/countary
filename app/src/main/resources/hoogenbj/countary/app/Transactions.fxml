@@ -51,12 +51,12 @@
             </TitledPane>
             <TitledPane collapsible="false" text="Tools:">
                 <HBox alignment="CENTER_LEFT" spacing="5.0">
-                    <ChoiceBox fx:id="searchChoice" prefWidth="120.0"/>
                     <StackPane>
-                        <ClearableTextField fx:id="searchCriteria" prefWidth="250.0"
-                                            promptText="Enter text to search for"/>
-                        <DatePicker fx:id="searchDatePicker" editable="false" prefWidth="200.0" visible="false"/>
+                        <ClearableTextField fx:id="searchCriteria" prefWidth="200.0"
+                                            promptText="Search for text or amount"/>
                     </StackPane>
+                    <DatePicker fx:id="searchDatePicker" editable="false" prefWidth="150.0"
+                                promptText="Search by date"/>
                     <Pane HBox.hgrow="ALWAYS"/>
                     <Button fx:id="refresh"/>
                     <Button fx:id="calculate" maxHeight="30.0" maxWidth="30.0" styleClass="calculate-button"
