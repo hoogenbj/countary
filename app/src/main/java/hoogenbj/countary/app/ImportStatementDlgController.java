@@ -94,10 +94,10 @@ public class ImportStatementDlgController extends Dialog<KeyValue> {
         KeyValue remembered = getLastImportType(account);
         if (remembered != null) {
             parsers.setValue(remembered);
+            okButton.setDisable(false);
         }
         parsers.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals(oldValue)) {
-                System.out.println(newValue.value());
                 settings.setAccountStatement(account.hashCode(), StatementParsers.valueOf(newValue.value()));
                 okButton.setDisable(false);
             }

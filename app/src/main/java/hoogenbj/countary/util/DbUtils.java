@@ -52,6 +52,7 @@ public class DbUtils {
             String dbUrl = String.format("jdbc:sqlite:%s", filePath);
             settings.setDatabaseUrl(dbUrl);
             settings.setDatabasePath(filePath);
+            userInterface.showNotification(String.format("Opening of database %s completed.", filePath));
             return true;
         }
         return false;
