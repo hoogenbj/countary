@@ -7,7 +7,7 @@ will find bugs that I missed. But bugs can be fixed.
 
 In case of an error a dialog will display which should explain what went wrong:
 
-![error dialog](error_dialog.png)
+![error dialog](images/error_dialog.png)
 
 If there is a stack trace, there will be a `Copy to clipboard` button which
 can be used to copy the stack trace to the clipboard. An email can be sent to 
