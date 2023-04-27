@@ -38,21 +38,29 @@ be perfect. It will all depend on your cash flow, but you should be able to `bor
 other items because you won't need to spend everything at once. Just make sure to consistenly 
 put the money aside every month and your cash flow will catch up.
 
+You can easily copy any of the calculated results by clicking on the ![copy](images/content_copy.png) icon.
+
 Have a look at the other budgets in the Demo database to get a feel for things.
 
 So how do you allocate funds to the different budgets? Here's an example from the 
 Demo database (click to make it bigger):  
 [![alloc to many](images/allocate_to_many_budgets.png)](images/allocate_to_many_budgets.png)
 
-The screen may seem a little busy at first. Take some time to study it. You will notice
-that the check box `Show completed` is ticked. That is how you can see the transactions
+The screen may seem a little busy at first. Take some time to study it. On the left it
+shows all the transactions for one of the accounts in the Demo database. You will notice
+that the check box **Show completed** is ticked. That is how you can see the transactions
 that have already been allocated, because transactions that are fully allocated normally
 disappear from view.
 
-The next thing to notice is that the transaction from `Feb 25, 2023` is selected. That
+On the right you can see a list of all the budgets in the Demo database and that one of
+those, the **March 2023** budget, is selected. Below that you can see all the items for
+the selected budget and below that, the categories of the items as a summary view.
+
+The next thing to notice is that the transaction from **Feb 25, 2023** is selected. That
 is a salary deposit. The smaller window in the bottom centre part of the image shows
 how the deposit amount is divided between five different budgets. So this is how money
-is divided among the different budgets.
+is divided among the different budgets. It is also an example of a single transaction
+allocated to more than one budget.
 
 The secret to making all of this work is that **absolutely every** transaction in your bank account
 needs to end up somewhere in one or more budgets. Otherwise, your account will leak money
@@ -78,11 +86,11 @@ Let's look at the transactions worksheet as it looks like when you first open th
 demo database. (If you don't know yet how to open the demo database go [here](databases.markdown)).  
 Click on the image to make it bigger:
 [![demo transactions](images/transactions_worksheet.png)](images/transactions_worksheet.png)
-Here you can see a number of transactions that have yet to be allocated. Transactions
-can come from two sources: bank statements or manual entry. It would take too much
-time and effort to add transactions by hand, so importing transactions from a bank
-statement is the way to go. To learn about importing bank statements, go 
-[here](bank_statements.md).
+Here you can see a number of transactions of the currently selected account that have yet 
+to be allocated. Transactions can come from two sources: bank statements or manual entry. 
+It would take too much time and effort to add transactions by hand, so importing 
+transactions from a bank statement is the way to go. To learn about importing bank 
+statements, go [here](bank_statements.md).
 
 The objective now is to make all transactions disappear by allocating them to the
 different budgets. But first, you should know where the transactions come from when
@@ -91,18 +99,93 @@ everything that you buy. Write a little note on each receipt to make sure that y
 remember what it was for. That way you'll know for sure what item to allocate the
 transaction to.
 
-The demo database makes it easy for you to see how it can be done. Select the `March 2023`
+The demo database makes it easy for you to see how it can be done. Select the **March 2023**
 budget and click on some items. Here you can see what happens when you click on the 
-`Groceries` item (Click on the image to make it bigger):
+**Groceries** item (Click on the image to make it bigger):
 [![groceries](images/demo_groceries_selected.png)](images/demo_groceries_selected.png)
-It shows that multiple transactions were allocated to the `Groceries` item. If you 
-click on the `Show completed` checkbox in the top left area of the window, you get
+It shows that multiple transactions were allocated to the **Groceries** item. If you 
+click on the **Show completed** checkbox in the top left area of the window, you get
 to see the transactions that have already been allocated. They are highlighted in green.
 You can click on any of those to see which item they were allocated to. Here you can
-see which item the `DISC PREM` for April 1st is allocated to (Click on the imate to make it bigger):
+see which item the **DISC PREM** for April 1st is allocated to (Click on the image to make it bigger):
 [![medical aid](images/demo_medicalaid_selected.png)](images/demo_medicalaid_selected.png)
 
 Also, recall that a transaction can be split over multiple budgets, as the salary example
 earlier shows.
+
+Let us tackle an example together. Here's a view that shows what it looks like when all 
+groceries transactions and the *Groceries* item in the *April 2023* budget are selected:
+[![groceries](images/demo_allocate_groceries.png)](images/demo_allocate_groceries.png)
+Above the transactions, find the *Many to 1* button in the toolbar and click it:
+[![many_to_1](images/demo_many_to_1.png)](images/demo_many_to_1.png)
+The image shows a dialog listing all the selected transactions, the budget item those
+will be allocated to and the sum of the amounts of all the transactions. At this point
+there is an opportunity to add a note, otherwise you can click the **OK** button.
+
+All the allocated transactions are now highlighted in green:
+[![allocated](images/demo_many_to_1_done.png)](images/demo_many_to_1_done.png)
+
+To reduce clutter, you can click the ![refresh](images/refresh.png) button which will
+will cause all allocated transactions to disappear from view:
+[![clutter_reduced](images/demo_1_to_many_gone.png)](images/demo_1_to_many_gone.png)
+
+There! You should be able to allocate the rest of the transactions yourself. The 
+**TOTAL RANDBURG** transaction goes to **Fuel**, the **CITY OF...** transaction to 
+**Rates and Taxes** and the **Meals on Wheels** transaction goes to **Donations**.
+
+That leaves the salary transaction: **FNB OB PMT**. The description likely means nothing to 
+you. Your salary transaction, or whatever the income is that you receive, will look
+different, but you will recognise it. For the purposes of the demonstration, this is a 
+salary transaction. It needs to be allocated to a number of different budgets, much like 
+the one for the previous month. Remember you can use the **Show completed** check box to 
+go back and look.
+
+Normally salaries are paid out towards or at the end of a month. Whatever the timing, a
+salary usually gets allocated to the next month's budget. As you might have noticed, there
+is no budget for the month of May yet. One still needs to be created.
+
+To do that, we go to the **Budgets** worksheet. Click on the **Show** menu and select 
+**Budget**. On this budget worksheet, select the **April 2023** budget:
+[![april_budget](images/demo_next_budget.png)](images/demo_next_budget.png)
+Once a budget is selected, the **Clone** button becomes available. Click on it:
+[![clone_budget](images/demo_clone_budget.png)](images/demo_clone_budget.png)
+A dialog pops up and offers a **Name** field. Use that to name the new budget *May 2023*
+and click the **OK** button. All the items from the *April 2023* are copied to the new
+budget and the budget gets added to the list in the topmost table. You can add items
+to the new budget or remove items no longer relevant.
+
+Now that we have a budget for *May 2023*, we can go back to the Transactions worksheet.
+Click the **Show** menu and select **Transactions**. Now we can go ahead and allocate
+the salary to the different budgets that was decided. Following the pattern that was
+established for the previous salary deposits, we end up with the following allocations:
+[![salary_allocations](images/demo_salary_allocations.png)](images/demo_salary_allocations.png)
+Clicking on **OK** gets us to:
+[![transactions_done](images/demo_salary_done.png)](images/demo_salary_done.png)
+
+However, we are not done yet. Allocating all transactions is not our only objective. We
+have another objective: to close off budgets when they are no longer needed. When we take
+a look at *March 2023*, we notice that it has a balance of *0.00*. This is what we need
+to aim for with all our budgets. For some budgets this may take years, but for monthly budgets,
+this should not take much longer than a month.
+
+According to our Demo database, we achieved a positive balance of *2,207.81*, which means we
+have money left over which we should allocate somewhere else. Let us say we decide to
+fatten our emergency fund with this excess. What we need to do now is to change our previous
+salary allocation. First we select the **Salary** item on the **April 2023** budget and
+then we click on the X encircled in red as follows:
+[![change_allocation](images/demo_change_allocation.png)](images/demo_change_allocation.png)
+That will remove the allocation and the transaction will again appear in the worksheet:
+[![salary_back](images/demo_salary_is_back.png)](images/demo_salary_is_back.png)
+Now we allocate the exact amount needed to bring the balance for *April 2023* to zero:
+[![bring_to_zero](images/demo_bring_to_zero.png)](images/demo_bring_to_zero.png)
+Next we need to remove our previous allocation to the emergency fund bly clicking on the X encircled in red:
+[![remove_emergency_allocation](images/demo_remove_emergency_allocation.png)](images/demo_remove_emergency_allocation.png)
+The last step now is to redo our emergency fund allocation with the balance of the salary
+transaction: [![redo_emergency_allocation](images/demo_redo_emergency.png)](images/demo_redo_emergency.png)
+And we are done! Our worksheet is clean: [![allocating_done](images/demo_allocating_finished.png)](images/demo_allocating_finished.png)
+To further reduce clutter we can now go to the **Budget** worksheet and select the **Hidden**
+checkboxes which will cause the budgets to disappear from view on the **Transactions** worksheet:
+[![hide_budgets](images/demo_hide_budgets.png)](images/demo_hide_budgets.png)
+[![hide_budgets2](images/demo_hide_budgets2.png)](images/demo_hide_budgets2.png)
 
 Back to [Home](index.markdown)
