@@ -38,7 +38,7 @@ public class CountaryApp extends Application implements Thread.UncaughtException
     @Override
     public void start(Stage stage) {
         new CountaryController().show(injector, stage);
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("₵.png")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("countary.png")));
     }
 
     public static void main(String[] args) {
