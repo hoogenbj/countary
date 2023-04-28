@@ -71,7 +71,7 @@ public class CreateMto1AllocationDlgController extends Dialog<List<Allocation>> 
         CreateMto1AllocationDlgController controller = new CreateMto1AllocationDlgController();
         loader.setController(controller);
         controller.initOwner(owner);
-        controller.setTitle("Create a budget");
+        controller.setTitle("Allocate many transactions to one item");
         controller.transactions = transactions;
         controller.budgetItem = budgetItem;
         try {

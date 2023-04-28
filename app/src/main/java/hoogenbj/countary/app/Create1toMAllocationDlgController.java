@@ -79,7 +79,7 @@ public class Create1toMAllocationDlgController extends Dialog<Allocation> implem
         Create1toMAllocationDlgController controller = new Create1toMAllocationDlgController();
         loader.setController(controller);
         controller.initOwner(owner);
-        controller.setTitle("Allocate transaction");
+        controller.setTitle("Allocate one transaction to one or many");
         controller.allocations = allocations;
         controller.budgetItem = budgetItem;
         controller.balanceToAllocate = balanceToAllocate;
