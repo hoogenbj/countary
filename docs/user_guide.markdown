@@ -50,6 +50,7 @@ To continue using Countary, you will need to understand the concepts:
 [**Categories**](categories.markdown)  
 [**Budgets**](budgets.markdown)  
 [**Accounts**](accounts.markdown)  
-[**Databases**](databases.markdown)
+[**Databases**](databases.markdown)  
+[**Statements**](bank_statements.md)
 
 Back to [Home](index.markdown)
