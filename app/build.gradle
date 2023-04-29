@@ -52,6 +52,7 @@ jlink {
     jpackage {
         if (os.macOsX) {
             installerType = "dmg"
+            outputDir = 'my-packaging'
             imageOptions = ['--icon', 'src/main/resources/hoogenbj/countary/app/countary.icns']
             installerOptions = ['--mac-package-identifier', "hoogenbj.Countary",
                                 '--mac-package-name', "Countary"
@@ -67,7 +68,7 @@ jlink {
         installerOptions += '--vendor'
         installerOptions += 'Johan Hoogenboezem'
         installerOptions += '--dest'
-        installerOptions += 'product'
+        installerOptions += "product"
         installerOptions += '--verbose'
         installerOptions += '--app-version'
         installerOptions += "$version"
