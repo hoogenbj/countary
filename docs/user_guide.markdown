@@ -50,5 +50,6 @@ To continue using Countary, you will need to understand the concepts:
 [**Categories**](categories.markdown)  
 [**Budgets**](budgets.markdown)  
 [**Accounts**](accounts.markdown)  
+[**Databases**](databases.markdown)
 
 Back to [Home](index.markdown)

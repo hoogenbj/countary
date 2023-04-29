@@ -33,10 +33,7 @@ icon. You'll see a dialog popup with the results of the most common calculations
 [![calculate monthly deposit](images/calculate_monthly_deposit.png)](images/calculate_monthly_deposit.png)
 
 The result you are looking for is the `Sum / 12` one. This tells you how much you must
-put away every month to make sure you have the money available when you need it. It won't
-be perfect. It will all depend on your cash flow, but you should be able to `borrow` from
-other items because you won't need to spend everything at once. Just make sure to consistenly 
-put the money aside every month and your cash flow will catch up.
+put away every month to make sure you have the money available when you need it.
 
 You can easily copy any of the calculated results by clicking on the ![copy](images/content_copy.png) icon.
 
