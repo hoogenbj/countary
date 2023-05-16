@@ -413,7 +413,8 @@ public class BudgetItemWorksheetController implements ControllerHelpers {
                 budgetItem.tags().forEach(tag -> {
                     try {
                         BigDecimal planned = model.getPlannedByBudgetAndTag(budgetItem.budget(), tag);
-                        profileMap.get(tag.name()).setTotalPlanned(planned);
+                        if (profileMap != null)
+                            profileMap.get(tag.name()).setTotalPlanned(planned);
                     } catch (SQLException e) {
                         throw new RuntimeException(String.format("Unable to retrieve planned for budget %s and tag %s",
                                 budgetItem.budget().name(), tag.name()), e);
