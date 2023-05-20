@@ -27,8 +27,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StatementParserTest {
 
     @Test
+    public void parseCapitecCsvTest() throws Exception {
+        ParsedStatement parsedStatement = new Capitec_CSVStatementParser()
+                .parse(this.getClass().getResource("CapitecBankTransactionHistory_123-123.csv").toURI());
+        for (ParsedStatement.Line line :
+                parsedStatement.getLines()) {
+            System.out.println(line);
+        }
+    }
+
+    @Test
     public void parseRMBPBTest() throws Exception {
-        ParsedStatement parsedStatement = new RMBPB_CSVStatementParser().parse(this.getClass().getResource("rmbpb_account.csv").toURI());
+        ParsedStatement parsedStatement = new RMBPB_CSVStatementParser()
+                .parse(this.getClass().getResource("rmbpb_account.csv").toURI());
         assertEquals("Joe Soap", parsedStatement.getAccountHolder());
         assertEquals("123412341234", parsedStatement.getAccountNumber());
         assertEquals(17, parsedStatement.getLines().size());
