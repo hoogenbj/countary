@@ -39,13 +39,18 @@ public class Capitec_CSVStatementParser implements StatementParser {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         final int[] lineCount = {0};
         final int[] fieldCount = {0};
+        final String[] accountNumber = {null};
         DsvParser<ParsedStatement.Line> parser = new DsvParser<>(reader, fields -> {
             // skip first two lines
             if (lineCount[0] <= 1) {
                 return null;
             }
             ParsedStatement.Line line = new ParsedStatement.Line();
-            fieldCount[0] += 3;
+            fieldCount[0] += 2;
+            if (accountNumber[0] == null) {
+                accountNumber[0] = fields[1];
+            }
+            fieldCount[0] += 1;
             Calendar postingDate = GregorianCalendar.from(dateFormat.parse(fields[2], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
             fieldCount[0] += 1;
             Calendar transactionDate = GregorianCalendar.from(dateFormat.parse(fields[3], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
@@ -76,14 +81,12 @@ public class Capitec_CSVStatementParser implements StatementParser {
             fieldCount[0] = 0;
             lineCount[0]++;
             // skip first two lines
-            if (lineCount[0] <= 1) {
-                return false;
-            }
-            return true;
+            return lineCount[0] > 2;
         });
         ParsedStatement parsedStatement = new ParsedStatement();
         try {
             parsedStatement.setLines(parser.readAll());
+            parsedStatement.setAccountNumber(accountNumber[0]);
         } catch (Exception e) {
             throw new StatementParseException(uri.getPath(), lineCount[0] + 1, fieldCount[0] % 11, e);
         }

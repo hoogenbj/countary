@@ -20,6 +20,11 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,10 +35,22 @@ public class StatementParserTest {
     public void parseCapitecCsvTest() throws Exception {
         ParsedStatement parsedStatement = new Capitec_CSVStatementParser()
                 .parse(this.getClass().getResource("CapitecBankTransactionHistory_123-123.csv").toURI());
+        assertEquals("1234567890", parsedStatement.getAccountNumber());
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        Date expectedDate = GregorianCalendar.from(dateFormat.parse("18/04/2023", LocalDate::from).atStartOfDay(ZoneId.systemDefault())).getTime();
+        int checked = 0;
+        assertEquals(32, parsedStatement.getLines().size());
         for (ParsedStatement.Line line :
                 parsedStatement.getLines()) {
-            System.out.println(line);
+            if (expectedDate.equals(line.getPostedOn().getTime())) {
+                assertEquals("Total Johannesburg (Card 1234)", line.getDescription());
+                assertEquals(GregorianCalendar.from(dateFormat.parse("14/04/2023", LocalDate::from).atStartOfDay(ZoneId.systemDefault())).getTime(), line.getTransactionDate().getTime());
+                assertEquals(new BigDecimal("-65.90"), line.getAmount());
+                assertEquals(new BigDecimal("17144.59"), line.getBalance());
+                checked++;
+            }
         }
+        assertEquals(1, checked);
     }
 
     @Test
