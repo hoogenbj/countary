@@ -17,12 +17,23 @@
 package hoogenbj.countary.app;
 
 import hoogenbj.countary.model.*;
+import hoogenbj.countary.util.ParseUtils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SummaryController extends StackPane implements ControllerHelpers {
     @FXML
@@ -37,6 +48,9 @@ public class SummaryController extends StackPane implements ControllerHelpers {
     private Text unfunded;
     @FXML
     private Text fundingBalance;
+    @FXML
+    private HBox fundingAccountBalances;
+
     private SummaryHolder holder = new SummaryHolder();
     private DataModel dataModel;
     private SummaryModel model;
@@ -59,13 +73,46 @@ public class SummaryController extends StackPane implements ControllerHelpers {
     }
 
     public void initialize() {
+        model = new SummaryModel(dataModel, holder);
         debits.textProperty().bind(holder.transactionDebitsProperty());
         credits.textProperty().bind(holder.transactionCreditsProperty());
         funded.textProperty().bind(holder.budgetFundedProperty());
         unfunded.textProperty().bind(holder.budgetUnfundedProperty());
         fundingBalance.textProperty().bind(holder.budgetBalanceProperty());
+        fundingBalance.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                updateFundingAccountBalances();
+            }
+        });
         transactionBalance.textProperty().bind(holder.transactionBalanceProperty());
-        model = new SummaryModel(dataModel, holder);
+        updateFundingAccountBalances();
+    }
+
+    private void updateFundingAccountBalances() {
+        fundingAccountBalances.getChildren().clear();
+        Map<Account, BigDecimal> totals = new HashMap<>();
+        model.getBudgetBalances().values()
+                .forEach(accountBalances ->
+                        accountBalances.forEach((key, value) -> totals.merge(key, value, BigDecimal::add)));
+        totals.forEach((key, value) -> {
+            HBox hBox = makeBalanceBox(key, value);
+            fundingAccountBalances.getChildren().add(hBox);
+        });
+
+    }
+
+    private static HBox makeBalanceBox(Account account, BigDecimal balance) {
+        SVGPath tag = new SVGPath();
+        tag.setContent(AccountTag.svgPathContent);
+        tag.setFill(Color.web(account.tagColor()));
+        Text text = new Text(ParseUtils.formatBigDecimal(balance));
+        text.setStrokeType(StrokeType.OUTSIDE);
+        text.setStrokeWidth(0.0);
+        text.getStyleClass().add("balance-text");
+        HBox hBox = new HBox(tag, text);
+        hBox.setSpacing(2.0);
+        hBox.setAlignment(Pos.CENTER);
+        return hBox;
     }
 
     public void update(Account account, Budget budget) {

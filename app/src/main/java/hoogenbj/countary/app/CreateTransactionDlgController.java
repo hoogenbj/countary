@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ import hoogenbj.countary.model.Account;
 import hoogenbj.countary.model.Transaction;
 import hoogenbj.countary.util.InputUtils;
 import hoogenbj.countary.util.ParseUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -87,7 +85,6 @@ public class CreateTransactionDlgController extends Dialog<Transaction> implemen
     }
 
     private Transaction composeResult() {
-        SimpleDateFormat format = new SimpleDateFormat(ParseUtils.DATE_FORMAT_SYMBOLS);
         Calendar postedOn = Calendar.getInstance();
         postedOn.setTime(Date.from(postedField.getValue().atStartOfDay().toInstant(ZoneOffset.MIN)));
         Calendar transactionDate = null;
@@ -120,7 +117,7 @@ public class CreateTransactionDlgController extends Dialog<Transaction> implemen
         accountTag.setContent(AccountTag.svgPathContent);
         accountTag.setFill(Color.web(account.tagColor()));
         EnumSet<Inputs> all = EnumSet.allOf(Inputs.class);
-        InputUtils<Inputs> inputUtils = new InputUtils<>(() -> {
+        InputUtils inputUtils = new InputUtils(() -> {
             okButton.setDisable(!inputState.containsAll(all));
         });
         inputUtils.observeChangesInInput(amountField.textProperty(), inputState, Inputs.Amount);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,10 +30,6 @@ public class CategoryModel {
     private final Map<Category, Set<BudgetItemHolder>> categoryItems;
     private final Set<Category> categories;
     private final BudgetHolder budgetHolder;
-
-    public BigDecimal getBalance() {
-        return budgetHolder.balanceProperty().get();
-    }
 
     public CategoryModel(BudgetHolder budgetHolder, Set<Category> categories, Map<Category, Set<BudgetItemHolder>> categoryItems) {
         this.categoryItems = categoryItems;

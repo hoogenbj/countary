@@ -23,10 +23,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
+import static hoogenbj.countary.util.ParseUtils.stripQuotes;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StatementParserTest {
@@ -51,6 +50,47 @@ public class StatementParserTest {
             }
         }
         assertEquals(1, checked);
+    }
+
+    @Test
+    public void testHash() throws Exception {
+        String[] fields = List.of("3", "1234567890", "08/04/2023", "05/04/2023", "Cx Roodepoort (Card 1234)",
+                "Cx Roodepoort         Roodepoort   ZA", "Food", "Groceries", "63.97", "", "20151.53").toArray(new String[0]);
+        ParsedStatement.Line line1 = parseLine(fields);
+        Thread.sleep(2000);
+        ParsedStatement.Line line2 = parseLine(fields);
+        System.out.println(line2.hashCode());
+        assertEquals(line2.hashCode(), line1.hashCode());
+    }
+
+    private static ParsedStatement.Line parseLine(String[] fields) {
+        final int[] fieldCount = {0};
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        ParsedStatement.Line line = new ParsedStatement.Line();
+        fieldCount[0] += 2;
+        fieldCount[0] += 1;
+        Calendar postingDate = GregorianCalendar.from(dateFormat.parse(fields[2], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
+        fieldCount[0] += 1;
+        Calendar transactionDate = GregorianCalendar.from(dateFormat.parse(fields[3], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
+        fieldCount[0] += 1;
+        String description = fields[4];
+        fieldCount[0] += 4;
+        BigDecimal debitAmount = ParseUtils.parseBigDecimal(stripQuotes(fields[8]));
+        fieldCount[0] += 1;
+        BigDecimal creditAmount = ParseUtils.parseBigDecimal(stripQuotes(fields[9]));
+        BigDecimal amount;
+        if (debitAmount != null)
+            amount = debitAmount.negate();
+        else
+            amount = creditAmount;
+        fieldCount[0] += 1;
+        BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotes(fields[10]));
+        line.setPostedOn(postingDate);
+        line.setTransactionDate(transactionDate);
+        line.setDescription(description);
+        line.setBalance(balance);
+        line.setAmount(amount);
+        return line;
     }
 
     @Test

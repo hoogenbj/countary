@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,16 +19,17 @@ package hoogenbj.countary.util;
 import javafx.beans.value.ObservableValue;
 
 import java.util.EnumSet;
+import java.util.function.Function;
 
-public class InputUtils<E extends Enum<E>> {
+public class InputUtils {
 
-    private final Runnable callback;
+    private Runnable callback;
 
     public InputUtils(Runnable callback) {
         this.callback = callback;
     }
 
-    public void observeChangesInInput(ObservableValue observableValue, EnumSet<E> inputState, E enumValue) {
+    public <E extends Enum<E>, F> void observeChangesInInput(ObservableValue<F> observableValue, EnumSet<E> inputState, E enumValue) {
         observableValue.addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals(oldValue)) {
                 inputState.add(enumValue);
@@ -37,5 +38,20 @@ public class InputUtils<E extends Enum<E>> {
             }
             this.callback.run();
         });
+    }
+
+    public <E extends Enum<E>, F> void observeChangesInInput(ObservableValue<F> observableValue, EnumSet<E> inputState, E enumValue, Function<F, Boolean> isValid) {
+        observableValue.addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue) && isValid.apply(newValue)) {
+                inputState.add(enumValue);
+            } else {
+                inputState.remove(enumValue);
+            }
+            this.callback.run();
+        });
+    }
+
+    public void setCallback(Runnable callback) {
+        this.callback = callback;
     }
 }

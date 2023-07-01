@@ -65,14 +65,16 @@
                     <HBox alignment="CENTER_RIGHT" prefWidth="90.0" spacing="5.0">
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Unfunded:" />
                     </HBox>
-                    <Text fx:id="unfunded" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                    <Text fx:id="unfunded" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text"/>
                 </HBox>
                 <HBox>
-                    <Pane prefWidth="10.0" />
+                    <Pane prefWidth="10.0"/>
                     <HBox alignment="CENTER_RIGHT" prefWidth="90.0" spacing="5.0">
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Balance:" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" text="Balance:"/>
                     </HBox>
-                    <Text fx:id="fundingBalance" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text" />
+                    <Text fx:id="fundingBalance" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="summary-text"/>
+                </HBox>
+                <HBox fx:id="fundingAccountBalances">
                 </HBox>
             </VBox>
         </VBox>

@@ -27,6 +27,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -41,6 +42,7 @@ public class Capitec_CSVStatementParser implements StatementParser {
         final int[] fieldCount = {0};
         final String[] accountNumber = {null};
         DsvParser<ParsedStatement.Line> parser = new DsvParser<>(reader, fields -> {
+            System.out.println(Arrays.toString(fields));
             // skip first two lines
             if (lineCount[0] <= 1) {
                 return null;
@@ -52,8 +54,10 @@ public class Capitec_CSVStatementParser implements StatementParser {
             }
             fieldCount[0] += 1;
             Calendar postingDate = GregorianCalendar.from(dateFormat.parse(fields[2], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
+            System.out.println("posting date: " + postingDate.getTimeInMillis());
             fieldCount[0] += 1;
             Calendar transactionDate = GregorianCalendar.from(dateFormat.parse(fields[3], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
+            System.out.println("transaction date: " + transactionDate.getTimeInMillis());
             fieldCount[0] += 1;
             String description = fields[4];
             fieldCount[0] += 4;

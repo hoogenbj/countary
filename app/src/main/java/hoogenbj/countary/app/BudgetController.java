@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -275,15 +275,27 @@ public class BudgetController implements ControllerHelpers {
     @FXML
     private void onCloneBudget() {
         Budget budget = tableView.getSelectionModel().getSelectedItem().getBudget();
-        CloneBudgetDlgController controller = CloneBudgetDlgController.getInstance(CountaryApp.OWNER_WINDOW);
-        controller.showAndWait().ifPresent(name -> {
-            try {
-                Budget newBudget = model.cloneBudget(budget, name);
-                listOfBudgets.add(new BudgetHolder(newBudget, this::onHiddenChanged));
-            } catch (SQLException e) {
-                DbUtils.handleException(userInterface, "budget", e);
-            }
-        });
+        try {
+            Set<BudgetItemHolder> holders = model.getBudgetItemHolders(budget, (a, b) -> null, (a, b) -> null);
+            CloneBudgetDlgController controller = CloneBudgetDlgController.getInstance(CountaryApp.OWNER_WINDOW, holders.stream().toList());
+            controller.showAndWait().ifPresent(result -> {
+                try {
+                    String name = (String) result.get(CloneBudgetDlgController.NAME);
+                    BudgetItemHolder budgetItemHolder = (BudgetItemHolder) result.get(CloneBudgetDlgController.BUDGET_ITEM);
+                    BudgetItem budgetItem = null;
+                    if (budgetItemHolder != null)
+                        budgetItem = budgetItemHolder.getBudgetItem();
+                    Boolean transferBalance = (Boolean) result.get(CloneBudgetDlgController.TRANSFER_BALANCE);
+                    Boolean copyActualToPlanned = (Boolean) result.get(CloneBudgetDlgController.COPY_ACTUAL_TO_PLANNED);
+                    Budget newBudget = model.cloneBudget(budget, name, copyActualToPlanned, transferBalance, budgetItem);
+                    listOfBudgets.add(new BudgetHolder(newBudget, this::onHiddenChanged));
+                } catch (SQLException e) {
+                    DbUtils.handleException(userInterface, "budget", e);
+                }
+            });
+        } catch (SQLException e) {
+            throw new RuntimeException(String.format("Unable to retrieve budget items for budget %s", budget.name()), e);
+        }
     }
 
     private void doSearch(String criteria) {

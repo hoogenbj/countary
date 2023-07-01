@@ -97,7 +97,7 @@ public class CreateAccountDlgController extends Dialog<Account> implements Initi
         Settings settings = CountaryApp.injector.getInstance(Settings.class);
         manageCustomColors(settings, tagColor);
         EnumSet<Inputs> all = EnumSet.allOf(Inputs.class);
-        InputUtils<Inputs> inputUtils = new InputUtils<>(() -> okButton.setDisable(!inputState.containsAll(all)));
+        InputUtils inputUtils = new InputUtils(() -> okButton.setDisable(!inputState.containsAll(all)));
         inputUtils.observeChangesInInput(accountName.textProperty(), inputState, Inputs.AccountName);
         inputUtils.observeChangesInInput(accountNumber.textProperty(), inputState, Inputs.AccountNumber);
         inputUtils.observeChangesInInput(bankName.textProperty(), inputState, Inputs.BankName);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -488,12 +488,15 @@ public class TransactionController implements ControllerHelpers {
     }
 
     public void onTransactionChanged(Transaction transaction) {
-        holderLookup.computeIfAbsent(transaction, key -> {
-            TransactionHolder holder = new TransactionHolder(transaction);
-            listOfTransactions.add(holder);
-            return holder;
-        });
-        tableView.refresh();
+        Account currentAccount = accounts.getValue();
+        if (currentAccount != null && transaction.account().id().equals(currentAccount.id())) {
+            holderLookup.computeIfAbsent(transaction, key -> {
+                TransactionHolder holder = new TransactionHolder(transaction);
+                listOfTransactions.add(holder);
+                return holder;
+            });
+            tableView.refresh();
+        }
     }
 
     private void applyToToolbox() {

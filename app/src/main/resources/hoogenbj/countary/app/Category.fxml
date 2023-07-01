@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2022. Johan Hoogenboezem
+  ~ Copyright (c) 2022-2023. Johan Hoogenboezem
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -20,11 +20,8 @@
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-    <HBox alignment="CENTER" minHeight="25">
-        <Text fx:id="balance" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="balance-text" text="Text"
-              HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER" minHeight="25" fx:id="balanceBox" spacing="10.0">
     </HBox>
     <TreeTableView fx:id="treeTableView" editable="true" showRoot="false" xmlns="http://javafx.com/javafx/18"
                    xmlns:fx="http://javafx.com/fxml/1">

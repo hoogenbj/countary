@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,8 +20,14 @@ import hoogenbj.countary.model.*;
 import hoogenbj.countary.util.ParseUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -29,6 +35,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CategoryController {
@@ -36,13 +43,13 @@ public class CategoryController {
     @FXML
     private TreeTableView<CategoryHolder> treeTableView;
     @FXML
+    private HBox balanceBox;
+    @FXML
     private TreeTableColumn<CategoryHolder, CategoryHolder> categoryColumn;
     @FXML
     private TreeTableColumn<CategoryHolder, String> plannedColumn;
     @FXML
     private TreeTableColumn<CategoryHolder, String> actualColumn;
-    @FXML
-    private Text balance;
     private final DataModel model;
     private TreeItem<CategoryHolder> root;
 
@@ -69,14 +76,50 @@ public class CategoryController {
         initializeTree();
         categoryModel.getBudgetHolder().balanceProperty().addListener((observable, oldValue, newValue) -> {
             if (Objects.nonNull(newValue) && !newValue.equals(oldValue)) {
-                balance.setText(String.format("Actual Balance: %s", ParseUtils.formatBigDecimal(newValue)));
+                updateBalances(categoryModel.getBudgetHolder().getBudget());
             }
         });
-        BigDecimal balanceValue = categoryModel.getBalance();
-        if (balanceValue != null)
-            balance.setText(String.format("Actual Balance: %s", ParseUtils.formatBigDecimal(balanceValue)));
-        else
-            balance.setText("");
+        updateBalances(categoryModel.getBudgetHolder().getBudget());
+    }
+
+    private void updateBalances(Budget budget) {
+        try {
+            Map<Account, BigDecimal> balances = model.calculateBalances(budget);
+            balanceBox.getChildren().clear();
+            String heading = "Actual balance:";
+            if (balances.size() > 1)
+                heading = "Actual balances:";
+            Text head = getBalanceHeading(heading);
+            balanceBox.getChildren().add(head);
+            balances.forEach((key, value) -> {
+                HBox hBox = makeBalanceBox(key, value);
+                balanceBox.getChildren().add(hBox);
+            });
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to retrieve balances for " + budget.name(), e);
+        }
+    }
+
+    private static Text getBalanceHeading(String heading) {
+        Text head = new Text(heading);
+        head.setStrokeType(StrokeType.OUTSIDE);
+        head.setStrokeWidth(0.0);
+        head.getStyleClass().add("balance-text");
+        return head;
+    }
+
+    private static HBox makeBalanceBox(Account account, BigDecimal balance) {
+        SVGPath tag = new SVGPath();
+        tag.setContent(AccountTag.svgPathContent);
+        tag.setFill(Color.web(account.tagColor()));
+        Text text = new Text(ParseUtils.formatBigDecimal(balance));
+        text.setStrokeType(StrokeType.OUTSIDE);
+        text.setStrokeWidth(0.0);
+        text.getStyleClass().add("balance-text");
+        HBox hBox = new HBox(tag, text);
+        hBox.setSpacing(2.0);
+        hBox.setAlignment(Pos.CENTER);
+        return hBox;
     }
 
     private TreeTableCell<CategoryHolder, CategoryHolder> makeCategoryCell(TreeTableColumn<CategoryHolder, CategoryHolder> categoryHolderStringTreeTableColumn) {

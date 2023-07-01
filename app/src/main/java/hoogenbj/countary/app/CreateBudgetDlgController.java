@@ -81,7 +81,7 @@ public class CreateBudgetDlgController extends Dialog<Budget> implements Initial
     public void initialize(URL location, ResourceBundle resources) {
         kindChoiceBox.setItems(FXCollections.observableArrayList(Kind.Annual, Kind.Monthly, Kind.AdHoc));
         EnumSet<Inputs> all = EnumSet.allOf(Inputs.class);
-        InputUtils<Inputs> inputUtils = new InputUtils<>(() -> {
+        InputUtils inputUtils = new InputUtils(() -> {
             okButton.setDisable(!inputState.containsAll(all));
         });
         inputUtils.observeChangesInInput(name.textProperty(), inputState, Inputs.Name);

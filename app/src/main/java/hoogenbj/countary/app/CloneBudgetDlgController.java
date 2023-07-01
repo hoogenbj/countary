@@ -16,30 +16,44 @@
 
 package hoogenbj.countary.app;
 
+import hoogenbj.countary.model.BudgetItemHolder;
 import hoogenbj.countary.util.InputUtils;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Window;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.EnumSet;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class CloneBudgetDlgController extends Dialog<String> implements Initializable {
+public class CloneBudgetDlgController extends Dialog<Map<String, Object>> implements Initializable {
 
+    public static final String NAME = "name";
+    public static final String TRANSFER_BALANCE = "transferBalance";
+    public static final String BUDGET_ITEM = "budgetItem";
+    public static final String COPY_ACTUAL_TO_PLANNED = "copyActualToPlanned";
+    @FXML
+    private CheckBox copyActualToPlanned;
+    @FXML
+    private CheckBox transferBalance;
+    @FXML
+    private ChoiceBox<BudgetItemHolder> toBudgetItem;
     @FXML
     private TextField name;
     @FXML
     private ButtonType okButtonType;
 
     private Button okButton;
+    private List<BudgetItemHolder> budgetItems;
 
-    public static CloneBudgetDlgController getInstance(Window owner) {
+    public static CloneBudgetDlgController getInstance(Window owner, List<BudgetItemHolder> budgetItems) {
         FXMLLoader loader = CountaryApp.injector.getInstance(FXMLLoader.class);
         loader.setLocation(CreateBudgetDlgController.class.getResource("CloneBudgetDlg.fxml"));
         CloneBudgetDlgController controller = null;
@@ -48,7 +62,9 @@ public class CloneBudgetDlgController extends Dialog<String> implements Initiali
             controller = loader.getController();
             controller.initOwner(owner);
             controller.setTitle("Copy a budget");
+            controller.budgetItems = budgetItems;
             controller.setDialogPane(dlgPane);
+            controller.initControls();
             controller.okButton = (Button) dlgPane.lookupButton(controller.okButtonType);
             controller.okButton.setDisable(true);
             CloneBudgetDlgController finalController = controller;
@@ -59,27 +75,70 @@ public class CloneBudgetDlgController extends Dialog<String> implements Initiali
                 return finalController.composeResult();
             });
         } catch (IOException e) {
-            throw new RuntimeException("Unable to launch "+controller.getClass().getSimpleName(), e);
+            throw new RuntimeException("Unable to launch " + CloneBudgetDlgController.class.getSimpleName(), e);
         }
         return controller;
     }
 
-    private String composeResult() {
-        return name.getText();
+    private Map<String, Object> composeResult() {
+        Map<String, Object> result = new HashMap<>();
+        result.put(NAME, name.getText());
+        result.put(TRANSFER_BALANCE, transferBalance.isSelected());
+        if (transferBalance.isSelected()) {
+            result.put(BUDGET_ITEM, toBudgetItem.getValue());
+        }
+        result.put(COPY_ACTUAL_TO_PLANNED, copyActualToPlanned.isSelected());
+        return result;
     }
 
     private enum Inputs {
-        Name
+        Name, CopyActual, TransferBalance, BudgetItem
     }
+
     private final EnumSet<Inputs> inputState = EnumSet.noneOf(Inputs.class);
+
+    private void initControls() {
+        ObservableList<BudgetItemHolder> list = FXCollections.observableList(budgetItems);
+        SortedList<BudgetItemHolder> sortedList = new SortedList<>(list, Comparator.comparing(BudgetItemHolder::getName));
+        toBudgetItem.setItems(sortedList);
+        toBudgetItem.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(BudgetItemHolder object) {
+                if (object != null) return object.getName();
+                else
+                    return null;
+            }
+
+            @Override
+            public BudgetItemHolder fromString(String string) {
+                return null;
+            }
+        });
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        EnumSet<Inputs> all = EnumSet.allOf(Inputs.class);
-        InputUtils<CloneBudgetDlgController.Inputs> inputUtils = new InputUtils<>(() -> {
-            okButton.setDisable(!inputState.containsAll(all));
+        Runnable forAll = () -> okButton.setDisable(!inputState.containsAll(EnumSet.allOf(Inputs.class)));
+        EnumSet<Inputs> some = EnumSet.of(Inputs.CopyActual, Inputs.TransferBalance, Inputs.Name);
+        Runnable forAllExceptBudgetItem = () -> okButton.setDisable(!inputState.containsAll(some));
+        InputUtils inputUtils = new InputUtils(forAll);
+        inputUtils.observeChangesInInput(name.textProperty(), inputState, Inputs.Name, (string) -> !string.isEmpty());
+        inputState.add(Inputs.CopyActual);
+        inputUtils.observeChangesInInput(copyActualToPlanned.selectedProperty(), inputState, Inputs.CopyActual);
+        inputUtils.observeChangesInInput(toBudgetItem.valueProperty(), inputState, Inputs.BudgetItem);
+        inputState.add(Inputs.TransferBalance);
+        transferBalance.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            Runnable theCallback;
+            if (newValue != null && !newValue.equals(oldValue) && newValue) {
+                theCallback = forAll;
+                toBudgetItem.setDisable(false);
+            } else {
+                toBudgetItem.setDisable(true);
+                theCallback = forAllExceptBudgetItem;
+            }
+            inputUtils.setCallback(theCallback);
+            theCallback.run();
         });
-        inputUtils.observeChangesInInput(name.textProperty(), inputState, CloneBudgetDlgController.Inputs.Name);
         Platform.runLater(() -> name.requestFocus());
     }
 }

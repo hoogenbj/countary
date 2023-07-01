@@ -94,7 +94,7 @@ public class CreateItemDlgController extends Dialog<Item> implements Initializab
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         kindChoiceBox.setItems(FXCollections.observableArrayList(Kind.Annual, Kind.Monthly, Kind.AdHoc));
-        InputUtils<Inputs> inputUtils = new InputUtils<>(this::checkInputs);
+        InputUtils inputUtils = new InputUtils(this::checkInputs);
         inputUtils.observeChangesInInput(name.textProperty(), inputState, Inputs.Name);
         inputUtils.observeChangesInInput(kindChoiceBox.valueProperty(), inputState, Inputs.Kind);
         kindChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

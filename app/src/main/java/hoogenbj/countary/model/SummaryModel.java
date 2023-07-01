@@ -33,6 +33,7 @@ public class SummaryModel {
     private final SummaryHolder holder;
     private final Map<Long, TransactionSummary> transactionsSummary = new HashMap<>();
     private final Map<Long, BigDecimal> budgetActuals = new HashMap<>();
+    private final Map<Long, Map<Account, BigDecimal>> budgetBalances = new HashMap<>();
 
     public SummaryModel(DataModel dataModel, SummaryHolder holder) {
         this.dataModel = dataModel;
@@ -63,11 +64,15 @@ public class SummaryModel {
         holder.setBudgetUnfunded(ParseUtils.formatBigDecimal(unfunded));
     }
 
+    public Map<Long, Map<Account, BigDecimal>> getBudgetBalances() {
+        return budgetBalances;
+    }
+
     private void refreshForTransactions() {
         BigDecimal debits = BigDecimal.ZERO;
         BigDecimal credits = BigDecimal.ZERO;
         BigDecimal balance = BigDecimal.ZERO;
-        for (Map.Entry<Long, TransactionSummary> entry: transactionsSummary.entrySet()) {
+        for (Map.Entry<Long, TransactionSummary> entry : transactionsSummary.entrySet()) {
             debits = debits.add(entry.getValue().debits());
             credits = credits.add(entry.getValue().credits());
             balance = balance.add(entry.getValue().balance());
@@ -82,8 +87,9 @@ public class SummaryModel {
             Long id = budget.id();
             BigDecimal actualForBudget = dataModel.getActualForBudget(budget);
             budgetActuals.put(id, actualForBudget);
+            budgetBalances.put(id, dataModel.calculateBalances(budget));
         } catch (SQLException e) {
-            throw new RuntimeException(String.format("Could not retrieve actual for budget %s"+budget.name()), e);
+            throw new RuntimeException(String.format("Could not retrieve actual for budget %s", budget.name()), e);
         }
     }
 

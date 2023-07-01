@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Johan Hoogenboezem
+ * Copyright (c) 2022-2023. Johan Hoogenboezem
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import static org.sqlite.SQLiteErrorCode.*;
 
 public class DbUtils {
 
-    public static Integer MAX_TRANSACTION_ROWS = 1000;
+    public static Integer MAX_TRANSACTION_ROWS = 2000;
 
     public static boolean dbFileNotFound(String dbUrl) {
         String[] parts = dbUrl.split(":");
