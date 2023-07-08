@@ -6,7 +6,7 @@ I am pretty sure rich people will tell you that they got rich by being careful
 spending money.
 
 It is hard to get rich, but it is much harder to stay rich. `Rich` means something
-different for everybody. For you and I it might just mean having the money when we need
+different for everybody. For you and I, it might just mean having the money when we need
 it. The best way to ensure that is to plan for it - to budget.
 
 I suspect that people who tried to budget and failed did so because they did not

@@ -2,7 +2,7 @@
 layout: default
 ---
 # Troubleshooting
-The author has been the only user of Countary so far.  It is highly likely that other users
+The author and his wife have been the only users of Countary so far.  It is highly likely that other users
 will find bugs that he missed. But bugs can be fixed.
 
 In case of an error a dialog will display which should explain what went wrong:

@@ -12,8 +12,11 @@ You will need version 19+ of the JDK installed, as well as at least v7.6 of Grad
 2. Run `gradle wrapper` in the root of the project.
 3. Run `./gradlew run`.
 
+You should be able to import the project into any IDE that supports Gradle projects.
+
 ## From a binary
-Go to the [repo](https://hoogenbj.github.io/countary) and click on the latest release.
+Go to the [repo](https://hoogenbj.github.io/countary) and click on the latest release. Look
+for the link in the sidebar to the right.
 Download a suitable release (Windows or Mac). Sorry, no Linux packages yet.
 
 Back to [Home](index.markdown)

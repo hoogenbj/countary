@@ -6,8 +6,8 @@ layout: default
 Countary is a budgeting program. You can create multiple budgets spanning
 multiple bank accounts and keep everything up-to-date with statement imports.
 It currently supports .csv imports from RMB Private Bank 
-(and probably FNB as well, since RMB Private Bank piggy-backs on FNB's systems)
-and Bank Zero. These are banks in South Africa - but do not despair!    
+(and probably FNB as well, since RMB Private Bank piggy-backs on FNB's systems),
+Bank Zero, and Capitec. These are banks in South Africa - but do not despair!    
 It also supports OFX (v1.x and v2.x) for importing of statements. This means that Countary
 likely can be used to import statements from any bank in the world that provides
 OFX format exports!  

@@ -14,7 +14,7 @@ a database, Countary will remember it and open it automatically when you come ba
 
 ## Open Demo Database
 This one you will pick if you want to take a look at the Demo database. A new 
-Demo database will be created every time you click here. *Any changes will be 
+Demo database will be created every time you click this. *Any changes will be 
 lost once Countary is closed*. You can play around with it and even use it as 
 a basis for your own budgeting - just create a backup of it and restore the 
 backup over a new database if you want that.
@@ -29,8 +29,10 @@ database you've opened and reopen it when you come back - except if it was the D
 database.
 
 ## Nothing
-Maybe you want to continue later.
+Maybe you just wanted to run the program to see what happens. You can always come back 
+later.
 
+## So you did click one of the database buttons...
 If you clicked one of the `database`, buttons you will see the initial screen - the
 Transactions worksheet. Here is the Transactions worksheet for the Demo database
 (click on the image to make it bigger):

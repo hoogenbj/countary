@@ -14,4 +14,4 @@ There is also an `Accounts worksheet` that can be accessed from the `Show` menu:
 [![accounts](images/accounts.png)](images/accounts.png)
 The image shows the list of accounts in the Demo database. 
 
-Back to [Home](index.markdown)
+Back to [User Guide](user_guide.markdown)

@@ -6,9 +6,9 @@ The `Items` worksheet for the Demo database looks like this (Click to make it bi
 [![Items worksheet](images/items_worksheet.png)](images/items_worksheet.png)
 
 Items go in budgets, so before you can create a budget, you create the items for it.
-It takes some practice to get the naming just right - at least right for you. You can delete
+It takes some practice to get the naming just right - or at least right for you. You can delete
 an item that has not been added to a budget yet by clicking on the trashcan icon. If
-it has been added to a budget the icon will be greyed-out - disabled.
+it has been added to a budget the icon will be greyed-out - which means it is disabled.
 
 Items can be re-used - added to more than one budget. You also get different kinds
 of items - `annual`, `monthly` and `ad hoc`. Only `annual` items can be added to `annual`
@@ -36,4 +36,4 @@ When you have the items you want, you can go ahead and create some budgets.
 You can always come back to the Items worksheet to create more items. You can also 
 modify the names and categories of items - just double-click to change.
 
-Back to [Home](index.markdown)
+Back to [User Guide](user_guide.markdown)

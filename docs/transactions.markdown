@@ -10,7 +10,7 @@ for example, a salary can be split over the `monthly` budget, the `holiday` budg
 the `emergency` budget and the `annual` budget.
 
 On the other hand, multiple transactions can be assigned to one budget item.
-For example, e-toll transactions can be assigned to the `E-Toll` budget item
+For example, all e-toll transactions can be assigned to the `E-Toll` budget item
 of the `monthly` budget.
 
 Here's a view of the `Transactions Worksheet` for the Demo database (click on it 
@@ -18,7 +18,8 @@ to see a bigger version):
 [![Transactions Worksheet](images/transactions_worksheet.png)](images/transactions_worksheet.png)
 
 The main objective should always be to add every transaction to items in one or more
-budgets. Once a transaction is fully allocated, it is removed from view.
+budgets. Once a transaction is fully allocated, it gets a green highlight. Next time you 
+view the transactions it won't appear.
 
 Here's an example of a salary transaction dated `25 Feb, 2023` that was allocated
 to several budgets (click to make it bigger):  
@@ -34,4 +35,4 @@ the `March 2023` budget (click to make it bigger):
 On this view you can also see a number of transactions that have not yet been allocated.
 See if you can figure out how to allocate them.
 
-Back to [Home](index.markdown)
+Back to [User Guide](user_guide.markdown)

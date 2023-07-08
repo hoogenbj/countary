@@ -55,4 +55,4 @@ will do just that. The procedure initiated by this button click will check the i
 of the virtual tables before attempting to rebuild them, so if the tables are fine, this
 will do nothing.
 
-Back to [Home](index.markdown)
+Back to [User Guide](user_guide.markdown)

@@ -30,4 +30,4 @@ or modify existing ones.
 Just click on the `Rename` button to rename category. Make sure the category you want
 to rename is selected first.
 
-Back to [Home](index.markdown)
+Back to [User Guide](user_guide.markdown)

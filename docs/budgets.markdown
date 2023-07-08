@@ -5,13 +5,13 @@ layout: default
 Countary supports three kinds of budgets: `Monthly`, `Annual` and `Ad hoc`. Having 
 a `monthly` budget is perhaps not unusual. Most self-help literature that mention budgeting
 refers to having a budget for your monthly income and expenses. I have yet to come 
-across any that suggest budgeting for `annual` expenses - let alone `ad hoc` expenses!
-And yet, I am convinced you need all three kinds if you are going to be successful in
+across any that suggest budgeting for `annual` expenses - let alone `ad hoc` expenses! And 
+yet, I am convinced you need all three kinds if you are going to be successful in
 your endeavour.
 
-Once you have your annual and monthly budget you don't need to start over for a new
+Once you have your annual and monthly budgets you don't need to start over for a new
 month or year. You can simply `Clone` a budget and add new items or remove items that
-are no longer relevant.
+are no longer relevant. Scroll down to find out more about cloning a budget.
 
 ## Annual budgets
 There are certain kinds of expenses that only happen once or perhaps a few times a year.
@@ -73,7 +73,8 @@ maybe only every couple of years. Such as buying a new motorcycle helmet (those 
 be replaced every 5 years!) or maybe a new washing machine. Or perhaps you need to save
 for your child's university education. Set up the budget and estimate how many months
 you have before you need to start spending the money. Divide that into the total and you
-will have the amount you need to put away every month to save for it.
+will have the amount you need to put away every month to save for it. It is still worth 
+doing if you can only save for a part of the full sum.
 
 ## Monthly budgets
 Monthly budgets are covered last not because they are less important, but perhaps they
@@ -113,7 +114,7 @@ earlier shows.
 Let us tackle an example together. Here's a view that shows what it looks like when all 
 groceries transactions and the *Groceries* item in the *April 2023* budget are selected:
 [![groceries](images/demo_allocate_groceries.png)](images/demo_allocate_groceries.png)
-Above the transactions, find the *Many to 1* button in the toolbar and click it:
+Above the transactions, find the *Allocate* button in the toolbar and click it:
 [![many_to_1](images/demo_many_to_1.png)](images/demo_many_to_1.png)
 The image shows a dialog listing all the selected transactions, the budget item those
 will be allocated to and the sum of the amounts of all the transactions. At this point
@@ -146,24 +147,40 @@ To do that, we go to the **Budgets** worksheet. Click on the **Show** menu and s
 [![april_budget](images/demo_next_budget.png)](images/demo_next_budget.png)
 Once a budget is selected, the **Clone** button becomes available. Click on it:
 [![clone_budget](images/demo_clone_budget.png)](images/demo_clone_budget.png)
-A dialog pops up and offers a **Name** field. Use that to name the new budget *May 2023*
-and click the **OK** button. All the items from the *April 2023* are copied to the new
-budget and the budget gets added to the list in the topmost table. You can add items
-to the new budget or remove items no longer relevant.
+A dialog pops up and offers a number of fields:
+1. The **Name** field. Use that to name the new budget *May 2023*.
+2. The **Copy actual to planned** checkbox. Select it to copy all the actual values
+from the cloned (April 2023) budget to the new one.
+3. The **Transfer balance** checkbox. Select it to transfer the balance of the cloned
+budget to the clone. This will cause the cloned budget to end on a zero balance and the 
+new budget will have what was left - whether it be a surplus or a deficit.
+4. If you did select the **Transfer Balance** checkbox, then the **Transfer To**
+drop-down list needs to be used to decide which budget item is to receive the balance 
+transaction.
+
+When you are ready, click the **OK** button. All the items from the *April 2023* are copied to the new
+budget and the budget gets added to the list in the topmost table. The balance maybe
+be adjusted and the planned values of the clone may be updated depending on the choices
+you made. You can now add items to the new budget or remove items no longer relevant.
 
 Now that we have a budget for *May 2023*, we can go back to the Transactions worksheet.
-Click the **Show** menu and select **Transactions**. Now we can go ahead and allocate
+Click the **Show** menu and select **Transactions**. We can go ahead and allocate
 the salary to the different budgets that was decided. Following the pattern that was
-established for the previous salary deposits, we end up with the following allocations:
+established for the previous salary deposits, this is what things look like after allocating
+to the *R & R*, *Savings* and *Year 2023* budgets. Clicking **OK** will assign the balance
+of the salary to the *May 2023* budget::
 [![salary_allocations](images/demo_salary_allocations.png)](images/demo_salary_allocations.png)
 Clicking on **OK** gets us to:
 [![transactions_done](images/demo_salary_done.png)](images/demo_salary_done.png)
 
 However, we are not done yet. Allocating all transactions is not our only objective. We
-have another objective: to close off budgets when they are no longer needed. When we take
-a look at *March 2023*, we notice that it has a balance of *0.00*. This is what we need
-to aim for with all our budgets. For some budgets this may take years, but for monthly budgets,
-this should not take much longer than a month.
+have another objective: to close off budgets when they are no longer needed.
+This is what we need to aim for with all our budgets. When we take
+a look at *March 2023*, we notice that it has a balance of *0.00*. For some Ad Hoc budgets this may take 
+years, but for monthly budgets, this should not take much longer than a month.
+Recall that when we cloned the *March 2023* budget we chose to transfer its positive balance to the 
+new budget. That is one way of handling it. Another way would be to change the allocations
+that we made. Let's assume we did not transfer the balance when we cloned *March 2023*.
 
 According to our Demo database, we achieved a positive balance of *2,207.81*, which means we
 have money left over which we should allocate somewhere else. Let us say we decide to
@@ -174,7 +191,8 @@ then we click on the X encircled in red as follows:
 That will remove the allocation and the transaction will again appear in the worksheet:
 [![salary_back](images/demo_salary_is_back.png)](images/demo_salary_is_back.png)
 Now we allocate the exact amount needed to bring the balance for *April 2023* to zero:
-[![bring_to_zero](images/demo_bring_to_zero.png)](images/demo_bring_to_zero.png)
+[![bring_to_zero](images/demo_bring_to_zero.png)](images/demo_bring_to_zero.png) and click **OK**.
+
 Next we need to remove our previous allocation to the emergency fund bly clicking on the X encircled in red:
 [![remove_emergency_allocation](images/demo_remove_emergency_allocation.png)](images/demo_remove_emergency_allocation.png)
 The last step now is to redo our emergency fund allocation with the balance of the salary
@@ -185,4 +203,4 @@ checkboxes which will cause the budgets to disappear from view on the **Transact
 [![hide_budgets](images/demo_hide_budgets.png)](images/demo_hide_budgets.png)
 [![hide_budgets2](images/demo_hide_budgets2.png)](images/demo_hide_budgets2.png)
 
-Back to [Home](index.markdown)
+Back to [User Guide](user_guide.markdown)
