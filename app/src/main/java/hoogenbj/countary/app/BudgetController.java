@@ -29,19 +29,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-
-import static org.sqlite.core.Codes.SQLITE_CONSTRAINT;
 
 public class BudgetController implements ControllerHelpers {
 
@@ -142,21 +138,23 @@ public class BudgetController implements ControllerHelpers {
         try {
             listOfBudgets = FXCollections.observableArrayList(model.getBudgets().stream()
                     .map(budget -> new BudgetHolder(budget, this::onHiddenChanged)).toList());
-            listOfBudgets.forEach(budgetHolder -> CompletableFuture.supplyAsync(() -> {
-                try {
-                    BigDecimal balance = model.getActualForBudget(budgetHolder.getBudget());
-                    budgetHolder.setBalance(balance);
-                    return balance;
-                } catch (SQLException e) {
-                    throw new RuntimeException("Unable to retrieve actual for budget " + budgetHolder.getBudget().name(), e);
-                }
-            }));
+            listOfBudgets.forEach(budgetHolder -> CompletableFuture.supplyAsync(() -> updateActualBalance(budgetHolder)));
             filteredList = new FilteredList<>(listOfBudgets);
             filteredList.setPredicate(getPredicate());
             SortedList<BudgetHolder> sortedList = new SortedList<>(filteredList, Comparator.comparing(BudgetHolder::getId).reversed());
             tableView.setItems(sortedList);
         } catch (SQLException e) {
             throw new RuntimeException("Unable to load budgets", e);
+        }
+    }
+
+    private BigDecimal updateActualBalance(BudgetHolder budgetHolder) {
+        try {
+            BigDecimal balance = model.getActualForBudget(budgetHolder.getBudget());
+            budgetHolder.setBalance(balance);
+            return balance;
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to retrieve actual for budget " + budgetHolder.getBudget().name(), e);
         }
     }
 
@@ -274,7 +272,8 @@ public class BudgetController implements ControllerHelpers {
 
     @FXML
     private void onCloneBudget() {
-        Budget budget = tableView.getSelectionModel().getSelectedItem().getBudget();
+        BudgetHolder budgetHolder = tableView.getSelectionModel().getSelectedItem();
+        Budget budget = budgetHolder.getBudget();
         try {
             Set<BudgetItemHolder> holders = model.getBudgetItemHolders(budget, (a, b) -> null, (a, b) -> null);
             CloneBudgetDlgController controller = CloneBudgetDlgController.getInstance(CountaryApp.OWNER_WINDOW, holders.stream().toList());
@@ -288,7 +287,12 @@ public class BudgetController implements ControllerHelpers {
                     Boolean transferBalance = (Boolean) result.get(CloneBudgetDlgController.TRANSFER_BALANCE);
                     Boolean copyActualToPlanned = (Boolean) result.get(CloneBudgetDlgController.COPY_ACTUAL_TO_PLANNED);
                     Budget newBudget = model.cloneBudget(budget, name, copyActualToPlanned, transferBalance, budgetItem);
-                    listOfBudgets.add(new BudgetHolder(newBudget, this::onHiddenChanged));
+                    BudgetHolder clonedBudgetHolder = new BudgetHolder(newBudget, this::onHiddenChanged);
+                    updateActualBalance(clonedBudgetHolder);
+                    listOfBudgets.add(clonedBudgetHolder);
+                    updateActualBalance(budgetHolder);
+                    tableView.refresh();
+                    tableView.getSelectionModel().select(clonedBudgetHolder);
                 } catch (SQLException e) {
                     DbUtils.handleException(userInterface, "budget", e);
                 }
