@@ -203,4 +203,24 @@ checkboxes which will cause the budgets to disappear from view on the **Transact
 [![hide_budgets](images/demo_hide_budgets.png)](images/demo_hide_budgets.png)
 [![hide_budgets2](images/demo_hide_budgets2.png)](images/demo_hide_budgets2.png)
 
+## Budget Transfers
+We've already covered how you can transfer the outstanding balance of a budget when you clone it. But what
+if you just wanted to transfer some funds to another budget? For instance, you might realise that some expenses
+that you budgeted for in your **Year 2023** budget is not going to happen after all, and you'd rather have
+more funds available for a holiday?
+
+What you need to do in this scenario is to go to the Budgets screen (using the *Show Budgets* menu item),
+select the **Year 2023** budget, and click the **Transfer** button that becomes available once a budget
+is selected. Here you can see a screenshot for transferring an amount of 1000 to the **R & R** budget:
+[![transfer a single balance](images/transfer_single_balance.png)](images/transfer_single_balance.png)
+
+On the next screenshot you'll notice that the balance for **Year 2023** is a 1000 smaller and
+the balance for **R & R** is a 1000 bigger!
+[![transferred a single balance](images/transferred_single_balance.png)](images/transferred_single_balance.png)
+
+When you have a budget with funding spread across more than one account, the transfer
+dialog looks slightly different. For example, what if you needed to transfer funds from
+your **Savings** to another budget? Here's a screenshot showing what it looks like if you 
+transfer a 1000 from each account: [![transfer multiple](images/transfer_multiple_balances.png)](images/transfer_multiple_balances.png)
+
 Back to [User Guide](user_guide.markdown)
