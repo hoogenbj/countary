@@ -54,6 +54,8 @@ public class BudgetController implements ControllerHelpers {
     @FXML
     private Button cloneButton;
     @FXML
+    private Button transferButton;
+    @FXML
     private Button createButton;
 
     @FXML
@@ -170,6 +172,8 @@ public class BudgetController implements ControllerHelpers {
         if (noButtons) {
             cloneButton.setManaged(false);
             cloneButton.setVisible(false);
+            transferButton.setManaged(false);
+            transferButton.setVisible(false);
             createButton.setVisible(false);
             createButton.setManaged(false);
         }
@@ -199,8 +203,10 @@ public class BudgetController implements ControllerHelpers {
         tableView.setEditable(tableEditable);
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals(oldValue)) {
-                if (!noButtons)
+                if (!noButtons) {
                     cloneButton.setDisable(false);
+                    transferButton.setDisable(false);
+                }
                 budgetSelectionNotifier.accept(newValue);
             } else {
                 budgetSelectionNotifier.accept(null);
@@ -297,6 +303,53 @@ public class BudgetController implements ControllerHelpers {
                     DbUtils.handleException(userInterface, "budget", e);
                 }
             });
+        } catch (SQLException e) {
+            throw new RuntimeException(String.format("Unable to retrieve budget items for budget %s", budget.name()), e);
+        }
+    }
+    @FXML
+    private void onTransferBudget() {
+        BudgetHolder budgetHolder = tableView.getSelectionModel().getSelectedItem();
+        Budget budget = budgetHolder.getBudget();
+        try {
+            Map<Account, BigDecimal> balances = model.calculateBalances(budget);
+            boolean anyNonZeroBalance = balances.values().stream()
+                    .anyMatch(balance -> balance.abs().compareTo(BigDecimal.ZERO) != 0);
+            if (anyNonZeroBalance) {
+                Optional<Map<String, Object>> result;
+                List<BudgetItemHolder> budgetItemHolders = model
+                        .getBudgetItemHolders(budget, (a, b) -> null, (a, b) -> null).stream().toList();
+                if (balances.size() == 1) {
+                    Map.Entry<Account, BigDecimal> balance =
+                            (Map.Entry<Account, BigDecimal>)balances.entrySet().toArray(new Map.Entry[0])[0];
+                    TransferSingleAccountBudgetDlgController controller =
+                            TransferSingleAccountBudgetDlgController.getInstance(CountaryApp.OWNER_WINDOW, model,
+                                    balance.getKey(), balance.getValue(), budgetItemHolders, listOfBudgets);
+                    result = controller.showAndWait();
+                } else {
+                    TransferMultiAccountBudgetDlgController controller =
+                            TransferMultiAccountBudgetDlgController.getInstance(CountaryApp.OWNER_WINDOW, model,
+                                    balances, budgetItemHolders, listOfBudgets);
+                    result = controller.showAndWait();
+                }
+                result.ifPresent(values -> {
+                    try {
+                        BudgetItemHolder fromBudgetItem = (BudgetItemHolder) values.get(TransferSingleAccountBudgetDlgController.FROM_BUDGET_ITEM);
+                        BudgetHolder toBudget = (BudgetHolder) values.get(TransferSingleAccountBudgetDlgController.TO_BUDGET);
+                        BudgetItemHolder toBudgetItem = (BudgetItemHolder) values.get(TransferSingleAccountBudgetDlgController.TO_BUDGET_ITEM);
+                        Map<Account, BigDecimal> amounts = (Map<Account, BigDecimal>) values.get(TransferSingleAccountBudgetDlgController.TRANSFER_AMOUNT);
+                        model.transferToBudget(budget, toBudget.getBudget(), fromBudgetItem.getBudgetItem(),
+                                toBudgetItem.getBudgetItem(), amounts);
+                        updateActualBalance(budgetHolder);
+                        updateActualBalance(toBudget);
+                        tableView.refresh();
+                    } catch (SQLException e) {
+                        DbUtils.handleException(userInterface, "budget", e);
+                    }
+                });
+            } else {
+                userInterface.showWarning("No balances found.");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Unable to retrieve budget items for budget %s", budget.name()), e);
         }

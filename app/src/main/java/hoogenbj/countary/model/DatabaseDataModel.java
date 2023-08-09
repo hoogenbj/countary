@@ -759,6 +759,11 @@ public class DatabaseDataModel implements DataModel {
     }
 
     @Override
+    public Set<BudgetItemHolder> getBudgetItemHolders(Budget budget) throws SQLException {
+        return getBudgetItemHolders(budget, (a,b)-> null, (a, b)-> null);
+    }
+
+    @Override
     public Set<BudgetItemHolder> getBudgetItemHolders(Budget budget,
                                                       BiFunction<BudgetItem, BigDecimal, BudgetItem> onPlannedChange,
                                                       BiFunction<BudgetItem, String, BudgetItem> onNoteChange) throws SQLException {
@@ -881,7 +886,32 @@ public class DatabaseDataModel implements DataModel {
     }
 
     @Override
-    public Budget cloneBudget(Budget budget, String newName, Boolean copyActualToPlanned, Boolean transferBalance, BudgetItem budgetItem) throws SQLException {
+    public void transferToBudget(Budget from, Budget to, BudgetItem fromBudgetItem, BudgetItem toBudgetItem,
+                                 Map<Account, BigDecimal> amounts) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties)) {
+            connection.setAutoCommit(false);
+            Calendar postedOn = Calendar.getInstance();
+            postedOn.setTime(Date.from(Instant.now()));
+            for (Map.Entry<Account, BigDecimal> entry : amounts.entrySet()) {
+                String description = "Reduce balance";
+                long transactionHash = Objects.hash(postedOn, description, entry.getValue().negate(), null,
+                        BigDecimal.ZERO);
+                Transaction closingBalance = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
+                        entry.getValue().negate(), BigDecimal.ZERO, "Reduce balance", transactionHash,
+                        true, true, false));
+                createAllocation(connection, closingBalance, fromBudgetItem, entry.getValue().negate(), "Transferring to " + to.name());
+                Transaction transferAmount = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
+                        entry.getValue(), BigDecimal.ZERO, "Transfer from " + from.name(), transactionHash,
+                        true, true, false));
+                createAllocation(connection, transferAmount, toBudgetItem, entry.getValue(), "Transferring from " + from.name());
+            }
+            connection.setAutoCommit(true);
+        }
+    }
+
+    @Override
+    public Budget cloneBudget(Budget budget, String newName, Boolean copyActualToPlanned, Boolean transferBalance,
+                              BudgetItem budgetItem) throws SQLException {
         if (!transferBalance)
             return cloneBudget(budget, newName, copyActualToPlanned);
         else {
@@ -943,11 +973,11 @@ public class DatabaseDataModel implements DataModel {
                     Transaction closingBalance = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
                             entry.getValue().negate(), BigDecimal.ZERO, "Closing balance", transactionHash,
                             true, true, false));
-                    createAllocation(connection, closingBalance, budgetItem, entry.getValue().negate(), "Transfering to " + newName);
+                    createAllocation(connection, closingBalance, budgetItem, entry.getValue().negate(), "Transferring to " + newName);
                     Transaction transferAmount = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
                             entry.getValue(), BigDecimal.ZERO, "Transfer from " + budget.name(), transactionHash,
                             true, true, false));
-                    createAllocation(connection, transferAmount, targetBudgetItem, entry.getValue(), "Transfering from " + budget.name());
+                    createAllocation(connection, transferAmount, targetBudgetItem, entry.getValue(), "Transferring from " + budget.name());
                 }
                 connection.setAutoCommit(true);
                 return clone;

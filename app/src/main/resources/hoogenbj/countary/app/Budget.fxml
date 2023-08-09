@@ -48,6 +48,9 @@
                 <Button fx:id="cloneButton" disable="true" mnemonicParsing="false" onAction="#onCloneBudget"
                         text="Clone">
                 </Button>
+                <Button fx:id="transferButton" disable="true" mnemonicParsing="false" onAction="#onTransferBudget"
+                        text="Transfer">
+                </Button>
             </HBox>
             <padding>
                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>

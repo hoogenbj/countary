@@ -16,11 +16,8 @@
 
 package hoogenbj.countary.app;
 
-import hoogenbj.countary.model.AllocationHolder;
 import hoogenbj.countary.model.BudgetHolder;
-import hoogenbj.countary.model.DataModel;
-import hoogenbj.countary.model.Transaction;
-import hoogenbj.countary.util.DbUtils;
+import hoogenbj.countary.model.BudgetItemHolder;
 import hoogenbj.countary.util.ParseUtils;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
@@ -30,13 +27,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static hoogenbj.countary.util.ParseUtils.DECIMAL_FORMAT_SYMBOLS;
 
 public interface ControllerHelpers {
 
@@ -125,5 +127,62 @@ public interface ControllerHelpers {
                 settings.setCustomColors(colors);
             }
         });
+    }
+
+    default <T> StringConverter<BigDecimal> getDecimalStringConverter(TableCell<T, BigDecimal> cell) {
+        return new StringConverter<>() {
+            final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT_SYMBOLS, DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+            public String toString(BigDecimal object) {
+                return format.format(object);
+            }
+
+            public BigDecimal fromString(String string) {
+                try {
+                    Number number = format.parse(string);
+                    if (number instanceof Long)
+                        return new BigDecimal((Long) number);
+                    else if (number instanceof Double)
+                        return BigDecimal.valueOf((Double) number);
+                    else
+                        throw new IllegalStateException("Unexpected value: " + number);
+                } catch (Throwable e) {
+                    cell.cancelEdit();
+                    throw new RuntimeException("Unexpected error editing planned value", e);
+                }
+            }
+        };
+    }
+
+    default StringConverter<BudgetHolder> getBudgetStringConverter() {
+        return new StringConverter<>() {
+            @Override
+            public String toString(BudgetHolder object) {
+                if (object != null) return object.getName();
+                else
+                    return null;
+            }
+
+            @Override
+            public BudgetHolder fromString(String string) {
+                return null;
+            }
+        };
+    }
+
+    default StringConverter<BudgetItemHolder> getBudgetItemStringConverter() {
+        return new StringConverter<>() {
+            @Override
+            public String toString(BudgetItemHolder object) {
+                if (object != null) return object.getName();
+                else
+                    return null;
+            }
+
+            @Override
+            public BudgetItemHolder fromString(String string) {
+                return null;
+            }
+        };
     }
 }

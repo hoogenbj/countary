@@ -68,6 +68,8 @@ public interface DataModel {
                                                BiFunction<BudgetItem, BigDecimal, BudgetItem> onPlannedChange,
                                                BiFunction<BudgetItem, String, BudgetItem> onNoteChange) throws SQLException;
 
+    Set<BudgetItemHolder> getBudgetItemHolders(Budget budget) throws SQLException;
+
     Set<Long> searchBudgets(String what, String criteria) throws SQLException;
 
     Map<Account, BigDecimal> calculateBalances(Budget budget) throws SQLException;
@@ -75,6 +77,8 @@ public interface DataModel {
     Budget createBudget(Budget budget) throws SQLException;
 
     Budget cloneBudget(Budget budget, String newName, Boolean copyActualToPlanned, Boolean transferBalance, BudgetItem budgetItem) throws SQLException;
+
+    void transferToBudget(Budget from, Budget to, BudgetItem fromBudgetItem, BudgetItem toBudgetItem, Map<Account, BigDecimal> amounts) throws SQLException;
 
     Item createItem(Item item) throws SQLException;
 

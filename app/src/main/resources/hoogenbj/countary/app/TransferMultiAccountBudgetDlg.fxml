@@ -2,14 +2,13 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ButtonType?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <!--
@@ -28,36 +27,40 @@
   ~    limitations under the License.
   -->
 
-<DialogPane prefWidth="350.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hoogenbj.countary.app.TransferBudgetDlgController">
+<DialogPane prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hoogenbj.countary.app.TransferMultiAccountBudgetDlgController">
     <content>
         <AnchorPane>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <HBox spacing="10.0">
+                <HBox prefHeight="150.0" spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Name:" />
-                    <TextField fx:id="name" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                    <TableView fx:id="tableView" HBox.hgrow="ALWAYS" editable="true">
+                        <columns>
+                            <TableColumn fx:id="accountColumn" editable="false" prefWidth="150.0" style="-fx-alignment: center-left;" text="Account" />
+                            <TableColumn fx:id="amountColumn" prefWidth="200.0" style="-fx-alignment: center-left;" text="Amount" />
+                        </columns>
+                    </TableView>
                 </HBox>
                 <HBox spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <Pane prefWidth="80.0" />
-                    <CheckBox fx:id="copyActualToPlanned" mnemonicParsing="false" selected="true" text="Copy actual to planned" />
+                    <Label alignment="CENTER_RIGHT" prefWidth="120.0" text="From Budget Item:" />
+                    <ChoiceBox fx:id="fromBudgetItem" prefWidth="234.0" />
                 </HBox>
                 <HBox spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <Pane prefWidth="80.0" />
-                    <CheckBox fx:id="transferBalance" mnemonicParsing="false" selected="true" text="Transfer balance" />
+                    <Label alignment="CENTER_RIGHT" prefWidth="120.0" text="To Budget:" />
+                    <ChoiceBox fx:id="toBudget" prefWidth="234.0" />
                 </HBox>
                 <HBox spacing="10.0">
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
-                    <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Transfer to:" />
+                    <Label alignment="CENTER_RIGHT" prefWidth="120.0" text="To Budget Item:" />
                     <ChoiceBox fx:id="toBudgetItem" prefWidth="234.0" />
                 </HBox>
             </VBox>

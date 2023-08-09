@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class CloneBudgetDlgController extends Dialog<Map<String, Object>> implements Initializable {
+public class CloneBudgetDlgController extends Dialog<Map<String, Object>> implements Initializable, ControllerHelpers {
 
     public static final String NAME = "name";
     public static final String TRANSFER_BALANCE = "transferBalance";
@@ -101,19 +101,7 @@ public class CloneBudgetDlgController extends Dialog<Map<String, Object>> implem
         ObservableList<BudgetItemHolder> list = FXCollections.observableList(budgetItems);
         SortedList<BudgetItemHolder> sortedList = new SortedList<>(list, Comparator.comparing(BudgetItemHolder::getName));
         toBudgetItem.setItems(sortedList);
-        toBudgetItem.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(BudgetItemHolder object) {
-                if (object != null) return object.getName();
-                else
-                    return null;
-            }
-
-            @Override
-            public BudgetItemHolder fromString(String string) {
-                return null;
-            }
-        });
+        toBudgetItem.setConverter(getBudgetItemStringConverter());
     }
 
     @Override

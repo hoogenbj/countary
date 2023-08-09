@@ -349,28 +349,7 @@ public class BudgetItemWorksheetController implements ControllerHelpers {
 
     private TableCell<BudgetItemHolder, BigDecimal> makePlannedCell(TableColumn<BudgetItemHolder, BigDecimal> tableColumn) {
         TextFieldTableCell<BudgetItemHolder, BigDecimal> cell = new TextFieldTableCell<>();
-        cell.setConverter(new StringConverter<>() {
-            final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT_SYMBOLS, DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-
-            public String toString(BigDecimal object) {
-                return format.format(object);
-            }
-
-            public BigDecimal fromString(String string) {
-                try {
-                    Number number = format.parse(string);
-                    if (number instanceof Long)
-                        return new BigDecimal((Long) number);
-                    else if (number instanceof Double)
-                        return BigDecimal.valueOf((Double) number);
-                    else
-                        throw new IllegalStateException("Unexpected value: " + number);
-                } catch (Throwable e) {
-                    cell.cancelEdit();
-                    throw new RuntimeException("Unexpected error editing planned value", e);
-                }
-            }
-        });
+        cell.setConverter(getDecimalStringConverter(cell));
         return cell;
     }
 
