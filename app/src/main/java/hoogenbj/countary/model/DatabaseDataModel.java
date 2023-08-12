@@ -613,7 +613,6 @@ public class DatabaseDataModel implements DataModel {
     public List<Integer> getTransactionHashesMatchingHashCodes(List<Integer> hashes) throws SQLException {
         String query = "select hash from transactions where hash in (" +
                 String.join(",", hashes.stream().map(String::valueOf).toList()) + ")";
-        System.out.println("query = " + query);
         List<Integer> found = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -893,17 +892,19 @@ public class DatabaseDataModel implements DataModel {
             Calendar postedOn = Calendar.getInstance();
             postedOn.setTime(Date.from(Instant.now()));
             for (Map.Entry<Account, BigDecimal> entry : amounts.entrySet()) {
-                String description = "Reduce balance";
-                long transactionHash = Objects.hash(postedOn, description, entry.getValue().negate(), null,
-                        BigDecimal.ZERO);
-                Transaction closingBalance = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
-                        entry.getValue().negate(), BigDecimal.ZERO, "Reduce balance", transactionHash,
-                        true, true, false));
-                createAllocation(connection, closingBalance, fromBudgetItem, entry.getValue().negate(), "Transferring to " + to.name());
-                Transaction transferAmount = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
-                        entry.getValue(), BigDecimal.ZERO, "Transfer from " + from.name(), transactionHash,
-                        true, true, false));
-                createAllocation(connection, transferAmount, toBudgetItem, entry.getValue(), "Transferring from " + from.name());
+                if (entry.getValue().compareTo(BigDecimal.ZERO) != 0) { // Only transfer non-zero balances
+                    String description = "Reduce balance";
+                    long transactionHash = Objects.hash(postedOn, description, entry.getValue().negate(), null,
+                            BigDecimal.ZERO);
+                    Transaction closingBalance = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
+                            entry.getValue().negate(), BigDecimal.ZERO, "Reduce balance", transactionHash,
+                            true, true, false));
+                    createAllocation(connection, closingBalance, fromBudgetItem, entry.getValue().negate(), "Transferring to " + to.name());
+                    Transaction transferAmount = createTransaction(connection, new Transaction(null, entry.getKey(), postedOn.getTime(), null,
+                            entry.getValue(), BigDecimal.ZERO, "Transfer from " + from.name(), transactionHash,
+                            true, true, false));
+                    createAllocation(connection, transferAmount, toBudgetItem, entry.getValue(), "Transferring from " + from.name());
+                }
             }
             connection.setAutoCommit(true);
         }

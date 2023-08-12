@@ -10,6 +10,8 @@ public class AccountBalanceHolder {
     private StringProperty accountNameProperty;
     private BigDecimalProperty amountProperty;
 
+    private BigDecimal originalAmount;
+
     private Account account;
 
     public AccountBalanceHolder() {
@@ -17,6 +19,7 @@ public class AccountBalanceHolder {
 
     public AccountBalanceHolder(Account account, BigDecimal amount) {
         this.account = account;
+        this.originalAmount = amount;
         setAccountName(account.name());
         setAmount(amount);
         amountProperty().addListener((observable, oldValue, newValue) -> {
@@ -29,6 +32,10 @@ public class AccountBalanceHolder {
 
     public Account getAccount() {
         return account;
+    }
+
+    public BigDecimal getOriginalAmount() {
+        return originalAmount;
     }
 
     public void setAmount(BigDecimal amount) {

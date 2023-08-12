@@ -138,11 +138,9 @@ public class TransferMultiAccountBudgetDlgController extends Dialog<Map<String, 
                 if (item == null || empty) {
                     super.updateItem(item, empty) ;
                 } else {
-                    BigDecimal oldValue = getItem();
-                    if (oldValue == null)
-                        super.updateItem(item, empty);
-                    else if (item.signum() == oldValue.signum() &&
-                            item.abs().compareTo(oldValue.abs()) < 1) {
+                    BigDecimal oldValue = getTableRow().getItem().getOriginalAmount();
+                    if (item.compareTo(BigDecimal.ZERO) == 0 || (item.signum() == oldValue.signum() &&
+                            item.abs().compareTo(oldValue.abs()) < 1)) {
                         super.updateItem(item, empty);
                     } else {
                         cancelEdit();

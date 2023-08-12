@@ -122,9 +122,6 @@ public class StatementConverter {
                 }
             }
             description = annotate(description, reference);
-            System.out.printf("5,%d,'%s',\"%s\",,\"%s\",%s,%s,,%n", count,
-                    txDateFormat.format(line.getPostedOn().getTime()), description.trim(), reference,
-                    decimalFormat.format(line.getAmount()), decimalFormat.format(line.getBalance()));
         }
     }
 

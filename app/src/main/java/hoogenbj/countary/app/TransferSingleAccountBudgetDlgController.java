@@ -43,6 +43,7 @@ public class TransferSingleAccountBudgetDlgController extends Dialog<Map<String,
     private List<BudgetHolder> budgets;
     private DataModel dataModel;
     private BigDecimal balance;
+    private String balanceAsText;
     private Account account;
     private List<BudgetItemHolder> budgetItems;
 
@@ -61,6 +62,7 @@ public class TransferSingleAccountBudgetDlgController extends Dialog<Map<String,
             controller.budgets = budgets;
             controller.dataModel = dataModel;
             controller.balance = balance;
+            controller.balanceAsText = ParseUtils.formatBigDecimal(balance);
             controller.account = account;
             controller.budgetItems = budgetItems;
             controller.setDialogPane(dlgPane);
@@ -83,7 +85,11 @@ public class TransferSingleAccountBudgetDlgController extends Dialog<Map<String,
     private Map<String, Object> composeResult() {
         Map<String, Object> result = new HashMap<>();
         Map<Account, BigDecimal> amountMap = new HashMap<>();
-        amountMap.put(account, ParseUtils.parseBigDecimal(amount.getText()));
+        if (amount.getText().equals(balanceAsText))
+            // Ensures exact balance amount is transferred, e.g. 123.999999999 which shows as 124.00
+            amountMap.put(account, balance);
+        else
+            amountMap.put(account, ParseUtils.parseBigDecimal(amount.getText()));
         result.put(TO_BUDGET, toBudget.getValue());
         result.put(TRANSFER_AMOUNT, amountMap);
         result.put(FROM_BUDGET_ITEM, fromBudgetItem.getValue());
@@ -116,7 +122,11 @@ public class TransferSingleAccountBudgetDlgController extends Dialog<Map<String,
         inputUtils.observeChangesInInput(amount.textProperty(), inputState, Inputs.Amount, (string) -> {
             if (string != null && !string.isEmpty()) {
                 BigDecimal newValue = ParseUtils.parseBigDecimal(amount.getText());
-                return (newValue.signum() == balance.signum() && newValue.compareTo(balance) < 1);
+                if (newValue == null)
+                    return false;
+                else
+                    return ((amount.getText().equals(balanceAsText)) ||
+                            (newValue.signum() == balance.signum() && newValue.compareTo(balance) < 1));
             } else
                 return false;
         });
