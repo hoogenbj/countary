@@ -34,7 +34,7 @@ public class BankZeroStatementParser implements StatementParser {
     @Override
     public ParsedStatement parse(URI uri) throws IOException, StatementParseException {
         Reader reader = new FileReader(new File(uri));
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         final int[] lineCount = {0};
         final int[] fieldCount = {0};
         DsvParser<ParsedStatement.Line> parser = new DsvParser<>(reader, fields -> {
@@ -44,12 +44,14 @@ public class BankZeroStatementParser implements StatementParser {
             }
             ParsedStatement.Line line = new ParsedStatement.Line();
             Calendar postingDate = Calendar.getInstance();
-            String candidate = null;
+            String complete=null;
             try {
-                candidate = fields[0];
-                postingDate.setTime(dateFormat.parse(candidate));
+                String date = fields[0];
+                String time = fields[2];
+                complete = date + " " + time;
+                postingDate.setTime(dateFormat.parse(complete));
             } catch (ParseException e) {
-                throw new RuntimeException("Unable to parse date from: " + candidate, e);
+                throw new RuntimeException("Unable to parse date from: " + complete, e);
             }
             String description = fields[3] + "," + fields[4] + "," + fields[5];
             BigDecimal amount = ParseUtils.parseBigDecimal(stripQuotes(fields[7]));

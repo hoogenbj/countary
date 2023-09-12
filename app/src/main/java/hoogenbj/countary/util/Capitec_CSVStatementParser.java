@@ -47,12 +47,17 @@ public class Capitec_CSVStatementParser implements StatementParser {
                 return null;
             }
             ParsedStatement.Line line = new ParsedStatement.Line();
-            fieldCount[0] += 2;
+            fieldCount[0] += 1;
+            int sequenceNumber = Integer.parseInt(fields[0]);
+            fieldCount[0] += 1;
             if (accountNumber[0] == null) {
                 accountNumber[0] = fields[1];
             }
             fieldCount[0] += 1;
             Calendar postingDate = GregorianCalendar.from(dateFormat.parse(fields[2], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
+            // Use the sequence number to adjust the date slightly in order to preserve the order of the transactions so
+            // the balance that displays matches up.
+            postingDate.add(Calendar.SECOND, sequenceNumber);
             fieldCount[0] += 1;
             Calendar transactionDate = GregorianCalendar.from(dateFormat.parse(fields[3], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
             fieldCount[0] += 1;
