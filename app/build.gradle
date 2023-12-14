@@ -18,7 +18,7 @@ javafx {
 
 dependencies {
     implementation(group: 'za.co.clock24', name: 'DsvParser', version: '2.0.1')
-    implementation(group: 'org.xerial', name: 'sqlite-jdbc', version: '3.36.0.3')
+    implementation(group: 'org.xerial', name: 'sqlite-jdbc', version: '3.42.0.0')
     implementation(group: 'com.google.inject', name: 'guice', version: '5.1.0')
     implementation(group: 'org.controlsfx', name: 'controlsfx', version: '11.1.2') { transitive = false }
     implementation(group: 'org.apache.commons', name: 'commons-text', version: '1.10.0')

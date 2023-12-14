@@ -27,11 +27,10 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static hoogenbj.countary.util.ParseUtils.stripQuotes;
+import static hoogenbj.countary.util.ParseUtils.stripQuotesAndWhiteSpace;
 
 public class Capitec_CSVStatementParser implements StatementParser {
     @Override
@@ -63,16 +62,16 @@ public class Capitec_CSVStatementParser implements StatementParser {
             fieldCount[0] += 1;
             String description = fields[4];
             fieldCount[0] += 4;
-            BigDecimal debitAmount = ParseUtils.parseBigDecimal(stripQuotes(fields[8]));
+            BigDecimal debitAmount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[8]));
             fieldCount[0] += 1;
-            BigDecimal creditAmount = ParseUtils.parseBigDecimal(stripQuotes(fields[9]));
+            BigDecimal creditAmount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[9]));
             BigDecimal amount;
             if (debitAmount != null)
                 amount = debitAmount.negate();
             else
                 amount = creditAmount;
             fieldCount[0] += 1;
-            BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotes(fields[10]));
+            BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[10]));
             line.setPostedOn(postingDate);
             line.setTransactionDate(transactionDate);
             line.setDescription(description);

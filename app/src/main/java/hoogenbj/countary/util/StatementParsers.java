@@ -18,7 +18,8 @@ package hoogenbj.countary.util;
 
 public enum StatementParsers {
     RMBPBCSV("CSV (RMB Private Bank or FNB)", RMBPB_CSVStatementParser.class, "*.csv"),
-    BZCSV("CSV (Bank Zero)", BankZeroStatementParser.class, "*.csv"),
+    BZCSV("CSV (Bank Zero monthly)", BankZeroStatementParser.class, "*.csv"),
+    BZHCSV("CSV (Bank Zero history)", BankZeroStatementHistoryParser.class, "*.csv"),
     OFX1("OFX v1.x", OFXStatementParser.class, "*.ofx"),
     OFX2("OFX v2.x", OFX2StatementParser.class, "*.ofx"),
     CAPITECCSV("CSV (Capitec)", Capitec_CSVStatementParser.class, "*.csv");

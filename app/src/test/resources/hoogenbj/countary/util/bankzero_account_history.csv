@@ -1,0 +1,4 @@
+Transaction Id,Date,Day,Time,Type,Description 1,Description 2,Fee,Amount,Balance,Has Attachments
+1 ,2023-10-09,Mon,18:17,Payment In,Firstrand bank,SINGLE FACILITY,0.00, 1848.55,6054.97,No
+2 ,2023-10-01,Sun,14:03,Card Purchase,"Apple.com/bill, Ireland","44.99 ZAR (@ rate R1.00), Online transaction",0.00, -44.99,3108.42,No
+3 ,2023-10-01,Sun,03:51,Card Purchase,"Netflix.com, Netherlands","159.00 ZAR (@ rate R1.00), Online transaction",0.00, -159.00,3153.41,No

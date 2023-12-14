@@ -25,7 +25,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static hoogenbj.countary.util.ParseUtils.stripQuotes;
+import static hoogenbj.countary.util.ParseUtils.stripQuotesAndWhiteSpace;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StatementParserTest {
@@ -78,7 +78,7 @@ public class StatementParserTest {
     @Test
     public void testHash() throws Exception {
         String[] fields = List.of("3", "1234567890", "08/04/2023", "05/04/2023", "Cx Roodepoort (Card 1234)",
-                "Cx Roodepoort         Roodepoort   ZA", "Food", "Groceries", "63.97", "", "20151.53")
+                        "Cx Roodepoort         Roodepoort   ZA", "Food", "Groceries", "63.97", "", "20151.53")
                 .toArray(new String[0]);
         ParsedStatement.Line line1 = parseLine(fields);
         Thread.sleep(2000);
@@ -101,16 +101,16 @@ public class StatementParserTest {
         fieldCount[0] += 1;
         String description = fields[4];
         fieldCount[0] += 4;
-        BigDecimal debitAmount = ParseUtils.parseBigDecimal(stripQuotes(fields[8]));
+        BigDecimal debitAmount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[8]));
         fieldCount[0] += 1;
-        BigDecimal creditAmount = ParseUtils.parseBigDecimal(stripQuotes(fields[9]));
+        BigDecimal creditAmount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[9]));
         BigDecimal amount;
         if (debitAmount != null)
             amount = debitAmount.negate();
         else
             amount = creditAmount;
         fieldCount[0] += 1;
-        BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotes(fields[10]));
+        BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[10]));
         line.setPostedOn(postingDate);
         line.setTransactionDate(transactionDate);
         line.setDescription(description);
@@ -161,6 +161,33 @@ public class StatementParserTest {
                         line.getDescription());
                 assertEquals(ParseUtils.parseBigDecimal("-1,189.00"), line.getAmount());
                 assertEquals(new BigDecimal("141.00"), line.getBalance());
+            } else {
+                fail("Should not get here");
+            }
+        }
+    }
+
+    @Test
+    public void parseBankZeroHistoryTest() throws Exception {
+        ParsedStatement parsedStatement = new BankZeroStatementHistoryParser().parse(this.getClass()
+                .getResource("bankzero_account_history.csv").toURI());
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        for (ParsedStatement.Line line : parsedStatement.getLines()) {
+            System.out.println(line);
+            if (dateFormat.parse("09/10/2023 18:17").equals(line.getPostedOn().getTime())) {
+                assertEquals("Payment In,Firstrand bank,SINGLE FACILITY", line.getDescription());
+                assertEquals(new BigDecimal("1848.55"), line.getAmount());
+                assertEquals(new BigDecimal("6054.97"), line.getBalance());
+            } else if (dateFormat.parse("01/10/2023 14:03").equals(line.getPostedOn().getTime())) {
+                assertEquals("Card Purchase,Apple.com/bill, Ireland,44.99 ZAR (@ rate R1.00), Online transaction",
+                        line.getDescription());
+                assertEquals(new BigDecimal("-44.99"), line.getAmount());
+                assertEquals(ParseUtils.parseBigDecimal("3108.42"), line.getBalance());
+            } else if (dateFormat.parse("01/10/2023 03:51").equals(line.getPostedOn().getTime())) {
+                assertEquals("Card Purchase,Netflix.com, Netherlands,159.00 ZAR (@ rate R1.00), Online transaction",
+                        line.getDescription());
+                assertEquals(ParseUtils.parseBigDecimal("-159.00"), line.getAmount());
+                assertEquals(new BigDecimal("3153.41"), line.getBalance());
             } else {
                 fail("Should not get here");
             }
@@ -247,4 +274,66 @@ public class StatementParserTest {
         ofx2Descriptions.stream().filter(line -> !ofx1Descriptions.contains(line)).forEach(System.out::println);
         assertTrue(ofx1Descriptions.containsAll(ofx2Descriptions));
     }
+
+    @Test
+    public void detectDuplicatesTest() throws Exception {
+        String linea1 = "Netflix.com, Netherlands";
+        String linea2 = "159.00 ZAR (@ rate R1.00), Online transaction";
+        String lineb1 = "Netflix com Netherlands";
+        String lineb2 = "159 00 ZAR  rate R1 00  Online transaction";
+        linea2 = strip(linea2);
+        linea2 = collapseSpaces(linea2);
+        lineb2 = collapseSpaces(lineb2);
+        System.out.println(linea2);
+        System.out.println(lineb2);
+        assertEquals(linea2, lineb2);
+        linea1 = strip(linea1);
+        linea2 = collapseSpaces(linea1);
+        lineb2 = collapseSpaces(lineb1);
+        System.out.println(linea2);
+        System.out.println(lineb2);
+        assertEquals(linea2, lineb2);
+    }
+
+    private String strip(String fromThis) {
+        char[] chars = new char[fromThis.length()];
+        fromThis.getChars(0, fromThis.length(), chars, 0);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < chars.length; i++) {
+            switch (chars[i]) {
+                case ' ':
+                    if (i < chars.length - 1 && chars[i + 1] == ' ') {
+                        builder.append(' ');
+                        i++;
+                    } else builder.append(' ');
+                    break;
+                case '.': builder.append(' ');
+                    break;
+                case '(':
+                case ')':
+                case '@':
+                case ',':
+                    break;
+                default:
+                    builder.append(chars[i]);
+            }
+        }
+        return builder.toString();
+    }
+
+    private String collapseSpaces(String fromThis) {
+        char[] chars = new char[fromThis.length()];
+        fromThis.getChars(0, fromThis.length(), chars, 0);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == ' ') {
+                if (i < chars.length - 1 && chars[i + 1] == ' ') {
+                    builder.append(' ');
+                    i++;
+                } else builder.append(' ');
+            } else builder.append(chars[i]);
+        }
+        return builder.toString();
+    }
+
 }

@@ -421,7 +421,7 @@ public class TransactionController implements ControllerHelpers {
                         } catch (SQLException e) {
                             throw new RuntimeException("Exception while looking for duplicate transactions", e);
                         }
-                        if (noDups.size() == 0)
+                        if (noDups.isEmpty())
                             return;
                         Account account = accounts.getValue();
                         try {

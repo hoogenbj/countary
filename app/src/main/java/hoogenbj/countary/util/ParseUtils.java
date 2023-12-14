@@ -21,8 +21,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class ParseUtils {
@@ -41,8 +39,8 @@ public class ParseUtils {
                 Double.valueOf(blue).intValue());
     }
 
-    public static String stripQuotes(String field) {
-        String[] parts = field.split("'|\"");
+    public static String stripQuotesAndWhiteSpace(String field) {
+        String[] parts = field.split("'|\"|\\s");
         return String.join("", parts);
     }
 

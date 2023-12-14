@@ -30,7 +30,7 @@ import java.util.Calendar;
 
 import static hoogenbj.countary.util.ParseUtils.stripQuotesAndWhiteSpace;
 
-public class BankZeroStatementParser implements StatementParser {
+public class BankZeroStatementHistoryParser implements StatementParser {
     @Override
     public ParsedStatement parse(URI uri) throws IOException, StatementParseException {
         Reader reader = new FileReader(new File(uri));
@@ -46,16 +46,16 @@ public class BankZeroStatementParser implements StatementParser {
             Calendar postingDate = Calendar.getInstance();
             String complete=null;
             try {
-                String date = fields[0];
-                String time = fields[2];
+                String date = fields[1];
+                String time = fields[3];
                 complete = date + " " + time;
                 postingDate.setTime(dateFormat.parse(complete));
             } catch (ParseException e) {
                 throw new RuntimeException("Unable to parse date from: " + complete, e);
             }
-            String description = fields[3] + "," + fields[4] + "," + fields[5];
-            BigDecimal amount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[7]));
-            BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[8]));
+            String description = fields[4] + "," + fields[5] + "," + fields[6];
+            BigDecimal amount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[8]));
+            BigDecimal balance = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[9]));
             line.setPostedOn(postingDate);
             line.setDescription(description);
             line.setBalance(balance);
