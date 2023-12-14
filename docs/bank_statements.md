@@ -9,18 +9,22 @@ The current formats supported by Countary are:
 2. OFX 2.x (Tested with Capitec Bank statements)**
 3. CSV (RMB Private Bank/First National Bank)
 4. CSV (Bank Zero)*
-5. CSV (Capitec Bank)
+5. CSV (Bank Zero Transaction History)***
+6. CSV (Capitec Bank)
 
 *To import the Bank Zero statement, first convert the monthly Excel sheet mailed to you 
 by the bank to .csv format.
 **Unfortunately the *OFX 2.x* statement for Capitec is flawed: the balance is wrong. At least
-this was the case at the time of testing. Better use the CSV version.
+this was the case at the time of testing. Better use the CSV version.  
+***The transaction history is available from the app. When you click the balance on an account 
+tile to view your account activity the icon for the transaction history appears at top right.
+It looks like a spreadsheet with an "X" superimposed.
+
 
 The banks mentioned are banks in South Africa and the CSV formats will likely not work for
 any other bank. However, as long as your bank supports exporting of banks statements in 
 either OFX 1.x or OFX 2.x formats, you should be able to use Countary! If you experience
 any issues with importing of bank statements, follow the guidance on [troubleshooting](trouble.markdown).
-
 
 Ensure that exporting is done regularly enough that there is sufficient overlap between
 statements so that no transactions are skipped. Countary will detect duplicate transactions
@@ -42,5 +46,11 @@ budgets, go to [**Budgets**](budgets.markdown).
 
 Countary will remember the format you selected the last time when you are ready to import
 your next statement.
+
+If you have more than one statement format to choose from be careful not to switch between 
+the two without good reason. If you do, note that duplicate transactions may appear. The
+algorithm for detecting duplicates only work as long as you stick to one format. If you suspect
+duplicates, click the **Show completed** checkbox and delete the duplicates by clicking
+on the trash can icon.
 
 Back to [User Guide](user_guide.markdown)
