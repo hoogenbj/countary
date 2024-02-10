@@ -153,7 +153,7 @@ public class DatabaseDataModel implements DataModel {
 
     @Override
     public BigDecimal getActualForBudget(Budget budget) throws SQLException {
-        String query = "select sum(a.amount) from budget_item bf join allocation a on a.budgetItemId=bf.id where budgetId=?";
+        String query = "select coalesce(sum(a.amount),0) from budget_item bf join allocation a on a.budgetItemId=bf.id where budgetId=?";
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, budget.id());
