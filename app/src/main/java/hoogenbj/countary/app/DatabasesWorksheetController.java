@@ -62,12 +62,12 @@ public class DatabasesWorksheetController implements ControllerHelpers {
 
     @FXML
     private void onBackup(ActionEvent actionEvent) {
-        DbUtils.backupCurrentDatabase(model, userInterface);
+        DbUtils.backupCurrentDatabase(model, userInterface, settings);
     }
 
     @FXML
     private void onRestore(ActionEvent actionEvent) {
-        DbUtils.restoreFromDatabase(model, userInterface);
+        DbUtils.restoreFromDatabase(model, userInterface, settings);
     }
 
     @FXML

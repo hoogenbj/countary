@@ -62,9 +62,12 @@ public class UserInterfaceImpl implements UserInterface {
     }
 
     @Override
-    public File restoreDatabaseFromFile() {
+    public File restoreDatabaseFromFile(Settings settings) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Restore database from file:");
+        String backupPath = settings.getBackupPath();
+        if (backupPath != null)
+            fileChooser.setInitialDirectory(new File(backupPath));
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Database Backup Files", "*.backup"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
@@ -72,9 +75,12 @@ public class UserInterfaceImpl implements UserInterface {
     }
 
     @Override
-    public File backupDatabaseToFile() {
+    public File backupDatabaseToFile(Settings settings) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Backup database to file:");
+        String backupPath = settings.getBackupPath();
+        if (backupPath != null)
+            fileChooser.setInitialDirectory(new File(backupPath));
         LocalDateTime now = LocalDateTime.now();
         String timestamp = new DateTimeFormatterBuilder()
                 .appendPattern("yyyyMMddHHmmss")

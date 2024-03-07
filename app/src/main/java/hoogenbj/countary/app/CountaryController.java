@@ -25,12 +25,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CountaryController implements ControllerHelpers {
 
@@ -85,16 +85,7 @@ public class CountaryController implements ControllerHelpers {
     public void initialize() {
     }
 
-    public void show(Injector injector, Stage stage) {
-        UserInterface userInterface = injector.getInstance(UserInterface.class);
-        if (dbInitialised(injector)) {
-            loadController(injector, stage);
-        } else {
-            userInterface.showWarning("Unfortunately it is not possible to continue without a database");
-        }
-    }
-
-    private void loadController(Injector injector, Stage stage) {
+    public void show(Injector injector, Stage stage) throws SQLException {
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
         loader.setLocation(this.getClass().getResource("Countary.fxml"));
         Parent root;
@@ -116,32 +107,6 @@ public class CountaryController implements ControllerHelpers {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String getOrSetDatabaseUrl(DataModel model, Settings settings, UserInterface userInterface) {
-        String dbUrl = settings.getDatabaseUrl();
-        if (!DbUtils.validUrl(dbUrl)) {
-            String choice = userInterface.chooseDB();
-            switch (choice) {
-                case "Open Database" -> DbUtils.openDatabase(settings, userInterface);
-                case "Open Demo Database" -> DbUtils.openDemoDatabase(settings, userInterface, model);
-                case "Create New Database" -> DbUtils.createDatabase(settings, userInterface, model);
-                default -> {
-                }
-            }
-            return settings.getDatabaseUrl();
-        } else {
-            settings.setDatabasePath(dbUrl.substring(dbUrl.lastIndexOf(":") + 1));
-        }
-        return dbUrl;
-    }
-
-
-    private boolean dbInitialised(Injector injector) {
-        Settings settings = injector.getInstance(Settings.class);
-        DataModel model = injector.getInstance(DataModel.class);
-        UserInterface userInterface = injector.getInstance(UserInterface.class);
-        return getOrSetDatabaseUrl(model, settings, userInterface) != null;
     }
 
     private Node getTransactions() {

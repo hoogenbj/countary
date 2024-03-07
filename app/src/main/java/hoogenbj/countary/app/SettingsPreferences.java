@@ -22,6 +22,7 @@ import java.util.prefs.Preferences;
 public class SettingsPreferences implements Settings {
     private static final String KEY_PREFIX = "/countary";
     private static final String DB_URL_KEY = KEY_PREFIX + "/database/url";
+    private static final String BACKUP_PATH_KEY = KEY_PREFIX + "/backup/path";
     private static final String CURRENT_ACCOUNT_KEY = KEY_PREFIX + "/current/account/key";
     private static final String CURRENT_ACCOUNT_VALUE = KEY_PREFIX + "/current/account/value";
     private static final String CUSTOM_COLORS_KEY = KEY_PREFIX + "/custom_colors";
@@ -34,6 +35,8 @@ public class SettingsPreferences implements Settings {
 
     private String databaseUrl;
 
+    private String backupPath;
+
     public SettingsPreferences(Preferences preferences) {
         this.preferences = preferences;
     }
@@ -43,6 +46,19 @@ public class SettingsPreferences implements Settings {
         if (databaseUrl == null)
             this.databaseUrl = preferences.get(DB_URL_KEY, null);
         return databaseUrl;
+    }
+
+    @Override
+    public String getBackupPath() {
+        if (backupPath == null)
+            this.backupPath = preferences.get(BACKUP_PATH_KEY, null);
+        return backupPath;
+    }
+
+    @Override
+    public void setBackupPath(String backupPath) {
+        preferences.put(BACKUP_PATH_KEY, backupPath);
+        this.backupPath = backupPath;
     }
 
     @Override

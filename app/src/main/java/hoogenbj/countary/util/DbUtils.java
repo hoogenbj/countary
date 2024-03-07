@@ -135,28 +135,33 @@ public class DbUtils {
         return false;
     }
 
-    public static void backupCurrentDatabase(DataModel model, UserInterface userInterface) {
-        File file = userInterface.backupDatabaseToFile();
+    public static String backupCurrentDatabase(DataModel model, UserInterface userInterface, Settings settings) {
+        File file = userInterface.backupDatabaseToFile(settings);
         if (file != null) {
             try {
                 model.backup(file.getAbsolutePath());
                 userInterface.showNotification(String.format("Backup to %s completed.", file.getAbsolutePath()));
+                settings.setBackupPath(file.getParentFile().getAbsolutePath());
+                return file.getAbsolutePath();
             } catch (SQLException e) {
                 userInterface.showError("Unable to backup database because of " + e);
             }
         }
+        return null;
     }
 
-    public static void restoreFromDatabase(DataModel model, UserInterface userInterface) {
-        File file = userInterface.restoreDatabaseFromFile();
+    public static String restoreFromDatabase(DataModel model, UserInterface userInterface, Settings settings) {
+        File file = userInterface.restoreDatabaseFromFile(settings);
         if (file != null) {
             try {
                 model.restore(file.getAbsolutePath());
                 userInterface.showNotification(String.format("Restore from %s completed.", file.getAbsolutePath()));
+                return file.getAbsolutePath();
             } catch (SQLException e) {
                 userInterface.showError("Unable to restore database because of " + e);
             }
         }
+        return null;
     }
 
     public static void handleException(UserInterface userInterface, String record, SQLException e) {

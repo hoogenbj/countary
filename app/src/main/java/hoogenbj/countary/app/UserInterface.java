@@ -25,13 +25,13 @@ public interface UserInterface {
 
     File newDatabaseFile();
 
-    File backupDatabaseToFile();
+    File backupDatabaseToFile(Settings settings);
 
     String openBankStatementFile(String ext);
 
     void showNotification(String notification);
 
-    File restoreDatabaseFromFile();
+    File restoreDatabaseFromFile(Settings settings);
 
     void showError(String content);
 

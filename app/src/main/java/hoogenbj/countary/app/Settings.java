@@ -38,5 +38,9 @@ public interface Settings {
 
     String getCustomColors();
 
+    String getBackupPath();
+
+    void setBackupPath(String backupPath);
+
     void setAccountStatement(int hashcode, StatementParsers parser);
 }

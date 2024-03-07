@@ -24,7 +24,7 @@ create unique index tag_name_uindex on tag (name);
 CREATE TRIGGER tag_ad AFTER DELETE ON tag BEGIN INSERT INTO tag_idx(tag_idx, rowid, name) VALUES ('delete', old.id, old.name); END; 
 CREATE TRIGGER tag_ai AFTER INSERT ON tag BEGIN INSERT INTO tag_idx(rowid, name) VALUES (new.id, new.name); END; 
 CREATE TRIGGER tag_au AFTER UPDATE ON tag BEGIN INSERT INTO tag_idx(tag_idx, rowid, name) VALUES ('delete', old.id, old.name); INSERT INTO tag_idx(rowid, name) VALUES (new.id, new.name); END; 
-create table transactions ( id INTEGER primary key, accountId INTEGER references account on delete cascade, txdate INTEGER, amount NUMERIC, balance NUMERIC, description TEXT, hash TEXT, allocated integer default 0, posting_date integer not null, manual integer default 0 ); 
+create table transactions ( id INTEGER primary key autoincrement, accountId INTEGER references account on delete cascade, txdate INTEGER, amount NUMERIC, balance NUMERIC, description TEXT, hash TEXT, allocated integer default 0, posting_date integer not null, manual integer default 0 );
 create table allocation ( id integer not null constraint allocation_pk primary key autoincrement, transactionId integer not null constraint allocation_transactions_id_fk references transactions, budgetItemId integer not null constraint allocation_budget_item_id_fk references budget_item, amount numeric not null, note TEXT ); 
 create unique index allocation_id_uindex on allocation (id); 
 create unique index allocation_transactionId_budgetItemId_uindex on allocation (transactionId, budgetItemId); 

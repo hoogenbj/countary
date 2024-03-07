@@ -54,9 +54,6 @@ public class Capitec_CSVStatementParser implements StatementParser {
             }
             fieldCount[0] += 1;
             Calendar postingDate = GregorianCalendar.from(dateFormat.parse(fields[2], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
-            // Use the sequence number to adjust the date slightly in order to preserve the order of the transactions so
-            // the balance that displays matches up.
-            postingDate.add(Calendar.SECOND, sequenceNumber);
             fieldCount[0] += 1;
             Calendar transactionDate = GregorianCalendar.from(dateFormat.parse(fields[3], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
             fieldCount[0] += 1;

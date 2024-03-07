@@ -189,9 +189,13 @@ public interface DataModel {
 
     void executeStatements(List<String> statements) throws SQLException;
 
+    void executeStatements(List<String> statements, boolean enforceForeignKeys) throws SQLException;
+
     Set<Long> searchAccounts(String criteria) throws SQLException;
 
     Account updateAccountTagColor(Account account, String color) throws SQLException;
 
     void rebuildVirtualTables(UserInterface userInterface) throws SQLException;
+
+    int getDbVersion() throws SQLException;
 }

@@ -64,6 +64,17 @@ public class DatabaseDataModel implements DataModel {
 
     @Override
     public void executeStatements(List<String> statements) throws SQLException {
+        executeStatements(statements, connectionProperties);
+    }
+
+    @Override
+    public void executeStatements(List<String> statements, boolean enforceForeignKeys) throws SQLException {
+        SQLiteConfig config = new SQLiteConfig();
+        config.enforceForeignKeys(enforceForeignKeys);
+        executeStatements(statements, config.toProperties());
+    }
+
+    private void executeStatements(List<String> statements, Properties connectionProperties) throws SQLException {
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties)) {
             connection.setAutoCommit(false);
             executeStatements(connection, statements);
@@ -210,6 +221,20 @@ public class DatabaseDataModel implements DataModel {
     }
 
     @Override
+    public int getDbVersion() throws SQLException {
+        String query = "select version from db_version where id = 1";
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 1;
+    }
+
+    @Override
     public boolean tableExists(String tableName) throws SQLException {
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties)) {
             DatabaseMetaData md = connection.getMetaData();
@@ -313,10 +338,10 @@ public class DatabaseDataModel implements DataModel {
         String query = null;
         if (showCompletedAlso)
             query = String.format("select id, posting_date, txdate, amount, balance, description, hash, allocated, manual, %s " +
-                    "from transactions t where accountId = ? limit %d", subQuery, MAX_TRANSACTION_ROWS);
+                    "from transactions t where accountId = ? order by id limit %d", subQuery, MAX_TRANSACTION_ROWS);
         else
             query = String.format("select id, posting_date, txdate, amount, balance, description, hash, allocated, manual, %s " +
-                    "from transactions t where accountId = ? and allocated = false limit %d", subQuery, MAX_TRANSACTION_ROWS);
+                    "from transactions t where accountId = ? and allocated = false order by id limit %d", subQuery, MAX_TRANSACTION_ROWS);
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, account.id());
