@@ -22,12 +22,14 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
 
 public class BudgetSummaryController {
 
@@ -94,15 +96,21 @@ public class BudgetSummaryController {
             CategoryController categoryController = new CategoryController(model, budget.kind(),
                     categoryModel);
             Node categoryControl = categoryController.createNode();
-            HBox.setHgrow(categoryControl, Priority.ALWAYS);
+            ScrollPane categoryScrollPane = new ScrollPane(categoryControl);
+            categoryScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            categoryScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            HBox.setHgrow(categoryScrollPane, Priority.ALWAYS);
             if (profile.isEmpty()) {
-                Platform.runLater(() -> container.getChildren().add(categoryControl));
+                Platform.runLater(() -> container.getChildren().add(categoryScrollPane));
             } else {
                 Platform.runLater(() -> {
-                            container.getChildren().addAll(profilesControl, categoryControl);
-                            categoryControl.prefWidth(container.getWidth() - profilesControl.getWidth());
-                        }
-                );
+                    ScrollPane profilesScrollPane = new ScrollPane(profilesControl);
+                    profilesScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                    profilesScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+                    HBox.setHgrow(profilesScrollPane, Priority.NEVER);
+                    container.getChildren().addAll(profilesScrollPane, categoryScrollPane);
+                    categoryControl.prefWidth(container.getWidth() - profilesControl.getWidth());
+                });
             }
         } catch (SQLException e) {
             throw new RuntimeException("Unable to load budget tag profiles", e);

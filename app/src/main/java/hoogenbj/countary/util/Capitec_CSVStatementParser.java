@@ -58,6 +58,9 @@ public class Capitec_CSVStatementParser implements StatementParser {
             Calendar transactionDate = GregorianCalendar.from(dateFormat.parse(fields[3], LocalDate::from).atStartOfDay(ZoneId.systemDefault()));
             fieldCount[0] += 1;
             String description = fields[4];
+            if (description == null || description.isEmpty()) {
+                description = fields[5];
+            }
             fieldCount[0] += 4;
             BigDecimal debitAmount = ParseUtils.parseBigDecimal(stripQuotesAndWhiteSpace(fields[8]));
             fieldCount[0] += 1;

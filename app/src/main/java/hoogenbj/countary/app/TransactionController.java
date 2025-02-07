@@ -599,7 +599,7 @@ public class TransactionController implements ControllerHelpers {
                     });
                     onAllocation.accept(allocation.transaction().account(), budgetItemSelected.getBudgetItem());
                 } catch (SQLException e) {
-                    DbUtils.handleException(userInterface, "transaction", e);
+                    DbUtils.handleException(userInterface, "allocation", e);
                 }
             });
         } else {

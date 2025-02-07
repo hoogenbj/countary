@@ -38,7 +38,6 @@ public class StatementParserTest {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Calendar expectedDate = GregorianCalendar.from(dateFormat.parse("18/04/2023", LocalDate::from)
                 .atStartOfDay(ZoneId.systemDefault()));
-        expectedDate.add(Calendar.SECOND, 23);
         int checked = 0;
         assertEquals(32, parsedStatement.getLines().size());
         for (ParsedStatement.Line line :
@@ -64,14 +63,10 @@ public class StatementParserTest {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Calendar expectedDate = GregorianCalendar.from(dateFormat.parse("01/05/2023", LocalDate::from)
                 .atStartOfDay(ZoneId.systemDefault()));
-        expectedDate.add(Calendar.SECOND, 36);
         System.out.println(lines.get(27).getPostedOn().getTime());
         assertEquals(expectedDate.getTime(), lines.get(27).getPostedOn().getTime());
-        expectedDate.add(Calendar.SECOND, 1);
         assertEquals(expectedDate.getTime(), lines.get(28).getPostedOn().getTime());
-        expectedDate.add(Calendar.SECOND, 1);
         assertEquals(expectedDate.getTime(), lines.get(29).getPostedOn().getTime());
-        expectedDate.add(Calendar.SECOND, 1);
         assertEquals(expectedDate.getTime(), lines.get(30).getPostedOn().getTime());
     }
 

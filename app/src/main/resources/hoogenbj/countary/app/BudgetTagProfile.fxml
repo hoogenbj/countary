@@ -21,8 +21,12 @@
 
 
 <?import hoogenbj.countary.app.TagToggle?>
-<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18">
-    <TagToggle prefHeight="25.0" prefWidth="150.0" fx:id="tagToggle"/>
-    <TextField alignment="CENTER_RIGHT" editable="false" prefHeight="25.0" prefWidth="150.0" fx:id="totalPlanned"/>
-    <TextField alignment="CENTER_RIGHT" editable="false" prefHeight="25.0" prefWidth="150.0" fx:id="totalActual"/>
+<?import javafx.geometry.Insets?>
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" >
+    <padding>
+        <Insets right="10.0" />
+    </padding>
+    <TagToggle prefHeight="25.0" prefWidth="170.0" fx:id="tagToggle"/>
+    <TextField alignment="CENTER_RIGHT" editable="false" prefHeight="25.0" prefWidth="170.0" fx:id="totalPlanned"/>
+    <TextField alignment="CENTER_RIGHT" editable="false" prefHeight="25.0" prefWidth="170.0" fx:id="totalActual"/>
 </fx:root>

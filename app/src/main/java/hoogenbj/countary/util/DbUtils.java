@@ -121,9 +121,6 @@ public class DbUtils {
                 model.executeStatements(statements);
                 userInterface.showNotification(String.format("Creation of database %s completed.", file.getAbsolutePath()));
                 return true;
-            } catch (IOException e) {
-                userInterface.showError(String.format("Unable to initialise database at %s due to %s", filePath, e));
-                restoreDatabaseSettings(settings);
             } catch (SQLException e) {
                 userInterface.showError(String.format("Unable to execute statements to initialise database at %s due to %s", filePath, e));
                 restoreDatabaseSettings(settings);

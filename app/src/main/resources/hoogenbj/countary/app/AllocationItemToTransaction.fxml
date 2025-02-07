@@ -24,8 +24,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
-<fx:root stylesheets="@skin.css" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/18"
-         xmlns:fx="http://javafx.com/fxml/1">
+<fx:root stylesheets="@skin.css" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <BorderPane>
         <center>
             <TableView fx:id="tableView">
@@ -49,22 +48,22 @@
             <HBox spacing="10.0" BorderPane.alignment="CENTER">
                 <Text fx:id="budget" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                     <HBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                     </HBox.margin>
                 </Text>
                 <Text fx:id="item" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                     <HBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                     </HBox.margin>
                 </Text>
                 <Text fx:id="amount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                     <HBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                     </HBox.margin>
                 </Text>
                 <Text fx:id="planned" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                     <HBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                     </HBox.margin>
                 </Text>
             </HBox>

@@ -145,6 +145,7 @@ public class CategoryController {
             } else {
                 roots.forEach(category -> root.getChildren().add(makeChild(category)));
             }
+            treeTableView.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
             treeTableView.setRoot(root);
         } catch (SQLException e) {
             throw new RuntimeException("Unable to retrieve category roots", e);

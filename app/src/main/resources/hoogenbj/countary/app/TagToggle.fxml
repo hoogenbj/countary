@@ -25,7 +25,7 @@
 
 <fx:root layoutX="1.0" layoutY="1.0" type="javafx.scene.layout.StackPane"
          xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-    <HBox alignment="CENTER" spacing="4.0" styleClass="my-tag-container">
+    <HBox alignment="CENTER" spacing="4.0" styleClass="my-tag-container" >
         <ToggleButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" selected="true"
                       styleClass="my-tag-toggle" stylesheets="@TagToggle.css" fx:id="toggleButton">
         </ToggleButton>

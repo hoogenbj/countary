@@ -16,56 +16,46 @@
   ~    limitations under the License.
   -->
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
     <BorderPane>
         <center>
             <TableView fx:id="tableView">
                 <columns>
-                    <TableColumn fx:id="budgetColumn" editable="false" prefWidth="150.0"
-                                 style="-fx-alignment: center-left;" text="Budget"/>
-                    <TableColumn fx:id="itemColumn" editable="false" prefWidth="150.0"
-                                 style="-fx-alignment: center-left;" text="Item"/>
-                    <TableColumn fx:id="noteColumn" editable="false" prefWidth="150.0"
-                                 style="-fx-alignment: center-left;" text="Note"/>
-                    <TableColumn fx:id="itemAmountColumn" editable="false" prefWidth="100.0"
-                                 style="-fx-alignment: center-right;" text="Amount"/>
-                    <TableColumn fx:id="allocationDeleteColumn" editable="false" prefWidth="50.0"
-                                 style="-fx-alignment: center;" text="Delete"/>
+                    <TableColumn fx:id="budgetColumn" editable="false" prefWidth="139.0" style="-fx-alignment: center-left;" text="Budget" />
+                    <TableColumn fx:id="itemColumn" editable="false" prefWidth="139.0" style="-fx-alignment: center-left;" text="Item" />
+                    <TableColumn fx:id="noteColumn" editable="false" prefWidth="120.0" style="-fx-alignment: center-left;" text="Note" />
+                    <TableColumn fx:id="itemAmountColumn" editable="false" prefWidth="100.0" style="-fx-alignment: center-right;" text="Amount" />
+                    <TableColumn fx:id="allocationDeleteColumn" editable="false" prefWidth="50.0" style="-fx-alignment: center;" text="Delete" />
                 </columns>
             </TableView>
         </center>
         <top>
             <VBox BorderPane.alignment="CENTER">
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Transaction:"/>
+                    <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Transaction:" />
                     <Text fx:id="transaction" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                         <HBox.margin>
-                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                         </HBox.margin>
                     </Text>
                     <Text fx:id="amount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                         <HBox.margin>
-                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                         </HBox.margin>
                     </Text>
-                    <SVGPath fx:id="accountTag" content="M40,60 C42,48 44,30 25,32"/>
+                    <SVGPath fx:id="accountTag" content="M40,60 C42,48 44,30 25,32" />
                 </HBox>
                 <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
-                    <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Balance:"/>
+                    <Label alignment="CENTER_RIGHT" prefWidth="85.0" text="Balance:" />
                     <Text fx:id="balance" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                         <HBox.margin>
-                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                         </HBox.margin>
                     </Text>
                 </HBox>

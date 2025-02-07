@@ -131,6 +131,7 @@ public class AllocationTransactionToItemController extends StackPane implements 
         listOfItems.forEach(holder -> allocationLookup.put(holder.getAllocation().id(), holder));
         SortedList<AllocationHolder> sortedList = new SortedList<>(listOfItems, Comparator.comparing(AllocationHolder::getAmount));
         tableView.setItems(sortedList);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
     }
 
     private TableCell<AllocationHolder, Allocation> makeDeleteButton(TableColumn<AllocationHolder, Allocation> tableColumn) {

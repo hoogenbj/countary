@@ -37,7 +37,7 @@ public class DbMigration {
             model.executeStatements(statements, false);
             stringConsumer.accept("Migration finished.");
             stringConsumer.accept("You can now restart the application.");
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

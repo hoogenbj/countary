@@ -111,7 +111,7 @@ public class TransactionWorkSheetController implements ControllerHelpers {
         anchorLayout(reports);
         allocations = new AnchorPane();
         allocations.setPrefHeight(293);
-        allocations.setPrefWidth(723.3);
+        allocations.setPrefWidth(550);
         allocations.getStyleClass().add("make-node-outline");
         allocations.getChildren().add(getLabeledNode("Select a transaction or a budget item..."));
         reports.getChildren().addAll(getLeftReportPane(), allocations, getRightReportPane());
@@ -122,7 +122,7 @@ public class TransactionWorkSheetController implements ControllerHelpers {
     private Node getLeftReportPane() {
         leftReportPane = new AnchorPane();
         leftReportPane.setPrefHeight(293);
-        leftReportPane.setPrefWidth(423.3);
+        leftReportPane.setPrefWidth(584.5);
         summaryController = SummaryController.getInstance(model);
         anchorLayout(summaryController);
         leftReportPane.getChildren().add(summaryController);
@@ -132,7 +132,7 @@ public class TransactionWorkSheetController implements ControllerHelpers {
     private Node getRightReportPane() {
         rightReportPane = new AnchorPane();
         rightReportPane.setPrefHeight(293);
-        rightReportPane.setPrefWidth(573.3);
+        rightReportPane.setPrefWidth(584.5);
         HBox.setHgrow(rightReportPane, Priority.ALWAYS);
         return rightReportPane;
     }

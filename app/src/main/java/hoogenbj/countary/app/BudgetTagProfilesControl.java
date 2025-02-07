@@ -19,6 +19,7 @@ package hoogenbj.countary.app;
 import hoogenbj.countary.model.BudgetTagProfile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;

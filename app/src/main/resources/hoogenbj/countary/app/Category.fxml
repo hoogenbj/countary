@@ -16,19 +16,17 @@
   ~    limitations under the License.
   -->
 
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-    <HBox alignment="CENTER" minHeight="25" fx:id="balanceBox" spacing="10.0">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fillWidth="false" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox fx:id="balanceBox" alignment="CENTER" minHeight="25" spacing="10.0">
     </HBox>
-    <TreeTableView fx:id="treeTableView" editable="true" showRoot="false" xmlns="http://javafx.com/javafx/18"
-                   xmlns:fx="http://javafx.com/fxml/1">
+    <TreeTableView fx:id="treeTableView" editable="true" showRoot="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
         <columns>
-            <TreeTableColumn fx:id="categoryColumn" prefWidth="180.0" text="Category"/>
-            <TreeTableColumn fx:id="plannedColumn" prefWidth="120.0" text="Planned"/>
-            <TreeTableColumn fx:id="actualColumn" prefWidth="120.0" text="Actual"/>
+            <TreeTableColumn fx:id="categoryColumn" prefWidth="210.0" text="Category" />
+            <TreeTableColumn fx:id="plannedColumn" prefWidth="90.0" text="Planned" />
+            <TreeTableColumn fx:id="actualColumn" prefWidth="90.0" text="Actual" />
         </columns>
     </TreeTableView>
 </VBox>
