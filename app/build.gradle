@@ -75,7 +75,7 @@ jlink {
         installerOptions += '--license-file'
         installerOptions += '../LICENSE'
         installerOptions += '--copyright'
-        installerOptions += 'JA Hoogenboezem 2023'
+        installerOptions += 'JA Hoogenboezem 2025'
         installerOptions += '--description'
         installerOptions += "Countary - an opinionated budgeting program"
     }
