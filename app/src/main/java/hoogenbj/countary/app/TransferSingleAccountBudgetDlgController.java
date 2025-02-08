@@ -125,7 +125,7 @@ public class TransferSingleAccountBudgetDlgController extends Dialog<Map<String,
                 if (newValue == null)
                     return false;
                 else
-                    return ((amount.getText().equals(balanceAsText)) ||
+                    return ((ParseUtils.formatBigDecimal(newValue).equals(balanceAsText)) ||
                             (newValue.signum() == balance.signum() && newValue.compareTo(balance) < 1));
             } else
                 return false;
