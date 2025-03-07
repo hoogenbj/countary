@@ -118,6 +118,7 @@ public class Parser {
             throw new StatementParseException("No transactions found in statement", path);
         final BigDecimal[] runningBalance = {balance};
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        DateFormat dateTimeFormat = new SimpleDateFormat("yyyyMMddhhmmss");
         List<ParsedStatement.Line> transactions = new ArrayList<>();
         AtomicInteger transactionCount = new AtomicInteger();
         transactionList.forEach(trn -> {
@@ -134,20 +135,23 @@ public class Parser {
             }
             Calendar transactionDate = Calendar.getInstance();
             try {
-                transactionDate.setTime(dateFormat.parse(trn.dtuser().substring(0, 8)));
+                transactionDate.setTime(dateTimeFormat.parse(trn.dtuser().substring(0, 14)));
                 transaction.setTransactionDate(transactionDate);
             } catch (ParseException e) {
-                throw new RuntimeException(String.format("Unable to parse date %s in transaction " +
+                throw new RuntimeException(String.format("Unable to parse date-time %s in transaction " +
                                 "%d of statement at %s ", trn.dtposted(), transactionCount.get(),
                         path), e);
             }
             BigDecimal amount = ParseUtils.parseBigDecimal(trn.trnamt());
             transaction.setAmount(amount);
-            transaction.setBalance(runningBalance[0]);
-            runningBalance[0] = runningBalance[0].subtract(amount);
             transaction.setDescription(StringEscapeUtils.unescapeXml(trn.memo()));
             transactions.add(transaction);
         });
+        transactions.stream().sorted(Comparator.comparing(ParsedStatement.Line::getTransactionDate).reversed())
+                .forEach(transaction -> {
+                    transaction.setBalance(runningBalance[0]);
+                    runningBalance[0] = runningBalance[0].subtract(transaction.getAmount());
+                });
         statement.setLines(transactions);
     }
 

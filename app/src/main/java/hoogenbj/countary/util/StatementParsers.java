@@ -21,8 +21,7 @@ public enum StatementParsers {
     BZCSV("CSV (Bank Zero monthly)", BankZeroStatementParser.class, "*.csv"),
     BZHCSV("CSV (Bank Zero history)", BankZeroStatementHistoryParser.class, "*.csv"),
     OFX1("OFX v1.x", OFXStatementParser.class, "*.ofx"),
-    OFX2("OFX v2.x", OFX2StatementParser.class, "*.ofx"),
-    CAPITECCSV("CSV (Capitec)", Capitec_CSVStatementParser.class, "*.csv");
+    OFX2("OFX v2.x", OFX2StatementParser.class, "*.ofx");
 
     private final String description;
     private final Class<? extends StatementParser> parser;

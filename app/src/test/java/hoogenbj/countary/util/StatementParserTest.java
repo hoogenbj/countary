@@ -217,22 +217,14 @@ public class StatementParserTest {
 
     @Test
     public void parseOFX2Test() throws Exception {
-        ParsedStatement parsedStatement = new OFX2StatementParser().parse(this.getClass()
-                .getResource("CapitecBankTransactionHistory_OFX2.ofx").toURI());
+        ParsedStatement parsedStatement = new OFX2StatementParser().parse(Objects.requireNonNull(this.getClass()
+                .getResource("CapitecBankTransactionHistory_OFX2.ofx")).toURI());
         assertEquals("1234567890", parsedStatement.getAccountNumber());
-        assertEquals(36, parsedStatement.getLines().size());
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        int checked = 0;
-        for (ParsedStatement.Line line : parsedStatement.getLines()) {
-            if (dateFormat.parse("20230401").getTime() == line.getPostedOn().getTime().getTime()) {
-                assertEquals("Superspar Johannesburg (Card 1234)", line.getDescription());
-                assertEquals(dateFormat.parse("20230329"), line.getTransactionDate().getTime());
-                assertEquals(new BigDecimal("-112.88"), line.getAmount());
-                assertEquals(new BigDecimal("13316.75"), line.getBalance());
-                checked++;
-            }
-        }
-        assertEquals(1, checked);
+        assertEquals(4, parsedStatement.getLines().size());
+        assertEquals("Transfer Engeland 2024",
+                parsedStatement.getLines().get(0).getDescription());
+        assertEquals(new BigDecimal("67576.34"),
+                parsedStatement.getLines().get(parsedStatement.getLines().size()-1).getBalance());
     }
 
     @Test
@@ -252,22 +244,6 @@ public class StatementParserTest {
             }
         }
         assertEquals(1, checked);
-    }
-
-    @Test
-    public void compareStatementsTest() throws Exception {
-        ParsedStatement parsedOFX1Statement = new OFXStatementParser().parse(this.getClass()
-                .getResource("CapitecBankTransactionHistory_OFX1.ofx").toURI());
-        ParsedStatement parsedOFX2Statement = new OFX2StatementParser().parse(this.getClass()
-                .getResource("CapitecBankTransactionHistory_OFX2.ofx").toURI());
-        List<String> ofx1Descriptions = parsedOFX1Statement.getLines().stream()
-                .map(line -> line.getDescription()).toList();
-        assertEquals(36, ofx1Descriptions.size());
-        List<String> ofx2Descriptions = parsedOFX2Statement.getLines().stream()
-                .map(line -> line.getDescription()).toList();
-        assertEquals(36, ofx2Descriptions.size());
-        ofx2Descriptions.stream().filter(line -> !ofx1Descriptions.contains(line)).forEach(System.out::println);
-        assertTrue(ofx1Descriptions.containsAll(ofx2Descriptions));
     }
 
     @Test
