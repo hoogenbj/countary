@@ -31,8 +31,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Parser {
+    private static final boolean ORDERBY_DATE = false;
+
     public static Header parseHeader(Node node, String path) {
         String trimmed = node.getNodeValue().trim();
         if (trimmed.isEmpty())
@@ -123,7 +126,7 @@ public class Parser {
         AtomicInteger transactionCount = new AtomicInteger();
         transactionList.forEach(trn -> {
             transactionCount.getAndIncrement();
-            ParsedStatement.Line transaction = new ParsedStatement.Line();
+            TransactionLine transaction = new TransactionLine();
             Calendar postingDate = Calendar.getInstance();
             try {
                 postingDate.setTime(dateFormat.parse(trn.dtposted().substring(0, 8)));
@@ -145,13 +148,23 @@ public class Parser {
             BigDecimal amount = ParseUtils.parseBigDecimal(trn.trnamt());
             transaction.setAmount(amount);
             transaction.setDescription(StringEscapeUtils.unescapeXml(trn.memo()));
+            transaction.setFitid(trn.fitid());
             transactions.add(transaction);
         });
-        transactions.stream().sorted(Comparator.comparing(ParsedStatement.Line::getTransactionDate).reversed())
-                .forEach(transaction -> {
-                    transaction.setBalance(runningBalance[0]);
-                    runningBalance[0] = runningBalance[0].subtract(transaction.getAmount());
-                });
+        if (ORDERBY_DATE) {
+            transactions.stream().sorted(Comparator.comparing(ParsedStatement.Line::getTransactionDate).reversed())
+                    .forEach(transaction -> {
+                        transaction.setBalance(runningBalance[0]);
+                        runningBalance[0] = runningBalance[0].subtract(transaction.getAmount());
+                    });
+        } else {
+            List<ParsedStatement.Line> list = new ArrayList<>(transactions.stream().toList());
+            Collections.reverse(list);
+            list.forEach(transaction -> {
+                transaction.setBalance(runningBalance[0]);
+                runningBalance[0] = runningBalance[0].subtract(transaction.getAmount());
+            });
+        }
         statement.setLines(transactions);
     }
 
