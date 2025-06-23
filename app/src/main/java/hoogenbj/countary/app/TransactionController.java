@@ -137,7 +137,7 @@ public class TransactionController implements ControllerHelpers {
             if (!model.tableExists("account")) {
                 userInterface.showWarning("The database appears to be empty. Create database objects first.");
             } else {
-                transactionModel = new TransactionModel(model, this::refreshTransactions, this::searchClearable);
+                transactionModel = new TransactionModel(model, settings, this::refreshTransactions, this::searchClearable);
                 initControls();
                 KeyValue recentAccount = settings.getCurrentAccount();
                 if (recentAccount != null) {
@@ -180,7 +180,8 @@ public class TransactionController implements ControllerHelpers {
         holderLookup.clear();
         list.forEach(holder -> holderLookup.put(holder.getTransaction(), holder));
         listOfTransactions = FXCollections.observableArrayList(list);
-        SortedList<TransactionHolder> sortedList = new SortedList<>(listOfTransactions, (left, right) -> right.pdate().compareTo(left.pdate()));
+        StatementSorter statementSorter = transactionModel.getStatementSorter();
+        SortedList<TransactionHolder> sortedList = statementSorter.sort(listOfTransactions);
         tableView.setItems(sortedList);
         tableView.refresh();
     }

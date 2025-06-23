@@ -18,13 +18,16 @@ package hoogenbj.countary.model;
 
 import hoogenbj.countary.app.Settings;
 import hoogenbj.countary.util.StatementParsers;
+import hoogenbj.countary.util.StatementSorters;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class AccountHolder {
 
@@ -33,18 +36,37 @@ public class AccountHolder {
     private StringProperty numberProperty;
     private StringProperty branchProperty;
     private SimpleObjectProperty<StatementParsers> statementParserProperty;
+    private SimpleObjectProperty<StatementSorters> statementSortersProperty;
     private StringProperty bankProperty;
-
     private Settings settings;
 
-    public AccountHolder(Settings settings, Account account) {
+    public AccountHolder(Settings settings, Account account,
+                         BiFunction<Account, String, Account> onNameChange,
+                         BiFunction<Account, String, Account> onNumberChange,
+                         BiFunction<Account, String, Account> onBranchChange,
+                         BiFunction<Account, String, Account> onBankChange) {
         this.settings = settings;
         setAccount(account);
-        setName(account.name());
-        setNumber(account.number());
-        setBank(account.bank());
-        setBranch(account.branchCode());
-        setStatementParser(settings, account);
+        this.numberProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                accountProperty().set(onNumberChange.apply(accountProperty().get(), newValue));
+            }
+        });
+        this.bankProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                accountProperty().set(onBankChange.apply(accountProperty().get(), newValue));
+            }
+        });
+        this.branchProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                accountProperty().set(onBranchChange.apply(accountProperty().get(), newValue));
+            }
+        });
+        this.nameProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                accountProperty().set(onNameChange.apply(accountProperty().get(), newValue));
+            }
+        });
     }
 
     private void setStatementParser(Settings settings, Account account) {
@@ -52,11 +74,23 @@ public class AccountHolder {
         statementParserProperty().set(parser);
     }
 
+    private void setStatementSorter(Settings settings, Account account) {
+        StatementSorters sorter = settings.getStatementSorter(account.hashCode());
+        statementSortersProperty().set(sorter);
+    }
+
     public SimpleObjectProperty<StatementParsers> statementParserProperty() {
         if (statementParserProperty == null) {
             statementParserProperty = new SimpleObjectProperty<>(this, "statementParser");
         }
         return statementParserProperty;
+    }
+
+    public SimpleObjectProperty<StatementSorters> statementSortersProperty() {
+        if (statementSortersProperty == null) {
+            statementSortersProperty = new SimpleObjectProperty<>(this, "statementSorter");
+        }
+        return statementSortersProperty;
     }
 
     private void setBranch(String branchCode) {
@@ -106,6 +140,12 @@ public class AccountHolder {
 
     public void setAccount(Account account) {
         accountProperty().set(account);
+        setName(account.name());
+        setNumber(account.number());
+        setBank(account.bank());
+        setBranch(account.branchCode());
+        setStatementParser(settings, account);
+        setStatementSorter(settings, account);
     }
 
     public ObjectProperty<Account> accountProperty() {
@@ -126,5 +166,10 @@ public class AccountHolder {
     public void setStatementParser(StatementParsers newValue) {
         settings.setAccountStatement(getAccount().hashCode(), newValue);
         statementParserProperty().set(newValue);
+    }
+
+    public void setStatementSorter(StatementSorters newValue) {
+        settings.setStatementSorter(getAccount().hashCode(), newValue);
+        statementSortersProperty.set(newValue);
     }
 }

@@ -20,16 +20,17 @@ import com.google.inject.Inject;
 import hoogenbj.countary.model.*;
 import hoogenbj.countary.util.ParseUtils;
 import hoogenbj.countary.util.StatementParsers;
+import hoogenbj.countary.util.StatementSorters;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
@@ -42,6 +43,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class AccountsWorksheetController {
+    @FXML
+    private TableColumn<AccountHolder, StatementSorters> sortColumn;
     @FXML
     private TableColumn<AccountHolder, StatementParsers> statementColumn;
     @FXML
@@ -90,10 +93,14 @@ public class AccountsWorksheetController {
 
     private void initControls() {
         nameColumn.setCellValueFactory(p -> p.getValue().nameProperty());
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         numberColumn.setCellValueFactory(p -> p.getValue().numberProperty());
+        numberColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         branchColumn.setCellValueFactory(p -> p.getValue().branchProperty());
+        branchColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         bankColumn.setCellValueFactory(p -> p.getValue().bankProperty());
-        statementColumn.setCellFactory(ComboBoxTableCell.forTableColumn(this.makeStringConverter(), StatementParsers.values()));
+        bankColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        statementColumn.setCellFactory(ComboBoxTableCell.forTableColumn(this.makeStringConverterForStatementParsers(), StatementParsers.values()));
         statementColumn.setOnEditCommit(cell -> {
             Account account = cell.getRowValue().getAccount();
             settings.setAccountStatement(account.hashCode(), cell.getNewValue());
@@ -102,6 +109,13 @@ public class AccountsWorksheetController {
         statementColumn.setCellValueFactory(cell -> cell.getValue().statementParserProperty());
         tagColumn.setCellFactory(this::makeTag);
         tagColumn.setCellValueFactory(p -> p.getValue().accountProperty());
+        sortColumn.setCellFactory(ComboBoxTableCell.forTableColumn(this.makeStringConverterForStatementSorters(), StatementSorters.values()));
+        sortColumn.setOnEditCommit(cell -> {
+            Account account = cell.getRowValue().getAccount();
+            settings.setStatementSorter(account.hashCode(), cell.getNewValue());
+            cell.getRowValue().setStatementSorter(cell.getNewValue());
+        });
+        sortColumn.setCellValueFactory(cell -> cell.getValue().statementSortersProperty());
         Platform.runLater(() -> searchCriteria.getParent().requestFocus());
         searchCriteria.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && newValue.length() > 1 && !newValue.equals(oldValue)) {
@@ -116,7 +130,7 @@ public class AccountsWorksheetController {
         });
     }
 
-    private StringConverter<StatementParsers> makeStringConverter() {
+    private StringConverter<StatementParsers> makeStringConverterForStatementParsers() {
         return new StringConverter<>() {
             @Override
             public String toString(StatementParsers object) {
@@ -128,6 +142,23 @@ public class AccountsWorksheetController {
 
             @Override
             public StatementParsers fromString(String string) {
+                return null;
+            }
+        };
+    }
+
+    private StringConverter<StatementSorters> makeStringConverterForStatementSorters() {
+        return new StringConverter<>() {
+            @Override
+            public String toString(StatementSorters object) {
+                if (object != null)
+                    return object.getDescription();
+                else
+                    return "";
+            }
+
+            @Override
+            public StatementSorters fromString(String string) {
                 return null;
             }
         };
@@ -199,12 +230,45 @@ public class AccountsWorksheetController {
     private void loadData() {
         try {
             listOfAccounts = FXCollections.observableArrayList(model.getAccounts().stream()
-                    .map(account -> new AccountHolder(settings, account)).toList());
+                    .map(account -> new AccountHolder(settings, account, this::nameChanged, 
+                            this::numberChanged, this::branchChanged, this::bankChanged)).toList());
             filteredList = new FilteredList<>(listOfAccounts);
             SortedList<AccountHolder> sortedList = new SortedList<>(filteredList, Comparator.comparing(AccountHolder::getName).reversed());
             tableView.setItems(sortedList);
         } catch (SQLException e) {
             throw new RuntimeException("Unable to load budgets", e);
+        }
+    }
+
+    private Account bankChanged(Account account, String s) {
+        try {
+            return model.updateAccountBank(account, s);
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to update bank name", e);
+        }
+    }
+
+    private Account branchChanged(Account account, String s) {
+        try {
+            return model.updateAccountBranch(account, s);
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to update account branch", e);
+        }
+    }
+
+    private Account numberChanged(Account account, String s) {
+        try {
+            return model.updateAccountNumber(account, s);
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to update account number", e);
+        }
+    }
+
+    private Account nameChanged(Account account, String name) {
+        try {
+            return model.updateAccountName(account, name);
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to update account name", e);
         }
     }
 }

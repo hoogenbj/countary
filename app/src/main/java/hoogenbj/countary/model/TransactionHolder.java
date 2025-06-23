@@ -28,6 +28,7 @@ public class TransactionHolder {
     private Date pDate;
     private Date tDate;
     private StringProperty postingDate;
+    private Long id;
     private StringProperty txDate;
     private BigDecimalProperty amount;
     private BigDecimalProperty balance;
@@ -65,12 +66,21 @@ public class TransactionHolder {
         return transaction;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setTransaction(Transaction transaction) {
         this.transactionProperty().set(transaction);
         setCanDelete(transaction.canDelete());
         DateFormat format = DateFormat.getDateInstance();
         setAmount(transaction.amount());
         setBalance(transaction.balance());
+        setId(transaction.id());
         setPostingDate(format.format(transaction.postingDate()));
         if (transaction.txdate() != null)
             setTxDate(format.format(transaction.txdate()));

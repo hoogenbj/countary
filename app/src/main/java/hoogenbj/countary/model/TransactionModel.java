@@ -17,7 +17,9 @@
 package hoogenbj.countary.model;
 
 import hoogenbj.countary.app.KeyValue;
+import hoogenbj.countary.app.Settings;
 import hoogenbj.countary.app.UserInterface;
+import hoogenbj.countary.util.StatementSorter;
 
 import static hoogenbj.countary.util.DbUtils.MAX_TRANSACTION_ROWS;
 
@@ -30,9 +32,14 @@ import java.util.function.Consumer;
 public class TransactionModel {
     private final Consumer<List<Transaction>> refreshTransactions;
     private final Consumer<Boolean> searchClearable;
+    private final Settings settings;
 
     public Account getAccount() {
         return account;
+    }
+
+    public StatementSorter getStatementSorter() {
+        return settings.getStatementSorter(this.account.hashCode()).getSorter();
     }
 
     public enum SearchChoice {
@@ -59,9 +66,10 @@ public class TransactionModel {
 
     private boolean showCompleted;
 
-    public TransactionModel(DataModel dataModel,
+    public TransactionModel(DataModel dataModel, Settings settings,
                             Consumer<List<Transaction>> refreshTransactions, Consumer<Boolean> searchClearable) {
         this.dataModel = dataModel;
+        this.settings = settings;
         this.refreshTransactions = refreshTransactions;
         this.searchClearable = searchClearable;
     }

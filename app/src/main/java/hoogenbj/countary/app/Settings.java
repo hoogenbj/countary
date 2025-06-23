@@ -16,6 +16,7 @@
 package hoogenbj.countary.app;
 
 import hoogenbj.countary.util.StatementParsers;
+import hoogenbj.countary.util.StatementSorters;
 
 public interface Settings {
     String getDatabaseUrl();
@@ -43,4 +44,8 @@ public interface Settings {
     void setBackupPath(String backupPath);
 
     void setAccountStatement(int hashcode, StatementParsers parser);
+
+    void setStatementSorter(int hashCode, StatementSorters sorter);
+
+    StatementSorters getStatementSorter(int hashCode);
 }

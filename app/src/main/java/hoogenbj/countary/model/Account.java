@@ -24,4 +24,9 @@ public record Account(Long id, String name, String number, String branchCode, St
         String value = account.id().toString();
         return new KeyValue(key, value);
     }
+
+    @Override
+    public int hashCode() {
+        return id().intValue();
+    }
 }

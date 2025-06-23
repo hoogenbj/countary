@@ -198,4 +198,12 @@ public interface DataModel {
     void rebuildVirtualTables(UserInterface userInterface) throws SQLException;
 
     int getDbVersion() throws SQLException;
+
+    Account updateAccountBank(Account account, String bankName) throws SQLException;
+
+    Account updateAccountBranch(Account account, String branchCode) throws SQLException;
+
+    Account updateAccountNumber(Account account, String accountNumber) throws SQLException;
+
+    Account updateAccountName(Account account, String name) throws SQLException;
 }

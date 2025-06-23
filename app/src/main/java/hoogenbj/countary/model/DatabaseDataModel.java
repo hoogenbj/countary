@@ -517,6 +517,66 @@ public class DatabaseDataModel implements DataModel {
     }
 
     @Override
+    public Account updateAccountBank(Account account, String bankName) throws SQLException {
+        String query = "update account set bank = ? where id = ?";
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            connection.setAutoCommit(true);
+            statement.setString(1, bankName);
+            statement.setLong(2, account.id());
+            int updated = statement.executeUpdate();
+            if (updated != 1)
+                throw new RuntimeException(String.format("Expected row count of 1 after updating name. Row count was %d instead.", updated));
+            return new Account(account.id(), account.name(), account.number(), account.branchCode(), bankName, account.tagColor());
+        }
+    }
+
+    @Override
+    public Account updateAccountBranch(Account account, String branchCode) throws SQLException {
+        String query = "update account set branchCode = ? where id = ?";
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            connection.setAutoCommit(true);
+            statement.setString(1, branchCode);
+            statement.setLong(2, account.id());
+            int updated = statement.executeUpdate();
+            if (updated != 1)
+                throw new RuntimeException(String.format("Expected row count of 1 after updating name. Row count was %d instead.", updated));
+            return new Account(account.id(), account.name(), account.number(), branchCode, account.bank(), account.tagColor());
+        }
+    }
+
+    @Override
+    public Account updateAccountName(Account account, String name) throws SQLException {
+        String query = "update account set name = ? where id = ?";
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            connection.setAutoCommit(true);
+            statement.setString(1, name);
+            statement.setLong(2, account.id());
+            int updated = statement.executeUpdate();
+            if (updated != 1)
+                throw new RuntimeException(String.format("Expected row count of 1 after updating name. Row count was %d instead.", updated));
+            return new Account(account.id(), name, account.number(), account.branchCode(), account.bank(), account.tagColor());
+        }
+    }
+
+    @Override
+    public Account updateAccountNumber(Account account, String accountNumber) throws SQLException {
+        String query = "update account set number = ? where id = ?";
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            connection.setAutoCommit(true);
+            statement.setString(1, accountNumber);
+            statement.setLong(2, account.id());
+            int updated = statement.executeUpdate();
+            if (updated != 1)
+                throw new RuntimeException(String.format("Expected row count of 1 after updating name. Row count was %d instead.", updated));
+            return new Account(account.id(), account.name(), accountNumber, account.branchCode(), account.bank(), account.tagColor());
+        }
+    }
+
+    @Override
     public Account updateAccountTagColor(Account account, String color) throws SQLException {
         String query = "update account set tagColor = ? where id = ?";
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties);
@@ -1064,6 +1124,9 @@ public class DatabaseDataModel implements DataModel {
                 }
             }
         }
+        balances.forEach((account, balance) -> {
+            System.out.printf("budget: %s balances: %s - %s%n", budget.name(), account.name(), balance);
+        });
         return balances;
     }
 

@@ -39,6 +39,8 @@
                 <TableColumn fx:id="statementColumn" prefWidth="250.0" text="Statement type"/>
                 <TableColumn fx:id="tagColumn" style="-fx-alignment: center;" minWidth="-Infinity" prefWidth="50.0"
                              text="Tag"/>
+                <TableColumn fx:id="sortColumn" style="-fx-alignment: center;" minWidth="-Infinity" prefWidth="250.0"
+                             text="Sorting"/>
             </columns>
         </TableView>
     </HBox>
