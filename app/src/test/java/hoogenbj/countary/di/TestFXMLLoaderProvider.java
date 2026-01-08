@@ -19,7 +19,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import javafx.fxml.FXMLLoader;
-import org.jmock.junit5.JUnit5Mockery;
 
 public class TestFXMLLoaderProvider implements Provider<FXMLLoader> {
 

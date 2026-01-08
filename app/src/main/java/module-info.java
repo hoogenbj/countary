@@ -27,8 +27,8 @@ module hoogenbj.countary {
     requires org.apache.commons.io;
 
     exports hoogenbj.countary.app;
-    opens hoogenbj.countary.app to javafx.fxml, com.google.guice, jmock.junit5;
+    opens hoogenbj.countary.app to javafx.fxml, com.google.guice;
     opens hoogenbj.countary.di to com.google.guice;
     exports hoogenbj.countary.model;
-    opens hoogenbj.countary.model to com.google.guice, javafx.fxml, jmock.junit5;
+    opens hoogenbj.countary.model to com.google.guice, javafx.fxml;
 }
