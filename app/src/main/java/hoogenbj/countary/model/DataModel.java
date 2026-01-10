@@ -72,7 +72,11 @@ public interface DataModel {
 
     Set<Long> searchBudgets(String what, String criteria) throws SQLException;
 
-    Map<Account, BigDecimal> calculateBalances(Budget budget) throws SQLException;
+    BigDecimal calculateAccountBalance(Account account) throws SQLException;
+
+    Map<Budget, BigDecimal> calculateBudgetBalances(Account account) throws SQLException;
+
+    Map<Account, BigDecimal> calculateAccountBalances(Budget budget) throws SQLException;
 
     Budget createBudget(Budget budget) throws SQLException;
 

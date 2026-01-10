@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class SummaryModel {
 
@@ -87,7 +86,7 @@ public class SummaryModel {
             Long id = budget.id();
             BigDecimal actualForBudget = dataModel.getActualForBudget(budget);
             budgetActuals.put(id, actualForBudget);
-            budgetBalances.put(id, dataModel.calculateBalances(budget));
+            budgetBalances.put(id, dataModel.calculateAccountBalances(budget));
         } catch (SQLException e) {
             throw new RuntimeException(String.format("Could not retrieve actual for budget %s", budget.name()), e);
         }

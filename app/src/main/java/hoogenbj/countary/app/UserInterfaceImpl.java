@@ -79,8 +79,14 @@ public class UserInterfaceImpl implements UserInterface {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Backup database to file:");
         String backupPath = settings.getBackupPath();
-        if (backupPath != null)
-            fileChooser.setInitialDirectory(new File(backupPath));
+        if (backupPath != null) {
+            File backupDirectory = new File(backupPath);
+            if (!backupDirectory.exists()) {
+                // Reset to safe path if setting somehow got changed to an invalid path
+                backupDirectory = new File(System.getProperty("user.home"));
+            }
+            fileChooser.setInitialDirectory(backupDirectory);
+        }
         LocalDateTime now = LocalDateTime.now();
         String timestamp = new DateTimeFormatterBuilder()
                 .appendPattern("yyyyMMddHHmmss")

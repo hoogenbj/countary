@@ -1049,7 +1049,7 @@ public class DatabaseDataModel implements DataModel {
                     }
                 }
                 BudgetItem targetBudgetItem = getBudgetItem(connection, clone, budgetItem.item());
-                Map<Account, BigDecimal> balances = calculateBalances(connection, budget);
+                Map<Account, BigDecimal> balances = calculateAccountBalances(connection, budget);
                 Calendar postedOn = Calendar.getInstance();
                 postedOn.setTime(Date.from(Instant.now()));
                 for (Map.Entry<Account, BigDecimal> entry : balances.entrySet()) {
@@ -1091,15 +1091,88 @@ public class DatabaseDataModel implements DataModel {
         }
     }
 
-    @Override
-    public Map<Account, BigDecimal> calculateBalances(Budget budget) throws SQLException {
+    public BigDecimal calculateAccountBalance(Account account) throws SQLException {
         try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties)) {
             connection.setAutoCommit(true);
-            return calculateBalances(connection, budget);
+            return calculateAccountBalance(connection, account);
         }
     }
 
-    private Map<Account, BigDecimal> calculateBalances(Connection connection, Budget budget) throws SQLException {
+    private BigDecimal calculateAccountBalance(Connection connection, Account account) throws SQLException {
+        String query = "select sum(a.amount) as balance " +
+                "from account act " +
+                "join transactions t on act.id = t.accountId " +
+                "join allocation a on a.transactionId = t.id " +
+                "join budget_item bi on bi.id = a.budgetItemId " +
+                "join budget b on b.id = bi.budgetId " +
+                "where accountId = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, account.id());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    BigDecimal sum = rs.getBigDecimal(1);
+                    BigDecimal balance;
+                    if (rs.wasNull())
+                        balance = BigDecimal.ZERO;
+                    else
+                        balance = sum;
+                    return balance;
+                }
+            }
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public Map<Budget, BigDecimal> calculateBudgetBalances(Account account) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties)) {
+            connection.setAutoCommit(true);
+            return calculateBudgetBalances(connection, account);
+        }
+    }
+
+    private Map<Budget, BigDecimal> calculateBudgetBalances(Connection connection, Account account) throws SQLException {
+        BigDecimal smallValue = new BigDecimal("0.0001");
+        Map<Budget, BigDecimal> balances = new HashMap<>();
+        String query = "select sum(a.amount) as balance, b.id as id, b.copyBudgetId as copyBudgetId," +
+                "b.name as name, b.kind as kind, b.hidden as hidden " +
+                "from account act " +
+                "join transactions t on act.id = t.accountId " +
+                "join allocation a on a.transactionId = t.id " +
+                "join budget_item bi on bi.id = a.budgetItemId " +
+                "join budget b on b.id = bi.budgetId " +
+                "where accountId = ? " +
+                "group by b.id";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, account.id());
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    BigDecimal sum = rs.getBigDecimal("balance");
+                    BigDecimal balance;
+                    if (rs.wasNull()) {
+                        continue;
+                    } else
+                        balance = sum;
+                    if (balance.abs().compareTo(smallValue) > 0) {
+                        Budget budget = new Budget(rs.getLong("id"), rs.getLong("copyBudgetId"),
+                                rs.getString("name"), Kind.valueOf(rs.getString("kind")),
+                                rs.getBoolean("hidden"));
+                        balances.put(budget, balance);
+                    }
+                }
+            }
+        }
+        return balances;
+    }
+
+    @Override
+    public Map<Account, BigDecimal> calculateAccountBalances(Budget budget) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(settings.getDatabaseUrl(), connectionProperties)) {
+            connection.setAutoCommit(true);
+            return calculateAccountBalances(connection, budget);
+        }
+    }
+
+    private Map<Account, BigDecimal> calculateAccountBalances(Connection connection, Budget budget) throws SQLException {
         Map<Account, BigDecimal> balances = new HashMap<>();
         String query = "select sum(a.amount), act.id, act.name, act.number, act.branchCode, act.bank, act.tagColor " +
                 "from budget_item bf " +
@@ -1124,9 +1197,6 @@ public class DatabaseDataModel implements DataModel {
                 }
             }
         }
-        balances.forEach((account, balance) -> {
-            System.out.printf("budget: %s balances: %s - %s%n", budget.name(), account.name(), balance);
-        });
         return balances;
     }
 

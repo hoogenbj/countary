@@ -312,7 +312,7 @@ public class BudgetController implements ControllerHelpers {
         BudgetHolder budgetHolder = tableView.getSelectionModel().getSelectedItem();
         Budget budget = budgetHolder.getBudget();
         try {
-            Map<Account, BigDecimal> balances = model.calculateBalances(budget);
+            Map<Account, BigDecimal> balances = model.calculateAccountBalances(budget);
             boolean anyNonZeroBalance = balances.values().stream()
                     .anyMatch(balance -> balance.abs().compareTo(BigDecimal.ZERO) != 0);
             if (anyNonZeroBalance) {

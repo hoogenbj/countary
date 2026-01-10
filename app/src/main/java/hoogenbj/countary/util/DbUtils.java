@@ -32,7 +32,7 @@ import static org.sqlite.SQLiteErrorCode.*;
 
 public class DbUtils {
 
-    public static Integer MAX_TRANSACTION_ROWS = 2000;
+    public static Integer MAX_TRANSACTION_ROWS = 4000;
 
     public static boolean dbFileNotFound(String dbUrl) {
         String[] parts = dbUrl.split(":");
@@ -136,6 +136,10 @@ public class DbUtils {
         File file = userInterface.backupDatabaseToFile(settings);
         if (file != null) {
             try {
+                if (file.getAbsolutePath().contains(".backup.backup")) {
+                    // workaround for JavaFX bug
+                    file = new File(file.getAbsolutePath().replace(".backup.backup", ".backup"));
+                }
                 model.backup(file.getAbsolutePath());
                 userInterface.showNotification(String.format("Backup to %s completed.", file.getAbsolutePath()));
                 settings.setBackupPath(file.getParentFile().getAbsolutePath());

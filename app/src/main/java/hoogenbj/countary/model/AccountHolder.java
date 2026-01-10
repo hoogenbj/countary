@@ -16,6 +16,7 @@
 
 package hoogenbj.countary.model;
 
+import hoogenbj.countary.app.BigDecimalProperty;
 import hoogenbj.countary.app.Settings;
 import hoogenbj.countary.util.StatementParsers;
 import hoogenbj.countary.util.StatementSorters;
@@ -35,18 +36,20 @@ public class AccountHolder {
     private StringProperty nameProperty;
     private StringProperty numberProperty;
     private StringProperty branchProperty;
+    private BigDecimalProperty balanceProperty;
     private SimpleObjectProperty<StatementParsers> statementParserProperty;
     private SimpleObjectProperty<StatementSorters> statementSortersProperty;
     private StringProperty bankProperty;
     private Settings settings;
 
-    public AccountHolder(Settings settings, Account account,
+    public AccountHolder(Settings settings, Account account, BigDecimal balance,
                          BiFunction<Account, String, Account> onNameChange,
                          BiFunction<Account, String, Account> onNumberChange,
                          BiFunction<Account, String, Account> onBranchChange,
                          BiFunction<Account, String, Account> onBankChange) {
         this.settings = settings;
         setAccount(account);
+        setBalance(balance);
         this.numberProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null && !newValue.equals(oldValue)) {
                 accountProperty().set(onNumberChange.apply(accountProperty().get(), newValue));
@@ -77,6 +80,18 @@ public class AccountHolder {
     private void setStatementSorter(Settings settings, Account account) {
         StatementSorters sorter = settings.getStatementSorter(account.hashCode());
         statementSortersProperty().set(sorter);
+    }
+    private void setBalance(BigDecimal balance) {
+        balanceProperty().set(balance);
+    }
+
+    public BigDecimal getBalance() {
+        return balanceProperty().get();
+    }
+
+    public BigDecimalProperty balanceProperty() {
+        if (balanceProperty == null) balanceProperty = new BigDecimalProperty(this, "balance");
+        return balanceProperty;
     }
 
     public SimpleObjectProperty<StatementParsers> statementParserProperty() {

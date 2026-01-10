@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import hoogenbj.countary.app.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <!--
   ~ Copyright (c) 2023. Johan Hoogenboezem
@@ -21,28 +20,32 @@
   ~    limitations under the License.
   -->
 
-
-<?import hoogenbj.countary.app.ClearableTextField?>
-<VBox alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="hoogenbj.countary.app.AccountsWorksheetController">
+<VBox alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hoogenbj.countary.app.AccountsWorksheetController">
     <HBox>
         <ClearableTextField fx:id="searchCriteria" promptText="Enter text to search for">
         </ClearableTextField>
     </HBox>
     <HBox>
-        <TableView fx:id="tableView" HBox.hgrow="ALWAYS" editable="true">
+        <TableView fx:id="tableView" editable="true" HBox.hgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="nameColumn" minWidth="-Infinity" prefWidth="250.0" text="Name"/>
-                <TableColumn fx:id="numberColumn" minWidth="-Infinity" prefWidth="150.0" text="Number"/>
-                <TableColumn fx:id="branchColumn" minWidth="-Infinity" prefWidth="100.0" text="Branch code"/>
-                <TableColumn fx:id="bankColumn" minWidth="-Infinity" prefWidth="250.0" text="Bank"/>
-                <TableColumn fx:id="statementColumn" prefWidth="250.0" text="Statement type"/>
-                <TableColumn fx:id="tagColumn" style="-fx-alignment: center;" minWidth="-Infinity" prefWidth="50.0"
-                             text="Tag"/>
-                <TableColumn fx:id="sortColumn" style="-fx-alignment: center;" minWidth="-Infinity" prefWidth="250.0"
-                             text="Sorting"/>
+                <TableColumn fx:id="nameColumn" minWidth="-Infinity" prefWidth="250.0" text="Name" />
+                <TableColumn fx:id="numberColumn" minWidth="-Infinity" prefWidth="150.0" text="Number" />
+                <TableColumn fx:id="branchColumn" minWidth="-Infinity" prefWidth="100.0" text="Branch code" />
+                <TableColumn fx:id="bankColumn" minWidth="-Infinity" prefWidth="250.0" text="Bank" />
+                <TableColumn fx:id="accountBalanceColumn" editable="false" minWidth="-Infinity" style="-fx-alignment: center-right;" prefWidth="100.0" text="Balance" />
+                <TableColumn fx:id="statementColumn" prefWidth="250.0" text="Statement type" />
+                <TableColumn fx:id="tagColumn" minWidth="-Infinity" prefWidth="50.0" style="-fx-alignment: center;" text="Tag" />
+                <TableColumn fx:id="sortColumn" minWidth="-Infinity" prefWidth="250.0" style="-fx-alignment: center;" text="Sorting" />
             </columns>
         </TableView>
     </HBox>
-    <HBox VBox.vgrow="ALWAYS"/>
+    <HBox VBox.vgrow="ALWAYS">
+        <TableView fx:id="budgetTableView" HBox.hgrow="ALWAYS" editable="false">
+            <columns>
+                <TableColumn fx:id="budgetNameColumn" prefWidth="300.0" text="Budget Name" />
+                <TableColumn fx:id="budgetBalanceColumn" prefWidth="100.0" style="-fx-alignment: center-right;" text="Balance" />
+                <TableColumn fx:id="kindColumn" prefWidth="150.0" text="Budget Kind" />
+            </columns>
+        </TableView>
+    </HBox>
 </VBox>

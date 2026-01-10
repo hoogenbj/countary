@@ -36,19 +36,31 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 import javafx.util.StringConverter;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class AccountsWorksheetController {
+public class AccountsWorksheetController implements ControllerHelpers {
+    @FXML
+    private TableView<BudgetBalanceHolder> budgetTableView;
+    @FXML
+    private TableColumn<BudgetBalanceHolder, String> budgetNameColumn;
+    @FXML
+    private TableColumn<BudgetBalanceHolder, BigDecimal> budgetBalanceColumn;
+    @FXML
+    private TableColumn<BudgetBalanceHolder, Kind> kindColumn;
     @FXML
     private TableColumn<AccountHolder, StatementSorters> sortColumn;
     @FXML
     private TableColumn<AccountHolder, StatementParsers> statementColumn;
     @FXML
     private TableColumn<AccountHolder, String> nameColumn;
+    @FXML
+    private TableColumn<AccountHolder, BigDecimal> accountBalanceColumn;
     @FXML
     private TableColumn<AccountHolder, String> numberColumn;
     @FXML
@@ -89,6 +101,21 @@ public class AccountsWorksheetController {
                 tableView.scrollTo(size - 1);
             }
         }));
+        tableView.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                try {
+                    Map<Budget, BigDecimal> balances = model.calculateBudgetBalances(newValue.getAccount());
+                    ObservableList<BudgetBalanceHolder> listOfBudgets = FXCollections.observableArrayList(balances
+                            .entrySet().stream().map(entry ->
+                                    new BudgetBalanceHolder(entry.getKey(), entry.getValue())).toList());
+                    SortedList<BudgetBalanceHolder> sortedList = new SortedList<>(listOfBudgets, Comparator.comparing(BudgetBalanceHolder::getBudgetName).reversed());
+                    budgetTableView.setItems(sortedList);
+                } catch (SQLException e) {
+                    throw new RuntimeException("Unable to load budgets", e);
+                }
+            }
+        });
     }
 
     private void initControls() {
@@ -100,6 +127,8 @@ public class AccountsWorksheetController {
         branchColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         bankColumn.setCellValueFactory(p -> p.getValue().bankProperty());
         bankColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        accountBalanceColumn.setCellValueFactory(p -> p.getValue().balanceProperty());
+        accountBalanceColumn.setCellFactory(this::makeBigDecimalCell);
         statementColumn.setCellFactory(ComboBoxTableCell.forTableColumn(this.makeStringConverterForStatementParsers(), StatementParsers.values()));
         statementColumn.setOnEditCommit(cell -> {
             Account account = cell.getRowValue().getAccount();
@@ -128,6 +157,10 @@ public class AccountsWorksheetController {
                 updatePredicate();
             }
         });
+        budgetNameColumn.setCellValueFactory(p -> p.getValue().budgetNameProperty());
+        kindColumn.setCellValueFactory(p -> p.getValue().kindProperty());
+        budgetBalanceColumn.setCellValueFactory(p -> p.getValue().balanceProperty());
+        budgetBalanceColumn.setCellFactory(this::makeBigDecimalCell);
     }
 
     private StringConverter<StatementParsers> makeStringConverterForStatementParsers() {
@@ -230,8 +263,15 @@ public class AccountsWorksheetController {
     private void loadData() {
         try {
             listOfAccounts = FXCollections.observableArrayList(model.getAccounts().stream()
-                    .map(account -> new AccountHolder(settings, account, this::nameChanged, 
-                            this::numberChanged, this::branchChanged, this::bankChanged)).toList());
+                    .map(account -> {
+                        try {
+                            BigDecimal balance = model.calculateAccountBalance(account);
+                            return new AccountHolder(settings, account, balance, this::nameChanged,
+                                    this::numberChanged, this::branchChanged, this::bankChanged);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).toList());
             filteredList = new FilteredList<>(listOfAccounts);
             SortedList<AccountHolder> sortedList = new SortedList<>(filteredList, Comparator.comparing(AccountHolder::getName).reversed());
             tableView.setItems(sortedList);

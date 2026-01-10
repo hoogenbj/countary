@@ -20,7 +20,6 @@ import hoogenbj.countary.model.*;
 import hoogenbj.countary.util.ParseUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -84,7 +83,7 @@ public class CategoryController {
 
     private void updateBalances(Budget budget) {
         try {
-            Map<Account, BigDecimal> balances = model.calculateBalances(budget);
+            Map<Account, BigDecimal> balances = model.calculateAccountBalances(budget);
             balanceBox.getChildren().clear();
             String heading = "Actual balance:";
             if (balances.size() > 1)
